@@ -3,7 +3,7 @@ package router
 import (
 	"fmt"
 	server "linuxcode/inventory_manager/pkg/server/generated"
-	apihandler "linuxcode/inventory_manager/pkg/server/handler/api"
+	apihandler "linuxcode/inventory_manager/pkg/server/handler/apihandler"
 	"linuxcode/inventory_manager/pkg/server/handler/infohandler"
 	"os"
 
@@ -65,10 +65,7 @@ func New(
 	// that server names match. We don't know how this thing will be run.
 	swagger.Servers = nil
 
-	// Create an instance of our handler which satisfies the generated interface
-	apiHandler := apihandler.NewAPIHandler()
-
-	server.HandlerFromMux(apiHandler, router)
+	server.HandlerFromMux(apiHandle, router)
 
 	return router
 }

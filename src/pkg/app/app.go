@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"linuxcode/inventory_manager/pkg/server"
+	"linuxcode/inventory_manager/pkg/server/handler/apihandler"
 	"linuxcode/inventory_manager/pkg/server/handler/infohandler"
 	"linuxcode/inventory_manager/pkg/server/router"
 	"net/http"
@@ -24,8 +25,11 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 		cfg.Info.CommitDate,
 	)
 
+	// Create an instance of our handler which satisfies the generated interface
+	apiHandler := apihandler.NewAPIHandler()
+
 	// setup router that uses the handlers
-	r := router.New(versionHandler, cfg.Router)
+	r := router.New(versionHandler, apiHandler, cfg.Router)
 
 	// Set up server
 	srv := server.NewServer(cfg.Server, r)
