@@ -20,3 +20,12 @@ build-push:
 gen-proto:
 	docker run -v ./protobuf:/defs namely/protoc-all -f *.proto -l go 
 	mv ./protobuf/gen/pb-go/linuxcode/domain/protobuf ./src/protobuf
+
+gen-sql:
+	@echo "Generating the sql"
+	npx -p @dbml/cli dbml2sql ./database/schema.dbml -o ./database/schema.sql
+
+gen-sqlc:
+	@echo "Generating the sqlc"
+	cd ./database && sqlc generate
+	mv ./database/repo ./src/pkg/

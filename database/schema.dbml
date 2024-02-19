@@ -1,0 +1,52 @@
+enum item_type {
+  consumable
+  armor
+  rangedWeapon
+  meleeWeapon
+  consumableWeapon
+  quest
+  resource
+}
+
+table item {
+  id int [pk, increment]
+  variant varchar(255)
+  name varchar(255)
+  description text
+  buy_value float
+  sell_value float
+  max_stack int
+  size_v int
+  size_h int
+  rawshape text
+  created_at timestamp
+  type item_type
+}
+
+table user {
+  id int [pk, increment]
+  username varchar(255)
+  salt varchar(255)
+  password_hash varchar(255)
+  email varchar(255)
+  created_at timestamp
+}
+
+table inventory {
+  id int [pk, increment]
+  user_id int [ref: > user.id]
+  size_h int
+  size_v int
+  created_at timestamp
+}
+
+table inventory_item {
+  id int [pk, increment]
+  inventory_id int [ref: > inventory.id]
+  item_id int [ref: > item.id]
+  quantity int
+  position_h int
+  position_v int
+  rotation int
+  created_at timestamp
+}
