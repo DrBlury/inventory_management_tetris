@@ -21,8 +21,16 @@ func New(
 	apiHandle *apihandler.APIHandler,
 	cfg *Config,
 ) *chi.Mux {
+	swagger, err := server.GetSwagger()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error loading swagger spec\n: %s", err)
+		os.Exit(1)
+	}
+	// Clear out the servers array in the swagger spec, that skips validating
+	// that server names match. We don't know how this thing will be run.
+	swagger.Servers = nil
 	router := chi.NewRouter()
-
+	
 	router.Use(middleware.RequestID)
 	router.Use(middleware.RealIP)
 	router.Use(middleware.Recoverer)
@@ -34,13 +42,14 @@ func New(
 		AllowedMethods:   cfg.CORS.Methods,
 		AllowedHeaders:   cfg.CORS.Headers,
 		AllowCredentials: cfg.CORS.AllowCredentials,
-	}))
-	
-	router.Route("/info", func(r chi.Router) {
-		r.Get("/health", infohandler.HealthCheck)
-		r.Get("/version", versionHandle.VersionCheck)
-		r.Handle("/metrics", promhttp.Handler())
-	})
+	}))	
+
+	apiRouter := chi.NewRouter()
+	apiRouter.Use(oapiMW.OapiRequestValidator(swagger))
+	// register the APIHandler
+	// create handler from mux
+	// and mount it to the router
+	apiHandler := server.HandlerFromMux(apiHandle, apiRouter)
 	
 	// Log requests apart from /info
 	handlerGroup := router.Group(nil)
@@ -53,19 +62,14 @@ func New(
 		),
 	)
 	
-	swagger, err := server.GetSwagger()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error loading swagger spec\n: %s", err)
-		os.Exit(1)
-	}
+	router.Route("/info", func(r chi.Router) {
+		r.Get("/health", infohandler.HealthCheck)
+		r.Get("/version", versionHandle.VersionCheck)
+		r.Handle("/metrics", promhttp.Handler())
+	})
 
-	router.Use(oapiMW.OapiRequestValidator(swagger))
-	
-	// Clear out the servers array in the swagger spec, that skips validating
-	// that server names match. We don't know how this thing will be run.
-	swagger.Servers = nil
-
-	server.HandlerFromMux(apiHandle, router)
+	// register subrouter to the main router
+	router.Mount("/", apiHandler)
 
 	return router
 }

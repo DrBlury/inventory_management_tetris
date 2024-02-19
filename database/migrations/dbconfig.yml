@@ -1,0 +1,5 @@
+development:
+    dialect: postgres
+    datasource: host=db port=5432 dbname=app_db user=app_user password=app_password sslmode=disable
+    dir: .
+    table: migrations

@@ -9,7 +9,7 @@ servers:
   - url: inventory.linuxcode.net
     description: Inventory server for example
 paths:
-  /items:
+  /api/items:
     get:
       summary: Get all items
       operationId: getAllItems
@@ -44,7 +44,7 @@ paths:
         '400':
           description: Bad request
       security: []
-  /items/{itemId}:
+  /api/items/{itemId}:
     get:
       summary: Get item by ID
       operationId: getItemById
@@ -119,7 +119,7 @@ paths:
         '404':
           description: Can not find item (item ID)
       security: []
-  /users:
+  /api/users:
     get:
       summary: Get all users
       operationId: getAllUsers
@@ -158,7 +158,7 @@ paths:
         '400':
           description: Bad request
       security: []
-  /users/{userId}:
+  /api/users/{userId}:
     get:
       summary: Get user by ID
       operationId: getUserById
@@ -233,7 +233,7 @@ paths:
         '404':
           description: Can not find user (user ID)
       security: []
-  /inventories:
+  /api/inventories:
     get:
       summary: Get all inventories
       operationId: getAllInventories
@@ -272,7 +272,7 @@ paths:
         '400':
           description: Bad request
       security: []
-  /inventories/{inventoryId}:
+  /api/inventories/{inventoryId}:
     get:
       summary: Get inventory by ID
       operationId: getInventoryById
@@ -320,7 +320,7 @@ paths:
         '404':
           description: Can not find inventory (inventory ID)
       security: []
-  /inventories/{inventoryId}/move:
+  /api/inventories/{inventoryId}/move:
     post:
       summary: Move an item already in the inventory
       operationId: moveItemInInventory
@@ -346,7 +346,7 @@ paths:
         '400':
           description: Bad request
       security: []
-  /inventories/{inventoryId}/add:
+  /api/inventories/{inventoryId}/add:
     post:
       summary: Add a new item to the inventory at the first possible position
       operationId: addItemInInventory
@@ -376,36 +376,6 @@ paths:
         '400':
           description: Bad request
       security: []
-  /inventories/{inventoryId}/addAtPosition:
-    post:
-      summary: Add a new item to the inventory at a specific position
-      operationId: addItemInInventoryAtPosition
-      tags:
-        - inventory
-      parameters:
-        - name: inventoryId
-          in: path
-          description: ID of inventory
-          required: true
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddItemToInventoryAtPositionRequest'
-      responses:
-        '200':
-          description: Added item to inventory
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/InventoryItem'
-        '400':
-          description: Bad request
-      security: []
 components:
   schemas:
     ItemShape:
@@ -417,6 +387,10 @@ components:
           type: integer
         size_h:
           type: integer
+      required:
+        - rawshape
+        - size_v
+        - size_h
     ItemType:
       type: string
       enum:
@@ -452,6 +426,18 @@ components:
           $ref: '#/components/schemas/ItemShape'
         type:
           $ref: '#/components/schemas/ItemType'
+      required:
+        - id
+        - variant
+        - name
+        - description
+        - buy_value
+        - sell_value
+        - weight
+        - durability
+        - max_stack
+        - shape
+        - type
     Pagination:
       type: object
       properties:
@@ -465,6 +451,12 @@ components:
           type: integer
         offset:
           type: integer
+      required:
+        - page
+        - pages
+        - limit
+        - total
+        - offset
     ItemListResponse:
       type: object
       properties:
@@ -474,6 +466,9 @@ components:
             $ref: '#/components/schemas/Item'
         pagination:
           $ref: '#/components/schemas/Pagination'
+      required:
+        - items
+        - pagination
     ItemPostRequest:
       type: object
       properties:
@@ -497,6 +492,17 @@ components:
           $ref: '#/components/schemas/ItemType'
         shape:
           $ref: '#/components/schemas/ItemShape'
+      required:
+        - name
+        - variant
+        - description
+        - buy_value
+        - sell_value
+        - weight
+        - durability
+        - max_stack
+        - type
+        - shape
     User:
       type: object
       properties:
@@ -508,6 +514,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Inventory'
+      required:
+        - id
+        - username
+        - inventories
     Volume:
       type: object
       properties:
@@ -515,6 +525,9 @@ components:
           type: number
         size_h:
           type: number
+      required:
+        - size_v
+        - size_h
     Inventory:
       type: object
       properties:
@@ -528,6 +541,12 @@ components:
           type: number
         volume:
           $ref: '#/components/schemas/Volume'
+      required:
+        - id
+        - name
+        - user
+        - max_weight
+        - volume
     UserListResponse:
       type: object
       properties:
@@ -537,6 +556,9 @@ components:
             $ref: '#/components/schemas/User'
         pagination:
           $ref: '#/components/schemas/Pagination'
+      required:
+        - users
+        - pagination
     UserPostRequest:
       type: object
       properties:
@@ -548,6 +570,11 @@ components:
           type: string
         password:
           type: string
+      required:
+        - id
+        - name
+        - email
+        - password
     InventoryListResponse:
       type: object
       properties:
@@ -557,6 +584,9 @@ components:
             $ref: '#/components/schemas/Inventory'
         pagination:
           $ref: '#/components/schemas/Pagination'
+      required:
+        - inventories
+        - pagination
     InventoryPostRequest:
       type: object
       properties:
@@ -568,6 +598,11 @@ components:
           $ref: '#/components/schemas/User'
         volume:
           $ref: '#/components/schemas/Volume'
+      required:
+        - name
+        - max_weight
+        - user
+        - volume
     InventoryPosition:
       type: object
       properties:
@@ -577,6 +612,10 @@ components:
           type: integer
         rotation:
           type: integer
+      required:
+        - x
+        - 'y'
+        - rotation
     MoveItemRequest:
       type: object
       properties:
@@ -586,6 +625,10 @@ components:
           $ref: '#/components/schemas/InventoryPosition'
         quantity:
           type: integer
+      required:
+        - original_position
+        - new_position
+        - quantity
     AddItemToInventoryRequest:
       type: object
       properties:
@@ -595,6 +638,12 @@ components:
           type: integer
         durability_left:
           type: number
+        position:
+          $ref: '#/components/schemas/InventoryPosition'
+      required:
+        - item
+        - quantity
+        - durability_left
     InventoryItem:
       type: object
       properties:
@@ -606,17 +655,11 @@ components:
           type: integer
         durability_left:
           type: number
-    AddItemToInventoryAtPositionRequest:
-      type: object
-      properties:
-        item:
-          $ref: '#/components/schemas/Item'
-        position:
-          $ref: '#/components/schemas/InventoryPosition'
-        quantity:
-          type: integer
-        durability_left:
-          type: number
+      required:
+        - item
+        - position
+        - quantity
+        - durability_left
     item:
       $ref: '#/components/schemas/Item'
     inventory_item:
@@ -635,8 +678,6 @@ components:
       $ref: '#/components/schemas/InventoryPostRequest'
     add_item_request:
       $ref: '#/components/schemas/AddItemToInventoryRequest'
-    add_item_at_position_request:
-      $ref: '#/components/schemas/AddItemToInventoryAtPositionRequest'
     move_item_request:
       $ref: '#/components/schemas/MoveItemRequest'
     item_post_request:

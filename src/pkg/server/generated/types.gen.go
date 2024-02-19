@@ -14,99 +14,92 @@ const (
 	Resource         ItemType = "resource"
 )
 
-// AddItemToInventoryAtPositionRequest defines model for AddItemToInventoryAtPositionRequest.
-type AddItemToInventoryAtPositionRequest struct {
-	DurabilityLeft *float32           `json:"durability_left,omitempty"`
-	Item           *Item              `json:"item,omitempty"`
-	Position       *InventoryPosition `json:"position,omitempty"`
-	Quantity       *int               `json:"quantity,omitempty"`
-}
-
 // AddItemToInventoryRequest defines model for AddItemToInventoryRequest.
 type AddItemToInventoryRequest struct {
-	DurabilityLeft *float32 `json:"durability_left,omitempty"`
-	Item           *Item    `json:"item,omitempty"`
-	Quantity       *int     `json:"quantity,omitempty"`
+	DurabilityLeft float32            `json:"durability_left"`
+	Item           Item               `json:"item"`
+	Position       *InventoryPosition `json:"position,omitempty"`
+	Quantity       int                `json:"quantity"`
 }
 
 // Inventory defines model for Inventory.
 type Inventory struct {
-	Id        *string  `json:"id,omitempty"`
-	MaxWeight *float32 `json:"max_weight,omitempty"`
-	Name      *string  `json:"name,omitempty"`
-	User      *User    `json:"user,omitempty"`
-	Volume    *Volume  `json:"volume,omitempty"`
+	Id        string  `json:"id"`
+	MaxWeight float32 `json:"max_weight"`
+	Name      string  `json:"name"`
+	User      User    `json:"user"`
+	Volume    Volume  `json:"volume"`
 }
 
 // InventoryItem defines model for InventoryItem.
 type InventoryItem struct {
-	DurabilityLeft *float32           `json:"durability_left,omitempty"`
-	Item           *Item              `json:"item,omitempty"`
-	Position       *InventoryPosition `json:"position,omitempty"`
-	Quantity       *int               `json:"quantity,omitempty"`
+	DurabilityLeft float32           `json:"durability_left"`
+	Item           Item              `json:"item"`
+	Position       InventoryPosition `json:"position"`
+	Quantity       int               `json:"quantity"`
 }
 
 // InventoryListResponse defines model for InventoryListResponse.
 type InventoryListResponse struct {
-	Inventories *[]Inventory `json:"inventories,omitempty"`
-	Pagination  *Pagination  `json:"pagination,omitempty"`
+	Inventories []Inventory `json:"inventories"`
+	Pagination  Pagination  `json:"pagination"`
 }
 
 // InventoryPosition defines model for InventoryPosition.
 type InventoryPosition struct {
-	Rotation *int `json:"rotation,omitempty"`
-	X        *int `json:"x,omitempty"`
-	Y        *int `json:"y,omitempty"`
+	Rotation int `json:"rotation"`
+	X        int `json:"x"`
+	Y        int `json:"y"`
 }
 
 // InventoryPostRequest defines model for InventoryPostRequest.
 type InventoryPostRequest struct {
-	MaxWeight *float32 `json:"max_weight,omitempty"`
-	Name      *string  `json:"name,omitempty"`
-	User      *User    `json:"user,omitempty"`
-	Volume    *Volume  `json:"volume,omitempty"`
+	MaxWeight float32 `json:"max_weight"`
+	Name      string  `json:"name"`
+	User      User    `json:"user"`
+	Volume    Volume  `json:"volume"`
 }
 
 // Item defines model for Item.
 type Item struct {
-	BuyValue    *float32   `json:"buy_value,omitempty"`
-	Description *string    `json:"description,omitempty"`
-	Durability  *float32   `json:"durability,omitempty"`
-	Id          *string    `json:"id,omitempty"`
-	MaxStack    *int       `json:"max_stack,omitempty"`
-	Name        *string    `json:"name,omitempty"`
-	SellValue   *float32   `json:"sell_value,omitempty"`
-	Shape       *ItemShape `json:"shape,omitempty"`
-	Type        *ItemType  `json:"type,omitempty"`
-	Variant     *string    `json:"variant,omitempty"`
-	Weight      *float32   `json:"weight,omitempty"`
+	BuyValue    float32   `json:"buy_value"`
+	Description string    `json:"description"`
+	Durability  float32   `json:"durability"`
+	Id          string    `json:"id"`
+	MaxStack    int       `json:"max_stack"`
+	Name        string    `json:"name"`
+	SellValue   float32   `json:"sell_value"`
+	Shape       ItemShape `json:"shape"`
+	Type        ItemType  `json:"type"`
+	Variant     string    `json:"variant"`
+	Weight      float32   `json:"weight"`
 }
 
 // ItemListResponse defines model for ItemListResponse.
 type ItemListResponse struct {
-	Items      *[]Item     `json:"items,omitempty"`
-	Pagination *Pagination `json:"pagination,omitempty"`
+	Items      []Item     `json:"items"`
+	Pagination Pagination `json:"pagination"`
 }
 
 // ItemPostRequest defines model for ItemPostRequest.
 type ItemPostRequest struct {
-	BuyValue    *float32   `json:"buy_value,omitempty"`
-	Description *string    `json:"description,omitempty"`
-	Durability  *float32   `json:"durability,omitempty"`
-	MaxStack    *int       `json:"max_stack,omitempty"`
-	Name        *string    `json:"name,omitempty"`
-	SellValue   *float32   `json:"sell_value,omitempty"`
-	Shape       *ItemShape `json:"shape,omitempty"`
-	Type        *ItemType  `json:"type,omitempty"`
-	Variant     *string    `json:"variant,omitempty"`
-	Weight      *float32   `json:"weight,omitempty"`
+	BuyValue    float32   `json:"buy_value"`
+	Description string    `json:"description"`
+	Durability  float32   `json:"durability"`
+	MaxStack    int       `json:"max_stack"`
+	Name        string    `json:"name"`
+	SellValue   float32   `json:"sell_value"`
+	Shape       ItemShape `json:"shape"`
+	Type        ItemType  `json:"type"`
+	Variant     string    `json:"variant"`
+	Weight      float32   `json:"weight"`
 }
 
 // ItemShape defines model for ItemShape.
 type ItemShape struct {
-	Rawshape *string `json:"rawshape,omitempty"`
-	SizeH    *int    `json:"size_h,omitempty"`
-	SizeV    *int    `json:"size_v,omitempty"`
+	Rawshape string `json:"rawshape"`
+	SizeH    int    `json:"size_h"`
+	SizeV    int    `json:"size_v"`
 }
 
 // ItemType defines model for ItemType.
@@ -114,45 +107,45 @@ type ItemType string
 
 // MoveItemRequest defines model for MoveItemRequest.
 type MoveItemRequest struct {
-	NewPosition      *InventoryPosition `json:"new_position,omitempty"`
-	OriginalPosition *InventoryPosition `json:"original_position,omitempty"`
-	Quantity         *int               `json:"quantity,omitempty"`
+	NewPosition      InventoryPosition `json:"new_position"`
+	OriginalPosition InventoryPosition `json:"original_position"`
+	Quantity         int               `json:"quantity"`
 }
 
 // Pagination defines model for Pagination.
 type Pagination struct {
-	Limit  *int `json:"limit,omitempty"`
-	Offset *int `json:"offset,omitempty"`
-	Page   *int `json:"page,omitempty"`
-	Pages  *int `json:"pages,omitempty"`
-	Total  *int `json:"total,omitempty"`
+	Limit  int `json:"limit"`
+	Offset int `json:"offset"`
+	Page   int `json:"page"`
+	Pages  int `json:"pages"`
+	Total  int `json:"total"`
 }
 
 // User defines model for User.
 type User struct {
-	Id          *string      `json:"id,omitempty"`
-	Inventories *[]Inventory `json:"inventories,omitempty"`
-	Username    *string      `json:"username,omitempty"`
+	Id          string      `json:"id"`
+	Inventories []Inventory `json:"inventories"`
+	Username    string      `json:"username"`
 }
 
 // UserListResponse defines model for UserListResponse.
 type UserListResponse struct {
-	Pagination *Pagination `json:"pagination,omitempty"`
-	Users      *[]User     `json:"users,omitempty"`
+	Pagination Pagination `json:"pagination"`
+	Users      []User     `json:"users"`
 }
 
 // UserPostRequest defines model for UserPostRequest.
 type UserPostRequest struct {
-	Email    *string `json:"email,omitempty"`
-	Id       *string `json:"id,omitempty"`
-	Name     *string `json:"name,omitempty"`
-	Password *string `json:"password,omitempty"`
+	Email    string `json:"email"`
+	Id       string `json:"id"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
 }
 
 // Volume defines model for Volume.
 type Volume struct {
-	SizeH *float32 `json:"size_h,omitempty"`
-	SizeV *float32 `json:"size_v,omitempty"`
+	SizeH float32 `json:"size_h"`
+	SizeV float32 `json:"size_v"`
 }
 
 // AddInventoryJSONRequestBody defines body for AddInventory for application/json ContentType.
@@ -160,9 +153,6 @@ type AddInventoryJSONRequestBody = InventoryPostRequest
 
 // AddItemInInventoryJSONRequestBody defines body for AddItemInInventory for application/json ContentType.
 type AddItemInInventoryJSONRequestBody = AddItemToInventoryRequest
-
-// AddItemInInventoryAtPositionJSONRequestBody defines body for AddItemInInventoryAtPosition for application/json ContentType.
-type AddItemInInventoryAtPositionJSONRequestBody = AddItemToInventoryAtPositionRequest
 
 // MoveItemInInventoryJSONRequestBody defines body for MoveItemInInventory for application/json ContentType.
 type MoveItemInInventoryJSONRequestBody = MoveItemRequest

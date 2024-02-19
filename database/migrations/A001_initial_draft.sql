@@ -2,6 +2,7 @@
 -- Database: PostgreSQL
 -- Generated at: 2024-02-19T01:08:04.945Z
 
+-- +migrate Up
 CREATE TYPE "item_type" AS ENUM (
   'consumable',
   'armor',

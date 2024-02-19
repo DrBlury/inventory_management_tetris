@@ -1,24 +1,24 @@
 ---
-/items:
+/api/items:
   $ref: './item/items.yml'
 
-/items/{itemId}:
+/api/items/{itemId}:
   $ref: './item/itemById.yml'
 
-/users:
+/api/users:
   $ref: './user/users.yml'
 
-/users/{userId}:
+/api/users/{userId}:
   $ref: './user/userById.yml'
 
-/inventories:
+/api/inventories:
   $ref: './inventory/inventories.yml'
 
-/inventories/{inventoryId}:
+/api/inventories/{inventoryId}:
   $ref: './inventory/inventoryById.yml'
 
-/inventories/{inventoryId}/move:
+/api/inventories/{inventoryId}/move:
   $ref: './inventory/moveItem.yml'
 
-/inventories/{inventoryId}/add:
+/api/inventories/{inventoryId}/add:
   $ref: './inventory/addItem.yml'

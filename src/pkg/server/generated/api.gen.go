@@ -21,55 +21,52 @@ import (
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Get all inventories
-	// (GET /inventories)
+	// (GET /api/inventories)
 	GetAllInventories(w http.ResponseWriter, r *http.Request)
 	// Add new inventory
-	// (POST /inventories)
+	// (POST /api/inventories)
 	AddInventory(w http.ResponseWriter, r *http.Request)
 	// Delete inventory by ID
-	// (DELETE /inventories/{inventoryId})
+	// (DELETE /api/inventories/{inventoryId})
 	DeleteInventoryById(w http.ResponseWriter, r *http.Request, inventoryId int64)
 	// Get inventory by ID
-	// (GET /inventories/{inventoryId})
+	// (GET /api/inventories/{inventoryId})
 	GetInventoryById(w http.ResponseWriter, r *http.Request, inventoryId int64)
 	// Add a new item to the inventory at the first possible position
-	// (POST /inventories/{inventoryId}/add)
+	// (POST /api/inventories/{inventoryId}/add)
 	AddItemInInventory(w http.ResponseWriter, r *http.Request, inventoryId int64)
-	// Add a new item to the inventory at a specific position
-	// (POST /inventories/{inventoryId}/addAtPosition)
-	AddItemInInventoryAtPosition(w http.ResponseWriter, r *http.Request, inventoryId int64)
 	// Move an item already in the inventory
-	// (POST /inventories/{inventoryId}/move)
+	// (POST /api/inventories/{inventoryId}/move)
 	MoveItemInInventory(w http.ResponseWriter, r *http.Request, inventoryId int64)
 	// Get all items
-	// (GET /items)
+	// (GET /api/items)
 	GetAllItems(w http.ResponseWriter, r *http.Request)
 	// Add new item
-	// (POST /items)
+	// (POST /api/items)
 	AddItem(w http.ResponseWriter, r *http.Request)
 	// Delete item by ID
-	// (DELETE /items/{itemId})
+	// (DELETE /api/items/{itemId})
 	DeleteItemById(w http.ResponseWriter, r *http.Request, itemId int64)
 	// Get item by ID
-	// (GET /items/{itemId})
+	// (GET /api/items/{itemId})
 	GetItemById(w http.ResponseWriter, r *http.Request, itemId int64)
 	// Update an item
-	// (PUT /items/{itemId})
+	// (PUT /api/items/{itemId})
 	UpdateItemById(w http.ResponseWriter, r *http.Request, itemId int64)
 	// Get all users
-	// (GET /users)
+	// (GET /api/users)
 	GetAllUsers(w http.ResponseWriter, r *http.Request)
 	// Add new user
-	// (POST /users)
+	// (POST /api/users)
 	AddUser(w http.ResponseWriter, r *http.Request)
 	// Delete user by ID
-	// (DELETE /users/{userId})
+	// (DELETE /api/users/{userId})
 	DeleteUserById(w http.ResponseWriter, r *http.Request, userId int64)
 	// Get user by ID
-	// (GET /users/{userId})
+	// (GET /api/users/{userId})
 	GetUserById(w http.ResponseWriter, r *http.Request, userId int64)
 	// Update an user
-	// (PUT /users/{userId})
+	// (PUT /api/users/{userId})
 	UpdateUserById(w http.ResponseWriter, r *http.Request, userId int64)
 }
 
@@ -78,103 +75,97 @@ type ServerInterface interface {
 type Unimplemented struct{}
 
 // Get all inventories
-// (GET /inventories)
+// (GET /api/inventories)
 func (_ Unimplemented) GetAllInventories(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Add new inventory
-// (POST /inventories)
+// (POST /api/inventories)
 func (_ Unimplemented) AddInventory(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Delete inventory by ID
-// (DELETE /inventories/{inventoryId})
+// (DELETE /api/inventories/{inventoryId})
 func (_ Unimplemented) DeleteInventoryById(w http.ResponseWriter, r *http.Request, inventoryId int64) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Get inventory by ID
-// (GET /inventories/{inventoryId})
+// (GET /api/inventories/{inventoryId})
 func (_ Unimplemented) GetInventoryById(w http.ResponseWriter, r *http.Request, inventoryId int64) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Add a new item to the inventory at the first possible position
-// (POST /inventories/{inventoryId}/add)
+// (POST /api/inventories/{inventoryId}/add)
 func (_ Unimplemented) AddItemInInventory(w http.ResponseWriter, r *http.Request, inventoryId int64) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-// Add a new item to the inventory at a specific position
-// (POST /inventories/{inventoryId}/addAtPosition)
-func (_ Unimplemented) AddItemInInventoryAtPosition(w http.ResponseWriter, r *http.Request, inventoryId int64) {
-	w.WriteHeader(http.StatusNotImplemented)
-}
-
 // Move an item already in the inventory
-// (POST /inventories/{inventoryId}/move)
+// (POST /api/inventories/{inventoryId}/move)
 func (_ Unimplemented) MoveItemInInventory(w http.ResponseWriter, r *http.Request, inventoryId int64) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Get all items
-// (GET /items)
+// (GET /api/items)
 func (_ Unimplemented) GetAllItems(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Add new item
-// (POST /items)
+// (POST /api/items)
 func (_ Unimplemented) AddItem(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Delete item by ID
-// (DELETE /items/{itemId})
+// (DELETE /api/items/{itemId})
 func (_ Unimplemented) DeleteItemById(w http.ResponseWriter, r *http.Request, itemId int64) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Get item by ID
-// (GET /items/{itemId})
+// (GET /api/items/{itemId})
 func (_ Unimplemented) GetItemById(w http.ResponseWriter, r *http.Request, itemId int64) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Update an item
-// (PUT /items/{itemId})
+// (PUT /api/items/{itemId})
 func (_ Unimplemented) UpdateItemById(w http.ResponseWriter, r *http.Request, itemId int64) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Get all users
-// (GET /users)
+// (GET /api/users)
 func (_ Unimplemented) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Add new user
-// (POST /users)
+// (POST /api/users)
 func (_ Unimplemented) AddUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Delete user by ID
-// (DELETE /users/{userId})
+// (DELETE /api/users/{userId})
 func (_ Unimplemented) DeleteUserById(w http.ResponseWriter, r *http.Request, userId int64) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Get user by ID
-// (GET /users/{userId})
+// (GET /api/users/{userId})
 func (_ Unimplemented) GetUserById(w http.ResponseWriter, r *http.Request, userId int64) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
 // Update an user
-// (PUT /users/{userId})
+// (PUT /api/users/{userId})
 func (_ Unimplemented) UpdateUserById(w http.ResponseWriter, r *http.Request, userId int64) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
@@ -287,32 +278,6 @@ func (siw *ServerInterfaceWrapper) AddItemInInventory(w http.ResponseWriter, r *
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.AddItemInInventory(w, r, inventoryId)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r.WithContext(ctx))
-}
-
-// AddItemInInventoryAtPosition operation middleware
-func (siw *ServerInterfaceWrapper) AddItemInInventoryAtPosition(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	var err error
-
-	// ------------- Path parameter "inventoryId" -------------
-	var inventoryId int64
-
-	err = runtime.BindStyledParameterWithOptions("simple", "inventoryId", chi.URLParam(r, "inventoryId"), &inventoryId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
-	if err != nil {
-		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "inventoryId", Err: err})
-		return
-	}
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.AddItemInInventoryAtPosition(w, r, inventoryId)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -678,55 +643,52 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	}
 
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/inventories", wrapper.GetAllInventories)
+		r.Get(options.BaseURL+"/api/inventories", wrapper.GetAllInventories)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/inventories", wrapper.AddInventory)
+		r.Post(options.BaseURL+"/api/inventories", wrapper.AddInventory)
 	})
 	r.Group(func(r chi.Router) {
-		r.Delete(options.BaseURL+"/inventories/{inventoryId}", wrapper.DeleteInventoryById)
+		r.Delete(options.BaseURL+"/api/inventories/{inventoryId}", wrapper.DeleteInventoryById)
 	})
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/inventories/{inventoryId}", wrapper.GetInventoryById)
+		r.Get(options.BaseURL+"/api/inventories/{inventoryId}", wrapper.GetInventoryById)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/inventories/{inventoryId}/add", wrapper.AddItemInInventory)
+		r.Post(options.BaseURL+"/api/inventories/{inventoryId}/add", wrapper.AddItemInInventory)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/inventories/{inventoryId}/addAtPosition", wrapper.AddItemInInventoryAtPosition)
+		r.Post(options.BaseURL+"/api/inventories/{inventoryId}/move", wrapper.MoveItemInInventory)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/inventories/{inventoryId}/move", wrapper.MoveItemInInventory)
+		r.Get(options.BaseURL+"/api/items", wrapper.GetAllItems)
 	})
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/items", wrapper.GetAllItems)
+		r.Post(options.BaseURL+"/api/items", wrapper.AddItem)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/items", wrapper.AddItem)
+		r.Delete(options.BaseURL+"/api/items/{itemId}", wrapper.DeleteItemById)
 	})
 	r.Group(func(r chi.Router) {
-		r.Delete(options.BaseURL+"/items/{itemId}", wrapper.DeleteItemById)
+		r.Get(options.BaseURL+"/api/items/{itemId}", wrapper.GetItemById)
 	})
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/items/{itemId}", wrapper.GetItemById)
+		r.Put(options.BaseURL+"/api/items/{itemId}", wrapper.UpdateItemById)
 	})
 	r.Group(func(r chi.Router) {
-		r.Put(options.BaseURL+"/items/{itemId}", wrapper.UpdateItemById)
+		r.Get(options.BaseURL+"/api/users", wrapper.GetAllUsers)
 	})
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/users", wrapper.GetAllUsers)
+		r.Post(options.BaseURL+"/api/users", wrapper.AddUser)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/users", wrapper.AddUser)
+		r.Delete(options.BaseURL+"/api/users/{userId}", wrapper.DeleteUserById)
 	})
 	r.Group(func(r chi.Router) {
-		r.Delete(options.BaseURL+"/users/{userId}", wrapper.DeleteUserById)
+		r.Get(options.BaseURL+"/api/users/{userId}", wrapper.GetUserById)
 	})
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/users/{userId}", wrapper.GetUserById)
-	})
-	r.Group(func(r chi.Router) {
-		r.Put(options.BaseURL+"/users/{userId}", wrapper.UpdateUserById)
+		r.Put(options.BaseURL+"/api/users/{userId}", wrapper.UpdateUserById)
 	})
 
 	return r
@@ -735,32 +697,34 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"mxr2U0N/19D87PBu+18AAAD//0IqTCdLLQAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

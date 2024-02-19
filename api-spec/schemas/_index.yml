@@ -21,8 +21,6 @@ inventory_post_request:
   $ref: './requests/InventoryPostRequest.yml'
 add_item_request:
   $ref: './requests/AddItemToInventoryRequest.yml'
-add_item_at_position_request:
-  $ref: './requests/AddItemToInventoryAtPositionRequest.yml'
 move_item_request:
   $ref: './requests/MoveItemRequest.yml'
 

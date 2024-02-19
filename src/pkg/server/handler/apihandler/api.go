@@ -12,6 +12,7 @@ func NewAPIHandler() *APIHandler {
 // Get all inventories
 // (GET /inventories)
 func (a APIHandler) GetAllInventories(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("GetAllInventories"))
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
