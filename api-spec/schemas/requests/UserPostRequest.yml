@@ -9,3 +9,9 @@ properties:
     type: string
   password:
     type: string
+
+required:
+  - id
+  - name
+  - email
+  - password

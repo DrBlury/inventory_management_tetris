@@ -9,3 +9,9 @@ properties:
     $ref: '../types/User.yml'
   volume:
     $ref: '../types/Volume.yml'
+
+required:
+  - name
+  - max_weight
+  - user
+  - volume

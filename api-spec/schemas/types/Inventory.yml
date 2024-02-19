@@ -11,4 +11,10 @@ properties:
     type: number
   volume:
     $ref: './Volume.yml'
-  
+
+required:
+  - id
+  - name
+  - user
+  - max_weight
+  - volume

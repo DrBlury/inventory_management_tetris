@@ -9,3 +9,8 @@ properties:
     type: array
     items:
       $ref: './Inventory.yml'
+
+required:
+  - id
+  - username
+  - inventories

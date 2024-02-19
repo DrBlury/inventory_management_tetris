@@ -7,3 +7,8 @@ properties:
     type: integer
   rotation:
     type: integer
+
+required:
+  - x
+  - y
+  - rotation

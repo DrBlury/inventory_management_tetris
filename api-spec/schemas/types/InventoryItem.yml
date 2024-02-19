@@ -9,3 +9,9 @@ properties:
     type: integer
   durability_left:
     type: number
+
+required:
+  - item
+  - position
+  - quantity
+  - durability_left

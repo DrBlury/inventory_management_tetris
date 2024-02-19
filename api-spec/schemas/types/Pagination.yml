@@ -11,3 +11,10 @@ properties:
     type: integer
   offset:
     type: integer
+
+required:
+  - page
+  - pages
+  - limit
+  - total
+  - offset

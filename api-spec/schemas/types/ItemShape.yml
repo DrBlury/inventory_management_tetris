@@ -7,3 +7,8 @@ properties:
     type: integer
   size_h:
     type: integer
+
+required:
+  - rawshape
+  - size_v
+  - size_h

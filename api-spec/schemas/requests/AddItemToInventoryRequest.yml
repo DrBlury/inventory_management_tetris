@@ -7,3 +7,10 @@ properties:
     type: integer
   durability_left:
     type: number
+  position:
+    $ref: '../types/InventoryPosition.yml'
+
+required:
+  - item
+  - quantity
+  - durability_left

@@ -22,6 +22,3 @@
 
 /inventories/{inventoryId}/add:
   $ref: './inventory/addItem.yml'
-
-/inventories/{inventoryId}/addAtPosition:
-  $ref: './inventory/addItemAtPosition.yml'

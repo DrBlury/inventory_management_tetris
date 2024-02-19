@@ -7,3 +7,7 @@ properties:
       $ref: '../types/Inventory.yml'
   pagination:
     $ref: '../types/Pagination.yml'
+
+required:
+  - inventories
+  - pagination

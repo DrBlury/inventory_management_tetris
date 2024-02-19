@@ -7,3 +7,7 @@ properties:
       $ref: '../types/Item.yml'
   pagination:
     $ref: '../types/Pagination.yml'
+
+required:
+  - items
+  - pagination
