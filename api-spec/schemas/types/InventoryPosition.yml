@@ -1,0 +1,9 @@
+---
+type: object
+properties:
+  x:
+    type: integer
+  y:
+    type: integer
+  rotation:
+    type: integer

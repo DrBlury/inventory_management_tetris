@@ -1,0 +1,9 @@
+---
+type: object
+properties:
+  rawshape:
+    type: string
+  size_v:
+    type: integer
+  size_h:
+    type: integer

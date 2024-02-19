@@ -1,0 +1,9 @@
+---
+type: object
+properties:
+  inventories:
+    type: array
+    items:
+      $ref: '../types/Inventory.yml'
+  pagination:
+    $ref: '../types/Pagination.yml'

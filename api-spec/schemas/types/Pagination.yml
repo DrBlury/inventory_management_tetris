@@ -1,0 +1,13 @@
+---
+type: object
+properties:
+  page:
+    type: integer
+  pages:
+    type: integer
+  limit:
+    type: integer
+  total:
+    type: integer
+  offset:
+    type: integer

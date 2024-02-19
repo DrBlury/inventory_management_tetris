@@ -1,0 +1,9 @@
+---
+type: object
+properties:
+  users:
+    type: array
+    items:
+      $ref: '../types/User.yml'
+  pagination:
+    $ref: '../types/Pagination.yml'

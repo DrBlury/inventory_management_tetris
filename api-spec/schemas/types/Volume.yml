@@ -1,0 +1,7 @@
+---
+type: object
+properties:
+  size_v:
+    type: number
+  size_h:
+    type: number

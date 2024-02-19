@@ -1,0 +1,25 @@
+---
+type: object
+properties:
+  id:
+    type: string
+  variant:
+    type: string
+  name:
+    type: string
+  description:
+    type: string
+  buy_value:
+    type: number
+  sell_value:
+    type: number
+  weight:
+    type: number
+  durability:
+    type: number
+  max_stack:
+    type: integer
+  shape:
+    $ref: './ItemShape.yml'
+  type:
+    $ref: './ItemType.yml'

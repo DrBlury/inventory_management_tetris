@@ -1,0 +1,44 @@
+---
+# Schemas
+item:
+  $ref: './types/Item.yml'
+inventory_item:
+  $ref: './types/InventoryItem.yml'
+inventory_position:
+  $ref: './types/InventoryPosition.yml'
+item_type:
+  $ref: './types/ItemType.yml'
+item_shape:
+  $ref: './types/ItemShape.yml'
+inventory:
+  $ref: './types/Inventory.yml'
+user:
+  $ref: './types/User.yml'
+
+# Requests
+# Inventory
+inventory_post_request:
+  $ref: './requests/InventoryPostRequest.yml'
+add_item_request:
+  $ref: './requests/AddItemToInventoryRequest.yml'
+add_item_at_position_request:
+  $ref: './requests/AddItemToInventoryAtPositionRequest.yml'
+move_item_request:
+  $ref: './requests/MoveItemRequest.yml'
+
+# Item
+item_post_request:
+  $ref: './requests/ItemPostRequest.yml'
+
+# User
+user_post_request:
+  $ref: './requests/UserPostRequest.yml'
+
+
+# Responses
+item_list_response:
+  $ref: './responses/ItemListResponse.yml'
+inventory_list_response:
+  $ref: './responses/InventoryListResponse.yml'
+user_list_response:
+  $ref: './responses/UserListResponse.yml'

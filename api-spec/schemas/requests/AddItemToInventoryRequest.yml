@@ -1,0 +1,9 @@
+---
+type: object
+properties:
+  item:
+    $ref: '../types/Item.yml'
+  quantity:
+    type: integer
+  durability_left:
+    type: number

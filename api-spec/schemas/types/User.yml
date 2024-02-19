@@ -1,0 +1,11 @@
+---
+type: object
+properties:
+  id: 
+    type: string
+  username:
+    type: string
+  inventories:
+    type: array
+    items:
+      $ref: './Inventory.yml'

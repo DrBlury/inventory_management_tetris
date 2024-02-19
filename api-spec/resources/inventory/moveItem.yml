@@ -1,0 +1,28 @@
+---
+post:
+  summary: Move an item already in the inventory
+  operationId: moveItemInInventory
+  tags:
+    - inventory
+  parameters:
+    - name: inventoryId
+      in: path
+      description: ID of inventory
+      required: true
+      schema:
+        type: integer
+        format: int64
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: 
+          $ref: '../../schemas/_index.yml#/move_item_request'
+  responses:
+    '200':
+      description: Moved item in inventory
+    '400':
+      description: Bad request
+
+  # This API has no security
+  security: []
