@@ -39,14 +39,15 @@ bundle-api:
 	@echo "Bundling the api-spec using redocly/redoc"
 	docker run --rm -v ${PWD}/api-spec/:/spec redocly/cli bundle api.yml -o bundle.yml
 
-generate-api-echo:
-	@echo "Generating the api for echo server using oapi-codegen"
-	oapi-codegen -generate types,server,spec -package server ./api-spec/bundle.yml > ./src/pkg/server/api.gen.go
-
 generate-api-chi:
 	@echo "Generating the api for chi server using oapi-codegen"
 	oapi-codegen --config ./api-spec/server.cfg.yml ./api-spec/bundle.yml > ./src/pkg/server/generated/api.gen.go
 	mv ./server.gen.go ./src/pkg/server/generated/api.gen.go
+
+generate-api-types:
+	@echo "Generating the types for the api using oapi-codegen"
+	oapi-codegen -generate types -package server ./api-spec/bundle.yml > ./src/pkg/server/generated/types.gen.go
+
 install-local-tools:
 	@echo "Installing the dependencies"
 	@echo "Installing oapi-codegen"

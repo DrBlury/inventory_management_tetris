@@ -64,6 +64,7 @@ require (
 	github.com/go-chi/render v1.0.3
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.6.0
+	github.com/oapi-codegen/nethttp-middleware v1.0.1
 	github.com/prometheus/client_golang v1.18.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.18.2
