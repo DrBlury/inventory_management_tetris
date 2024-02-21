@@ -20,14 +20,14 @@ func NewInventory(width int, height int) *Inventory {
 	}
 }
 
-func (i *Inventory) AddItemAtPosition(item Item, position Position) error {
+func (i *Inventory) AddItemAtPosition(item Item, position *Position) error {
 	if !i.CheckItemPlacement(&item, position) {
 		return &NoFitPositionError{}
 	}
 
 	i.Items = append(i.Items, &InventoryItem{
 			Item:     item,
-			Position: position,
+			Position: *position,
 	})
 	return nil
 }
@@ -46,7 +46,7 @@ func (i *Inventory) AddItem(item Item) bool {
 	// add the item to the inventory
 	i.Items = append(i.Items, &InventoryItem{
 		Item:     item,
-		Position: positionSuggestion.Position,
+		Position: *positionSuggestion,
 	})
 
 	return true // item was added
@@ -61,11 +61,12 @@ func (i *Inventory) RemoveItem(item Item) {
 }
 
 // GetFitPosition returns the first position where the item fits into the inventory
-func (i *Inventory) GetFitPosition(item Item) (*PositionSuggestion, error) {
+func (i *Inventory) GetFitPosition(item Item) (*Position, error) {
 	originalRotation := item.Shape
 	const POSSIBLE_ROTATIONS = 3 // 4 possible rotations (No rotation, 90, 180, 270 degrees)
 
 	// for every possible cell, test all the possible rotations
+	var maybePosition Position
 	for y := 0; y < i.Height; y++ {
 		for x := 0; x < i.Width; x++ {
 			item.Shape = originalRotation
@@ -75,11 +76,13 @@ func (i *Inventory) GetFitPosition(item Item) (*PositionSuggestion, error) {
 					item.Shape.rotateCW()
 				}
 
-				if i.CheckItemPlacement(&item, Position{X: x, Y: y}) {
-					return &PositionSuggestion{
-						Position: Position{X: x, Y: y},
-						Rotation: rotation,
-					}, nil
+				// Overwrite the maybePosition with the new values
+				maybePosition.X = x
+				maybePosition.Y = y
+				maybePosition.Rotation = rotation
+
+				if i.CheckItemPlacement(&item, &maybePosition) {
+					return &maybePosition, nil
 				}
 			}
 		}
@@ -110,7 +113,7 @@ func (i *Inventory) getItemsInMatrix() [][]int {
 	return tempInventoryMatrix
 }
 
-func (i *Inventory) CheckItemPlacement(item *Item, position Position) bool {
+func (i *Inventory) CheckItemPlacement(item *Item, position *Position) bool {
 	// Check if the item fits into the inventory or would reach out of bounds
 	if position.X+item.Shape.Width > i.Width || position.Y+item.Shape.Height > i.Height {
 		return false
