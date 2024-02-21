@@ -57,3 +57,5 @@ install-local-tools:
 	go install github.com/deepmap/oapi-codegen/v2/cmd/oapi-codegen@latest
 	@echo "Installing sqlc"
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+	---
+	go get -u github.com/davidrjenni/reftools/cmd/fillstruct

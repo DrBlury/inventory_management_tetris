@@ -499,7 +499,7 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: integer
         variant:
           type: string
         name:
@@ -507,13 +507,13 @@ components:
         description:
           type: string
         buy_value:
-          type: number
+          type: integer
         sell_value:
-          type: number
+          type: integer
         weight:
-          type: number
+          type: integer
         durability:
-          type: number
+          type: integer
         max_stack:
           type: integer
         shape:
@@ -612,13 +612,13 @@ components:
         description:
           type: string
         buy_value:
-          type: number
+          type: integer
         sell_value:
-          type: number
+          type: integer
         weight:
-          type: number
+          type: integer
         durability:
-          type: number
+          type: integer
         max_stack:
           type: integer
         type:
@@ -636,11 +636,74 @@ components:
         - max_stack
         - type
         - shape
+    Volume:
+      type: object
+      properties:
+        size_v:
+          type: integer
+        size_h:
+          type: integer
+      required:
+        - size_v
+        - size_h
+    Position:
+      type: object
+      properties:
+        x:
+          type: integer
+        'y':
+          type: integer
+        rotation:
+          type: integer
+      required:
+        - x
+        - 'y'
+        - rotation
+    InventoryItem:
+      type: object
+      properties:
+        item:
+          $ref: '#/components/schemas/Item'
+        position:
+          $ref: '#/components/schemas/Position'
+        quantity:
+          type: integer
+        durability_left:
+          type: integer
+      required:
+        - item
+        - position
+        - quantity
+        - durability_left
+    Inventory:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        userId:
+          type: integer
+        max_weight:
+          type: integer
+        volume:
+          $ref: '#/components/schemas/Volume'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryItem'
+      required:
+        - id
+        - name
+        - userId
+        - max_weight
+        - volume
+        - items
     User:
       type: object
       properties:
         id:
-          type: string
+          type: integer
         username:
           type: string
         inventories:
@@ -651,35 +714,6 @@ components:
         - id
         - username
         - inventories
-    Volume:
-      type: object
-      properties:
-        size_v:
-          type: number
-        size_h:
-          type: number
-      required:
-        - size_v
-        - size_h
-    Inventory:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        user:
-          $ref: '#/components/schemas/User'
-        max_weight:
-          type: number
-        volume:
-          $ref: '#/components/schemas/Volume'
-      required:
-        - id
-        - name
-        - user
-        - max_weight
-        - volume
     UserListResponse:
       type: object
       properties:
@@ -726,7 +760,7 @@ components:
         name:
           type: string
         max_weight:
-          type: number
+          type: integer
         user:
           $ref: '#/components/schemas/User'
         volume:
@@ -736,26 +770,13 @@ components:
         - max_weight
         - user
         - volume
-    InventoryPosition:
-      type: object
-      properties:
-        x:
-          type: integer
-        'y':
-          type: integer
-        rotation:
-          type: integer
-      required:
-        - x
-        - 'y'
-        - rotation
     MoveItemRequest:
       type: object
       properties:
         original_position:
-          $ref: '#/components/schemas/InventoryPosition'
+          $ref: '#/components/schemas/Position'
         new_position:
-          $ref: '#/components/schemas/InventoryPosition'
+          $ref: '#/components/schemas/Position'
         quantity:
           type: integer
       required:
@@ -770,27 +791,11 @@ components:
         quantity:
           type: integer
         durability_left:
-          type: number
-        position:
-          $ref: '#/components/schemas/InventoryPosition'
-      required:
-        - item
-        - quantity
-        - durability_left
-    InventoryItem:
-      type: object
-      properties:
-        item:
-          $ref: '#/components/schemas/Item'
-        position:
-          $ref: '#/components/schemas/InventoryPosition'
-        quantity:
           type: integer
-        durability_left:
-          type: number
+        position:
+          $ref: '#/components/schemas/Position'
       required:
         - item
-        - position
         - quantity
         - durability_left
     Version:
@@ -833,8 +838,8 @@ components:
       $ref: '#/components/schemas/Item'
     inventory_item:
       $ref: '#/components/schemas/InventoryItem'
-    inventory_position:
-      $ref: '#/components/schemas/InventoryPosition'
+    position:
+      $ref: '#/components/schemas/Position'
     item_type:
       $ref: '#/components/schemas/ItemType'
     item_shape:

@@ -2,7 +2,7 @@
 type: object
 properties:
     id:
-        type: string
+        type: integer
     username:
         type: string
     inventories:

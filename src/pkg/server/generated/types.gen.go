@@ -35,10 +35,10 @@ const (
 
 // AddItemToInventoryRequest defines model for AddItemToInventoryRequest.
 type AddItemToInventoryRequest struct {
-	DurabilityLeft float32            `json:"durability_left"`
-	Item           Item               `json:"item"`
-	Position       *InventoryPosition `json:"position,omitempty"`
-	Quantity       int                `json:"quantity"`
+	DurabilityLeft int       `json:"durability_left"`
+	Item           Item      `json:"item"`
+	Position       *Position `json:"position,omitempty"`
+	Quantity       int       `json:"quantity"`
 }
 
 // Error defines model for Error.
@@ -64,19 +64,20 @@ type ErrorType string
 
 // Inventory defines model for Inventory.
 type Inventory struct {
-	Id        string  `json:"id"`
-	MaxWeight float32 `json:"max_weight"`
-	Name      string  `json:"name"`
-	User      User    `json:"user"`
-	Volume    Volume  `json:"volume"`
+	Id        int             `json:"id"`
+	Items     []InventoryItem `json:"items"`
+	MaxWeight int             `json:"max_weight"`
+	Name      string          `json:"name"`
+	UserId    int             `json:"userId"`
+	Volume    Volume          `json:"volume"`
 }
 
 // InventoryItem defines model for InventoryItem.
 type InventoryItem struct {
-	DurabilityLeft float32           `json:"durability_left"`
-	Item           Item              `json:"item"`
-	Position       InventoryPosition `json:"position"`
-	Quantity       int               `json:"quantity"`
+	DurabilityLeft int      `json:"durability_left"`
+	Item           Item     `json:"item"`
+	Position       Position `json:"position"`
+	Quantity       int      `json:"quantity"`
 }
 
 // InventoryListResponse defines model for InventoryListResponse.
@@ -85,34 +86,27 @@ type InventoryListResponse struct {
 	Pagination  Pagination  `json:"pagination"`
 }
 
-// InventoryPosition defines model for InventoryPosition.
-type InventoryPosition struct {
-	Rotation int `json:"rotation"`
-	X        int `json:"x"`
-	Y        int `json:"y"`
-}
-
 // InventoryPostRequest defines model for InventoryPostRequest.
 type InventoryPostRequest struct {
-	MaxWeight float32 `json:"max_weight"`
-	Name      string  `json:"name"`
-	User      User    `json:"user"`
-	Volume    Volume  `json:"volume"`
+	MaxWeight int    `json:"max_weight"`
+	Name      string `json:"name"`
+	User      User   `json:"user"`
+	Volume    Volume `json:"volume"`
 }
 
 // Item defines model for Item.
 type Item struct {
-	BuyValue    float32   `json:"buy_value"`
+	BuyValue    int       `json:"buy_value"`
 	Description string    `json:"description"`
-	Durability  float32   `json:"durability"`
-	Id          string    `json:"id"`
+	Durability  int       `json:"durability"`
+	Id          int       `json:"id"`
 	MaxStack    int       `json:"max_stack"`
 	Name        string    `json:"name"`
-	SellValue   float32   `json:"sell_value"`
+	SellValue   int       `json:"sell_value"`
 	Shape       ItemShape `json:"shape"`
 	Type        ItemType  `json:"type"`
 	Variant     string    `json:"variant"`
-	Weight      float32   `json:"weight"`
+	Weight      int       `json:"weight"`
 }
 
 // ItemListResponse defines model for ItemListResponse.
@@ -123,16 +117,16 @@ type ItemListResponse struct {
 
 // ItemPostRequest defines model for ItemPostRequest.
 type ItemPostRequest struct {
-	BuyValue    float32   `json:"buy_value"`
+	BuyValue    int       `json:"buy_value"`
 	Description string    `json:"description"`
-	Durability  float32   `json:"durability"`
+	Durability  int       `json:"durability"`
 	MaxStack    int       `json:"max_stack"`
 	Name        string    `json:"name"`
-	SellValue   float32   `json:"sell_value"`
+	SellValue   int       `json:"sell_value"`
 	Shape       ItemShape `json:"shape"`
 	Type        ItemType  `json:"type"`
 	Variant     string    `json:"variant"`
-	Weight      float32   `json:"weight"`
+	Weight      int       `json:"weight"`
 }
 
 // ItemShape defines model for ItemShape.
@@ -147,9 +141,9 @@ type ItemType string
 
 // MoveItemRequest defines model for MoveItemRequest.
 type MoveItemRequest struct {
-	NewPosition      InventoryPosition `json:"new_position"`
-	OriginalPosition InventoryPosition `json:"original_position"`
-	Quantity         int               `json:"quantity"`
+	NewPosition      Position `json:"new_position"`
+	OriginalPosition Position `json:"original_position"`
+	Quantity         int      `json:"quantity"`
 }
 
 // Pagination defines model for Pagination.
@@ -161,12 +155,19 @@ type Pagination struct {
 	Total  int `json:"total"`
 }
 
+// Position defines model for Position.
+type Position struct {
+	Rotation int `json:"rotation"`
+	X        int `json:"x"`
+	Y        int `json:"y"`
+}
+
 // Status The status of the API
 type Status string
 
 // User defines model for User.
 type User struct {
-	Id          string      `json:"id"`
+	Id          int         `json:"id"`
 	Inventories []Inventory `json:"inventories"`
 	Username    string      `json:"username"`
 }
@@ -205,8 +206,8 @@ type Version struct {
 
 // Volume defines model for Volume.
 type Volume struct {
-	SizeH float32 `json:"size_h"`
-	SizeV float32 `json:"size_v"`
+	SizeH int `json:"size_h"`
+	SizeV int `json:"size_v"`
 }
 
 // AddInventoryJSONRequestBody defines body for AddInventory for application/json ContentType.

@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	"linuxcode/inventory_manager/pkg/domain"
 	"linuxcode/inventory_manager/pkg/server"
 	"linuxcode/inventory_manager/pkg/server/handler/apihandler"
 	"linuxcode/inventory_manager/pkg/server/handler/infohandler"
@@ -25,8 +26,11 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 		cfg.Info.CommitDate,
 	)
 
+	// create app logic layer
+	appLogic := domain.NewAppLogic()
+
 	// Create an instance of our handler which satisfies the generated interface
-	apiHandler := apihandler.NewAPIHandler()
+	apiHandler := apihandler.NewAPIHandler(appLogic)
 
 	// setup router that uses the handlers
 	r := router.New(versionHandler, apiHandler, cfg.Router)

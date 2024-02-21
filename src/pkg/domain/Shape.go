@@ -3,6 +3,7 @@ package domain
 import "fmt"
 
 type Shape struct {
+	RawShape string
 	Width  int
 	Height int
 	Matrix [][]int

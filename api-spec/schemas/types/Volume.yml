@@ -2,9 +2,9 @@
 type: object
 properties:
     size_v:
-        type: number
+        type: integer
     size_h:
-        type: number
+        type: integer
 
 required:
     - size_v

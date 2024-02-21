@@ -5,18 +5,18 @@ import "fmt"
 type Inventory struct {
 	ID      int
 	Name    string
-	Owner   string
-	OwnerID int
+	UserID  int
 	Width   int
 	Height  int
-	Items   []*InventoryItem
+	MaxWeight int
+	Items   []InventoryItem
 }
 
 func NewInventory(width int, height int) *Inventory {
 	return &Inventory{
 		Width:  width,
 		Height: height,
-		Items:  make([]*InventoryItem, 0),
+		Items:  make([]InventoryItem, 0),
 	}
 }
 
@@ -25,7 +25,7 @@ func (i *Inventory) AddItemAtPosition(item Item, position *Position) error {
 		return &NoFitPositionError{}
 	}
 
-	i.Items = append(i.Items, &InventoryItem{
+	i.Items = append(i.Items, InventoryItem{
 			Item:     item,
 			Position: *position,
 	})
@@ -44,7 +44,7 @@ func (i *Inventory) AddItem(item Item) bool {
 	}
 
 	// add the item to the inventory
-	i.Items = append(i.Items, &InventoryItem{
+	i.Items = append(i.Items, InventoryItem{
 		Item:     item,
 		Position: *positionSuggestion,
 	})

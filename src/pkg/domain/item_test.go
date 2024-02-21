@@ -1,27 +1,9 @@
 package domain
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
-
-// Test_parseYamlExample tests the parseYAML function.
-func Test_parseYamlExample(t *testing.T) {
-	items := &Items{}
-	err := items.parseYAML("../../../data/example_item.yaml")
-	if err != nil {
-		t.Errorf("error parsing yaml: %s", err.Error())
-	}
-
-	// print all items
-	for _, item := range items.Items {
-		fmt.Println("Name:", item.Name)
-		item.Shape.printShape()
-		fmt.Println("----------------")
-	}
-	t.FailNow()
-}
 
 // Test_parseShape tests the parseShape function.
 func Test_parseShape(t *testing.T) {

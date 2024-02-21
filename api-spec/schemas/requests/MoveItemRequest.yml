@@ -2,9 +2,9 @@
 type: object
 properties:
     original_position:
-        $ref: '../types/InventoryPosition.yml'
+        $ref: '../types/Position.yml'
     new_position:
-        $ref: '../types/InventoryPosition.yml'
+        $ref: '../types/Position.yml'
     quantity:
         type: integer
 

@@ -19,7 +19,8 @@ func Test_inventoryItemPlaceCheck(t *testing.T) {
 				{1, 0, 0, 0},
 			},
 		},
-		Value: 100,
+		SellValue: 100,
+		BuyValue: 100,
 	}
 
 	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0})
@@ -70,7 +71,8 @@ func Test_inventoryItemAdd(t *testing.T) {
 				{1, 0, 0},
 			},
 		},
-		Value: 100,
+		SellValue: 100,
+		BuyValue:  100,
 	}
 
 	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0})
@@ -141,7 +143,8 @@ func createBox(width int, height int, filled bool) *Item {
 			Height: height,
 			Matrix: matrix,
 		},
-		Value: 100,
+		SellValue: 100,
+		BuyValue:  100,
 	}
 }
 
@@ -159,7 +162,8 @@ func createLShapedItem() *Item {
 				{1, 1, 1},
 			},
 		},
-		Value: 100,
+		SellValue: 100,
+		BuyValue:  100,
 	}
 }
 

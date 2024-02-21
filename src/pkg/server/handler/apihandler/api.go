@@ -1,16 +1,42 @@
 package apihandler
 
-import "net/http"
-type APIHandler struct{}
+import (
+	"linuxcode/inventory_manager/pkg/domain"
+	server "linuxcode/inventory_manager/pkg/server/generated"
+	"net/http"
 
-func NewAPIHandler() *APIHandler {
-	return &APIHandler{}
+	transform "linuxcode/inventory_manager/pkg/server/transform"
+
+	"github.com/go-chi/render"
+)
+type APIHandler struct{
+	AppLogic domain.AppLogic
+}
+
+func NewAPIHandler(appLogic domain.AppLogic) *APIHandler {
+	return &APIHandler{
+		AppLogic: appLogic,
+	}
 }
 
 // Get all inventories
 // (GET /api/inventories)
 func (a APIHandler) GetAllInventories(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotImplemented)
+	// call domain layer
+	inventories, err := a.AppLogic.GetAllInventories()
+	if err != nil {
+		// handle error
+	}
+
+	// map domain model to dto
+	inventoriesDTO := make([]server.Inventory, 0, len(inventories))
+	for _, inv := range inventories {
+		inventoriesDTO = append(inventoriesDTO, transform.DTOInventoryFromDomain(inv))
+	}
+
+	// return response
+	w.WriteHeader(http.StatusOK)
+	render.JSON(w, r, inventoriesDTO)
 }
 
 // Add new inventory

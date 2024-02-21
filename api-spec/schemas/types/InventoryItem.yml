@@ -4,11 +4,11 @@ properties:
     item:
         $ref: './Item.yml'
     position:
-        $ref: './InventoryPosition.yml'
+        $ref: './Position.yml'
     quantity:
         type: integer
     durability_left:
-        type: number
+        type: integer
 
 required:
     - item

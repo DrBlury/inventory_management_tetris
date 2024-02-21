@@ -2,7 +2,7 @@
 type: object
 properties:
     id:
-        type: string
+        type: integer
     variant:
         type: string
     name:
@@ -10,13 +10,13 @@ properties:
     description:
         type: string
     buy_value:
-        type: number
+        type: integer
     sell_value:
-        type: number
+        type: integer
     weight:
-        type: number
+        type: integer
     durability:
-        type: number
+        type: integer
     max_stack:
         type: integer
     shape:
