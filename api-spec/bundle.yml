@@ -26,6 +26,10 @@ paths:
                   $ref: '#/components/schemas/ItemListResponse'
         '404':
           description: No items found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security: []
     post:
       summary: Add new item
@@ -95,8 +99,16 @@ paths:
           description: Update done
         '400':
           description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: Can not find item (item ID)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security: []
     delete:
       summary: Delete item by ID
@@ -136,6 +148,10 @@ paths:
                   $ref: '#/components/schemas/UserListResponse'
         '404':
           description: No items found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security: []
     post:
       summary: Add new user
@@ -182,8 +198,16 @@ paths:
                   $ref: '#/components/schemas/User'
         '400':
           description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: Can not find user (user ID)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security: []
     put:
       summary: Update an user
@@ -250,6 +274,10 @@ paths:
                   $ref: '#/components/schemas/InventoryListResponse'
         '404':
           description: No inventories found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security: []
     post:
       summary: Add new inventory
@@ -271,6 +299,10 @@ paths:
                 $ref: '#/components/schemas/Inventory'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security: []
   /api/inventories/{inventoryId}:
     get:
@@ -296,8 +328,16 @@ paths:
                   $ref: '#/components/schemas/Inventory'
         '400':
           description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: Can not find inventory (inventory ID)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security: []
     delete:
       summary: Delete inventory by ID
@@ -345,6 +385,10 @@ paths:
           description: Moved item in inventory
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security: []
   /api/inventories/{inventoryId}/add:
     post:
@@ -375,7 +419,57 @@ paths:
                 $ref: '#/components/schemas/InventoryItem'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
       security: []
+  /info/metrics:
+    get:
+      tags:
+        - info
+      summary: Get metrics
+      description: Get metrics
+      operationId: getMetrics
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metrics:
+                    type: object
+                    description: Metrics for prometheus
+  /info/version:
+    get:
+      tags:
+        - info
+      summary: Get version
+      description: Get version
+      operationId: getVersion
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Version'
+  /info/status:
+    get:
+      tags:
+        - info
+      summary: Get status
+      description: Get status
+      operationId: getStatus
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
 components:
   schemas:
     ItemShape:
@@ -469,6 +563,45 @@ components:
       required:
         - items
         - pagination
+    ErrorType:
+      type: string
+      example: Bad Request
+      description: The error type
+      enum:
+        - Bad Request
+        - Not Found
+        - Not Implemented
+        - Internal Server Error
+    Error:
+      type: object
+      properties:
+        errorId:
+          type: string
+          description: The unique identifier for the error
+          example: 123e4567-e89b-12d3-a456-426614174000
+        error:
+          type: string
+          description: The error message
+          example: The item does not exist
+        errorType:
+          $ref: '#/components/schemas/ErrorType'
+          description: The error type
+          example: Bad Request
+        code:
+          type: integer
+          description: The error code
+          example: 404
+        timestamp:
+          type: string
+          format: date-time
+          description: The time the error occurred
+          example: '2020-01-01T00:00:00Z'
+      required:
+        - errorId
+        - error
+        - errorType
+        - code
+        - timestamp
     ItemPostRequest:
       type: object
       properties:
@@ -660,6 +793,42 @@ components:
         - position
         - quantity
         - durability_left
+    Version:
+      type: object
+      properties:
+        version:
+          type: string
+          description: The version of the API
+          example: 1.0.0
+        buildDate:
+          type: string
+          description: The date the code was built
+          example: '2020-01-01'
+        description:
+          type: string
+          description: A description of the API
+          example: This is the API for the inventory management system
+        commitHash:
+          type: string
+          description: The hash of the commit
+          example: 1234567890
+        commitDate:
+          type: string
+          description: The date of the commit
+          example: '2020-01-01T00:00:00Z'
+      required:
+        - version
+        - buildDate
+        - description
+        - commitHash
+        - commitDate
+    Status:
+      type: string
+      enum:
+        - HEALTHY
+        - UNHEALTHY
+        - UNKNOWN
+      description: The status of the API
     item:
       $ref: '#/components/schemas/Item'
     inventory_item:
@@ -674,6 +843,10 @@ components:
       $ref: '#/components/schemas/Inventory'
     user:
       $ref: '#/components/schemas/User'
+    version:
+      $ref: '#/components/schemas/Version'
+    status:
+      $ref: '#/components/schemas/Status'
     inventory_post_request:
       $ref: '#/components/schemas/InventoryPostRequest'
     add_item_request:
@@ -690,3 +863,7 @@ components:
       $ref: '#/components/schemas/InventoryListResponse'
     user_list_response:
       $ref: '#/components/schemas/UserListResponse'
+    errorType:
+      $ref: '#/components/schemas/ErrorType'
+    error:
+      $ref: '#/components/schemas/Error'

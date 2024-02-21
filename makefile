@@ -48,6 +48,9 @@ generate-api-types:
 	@echo "Generating the types for the api using oapi-codegen"
 	oapi-codegen -generate types -package server ./api-spec/bundle.yml > ./src/pkg/server/generated/types.gen.go
 
+
+generate-api: bundle-api generate-api-chi generate-api-types
+
 install-local-tools:
 	@echo "Installing the dependencies"
 	@echo "Installing oapi-codegen"

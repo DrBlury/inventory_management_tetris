@@ -1,14 +1,14 @@
 ---
 type: object
 properties:
-  rawshape:
-    type: string
-  size_v:
-    type: integer
-  size_h:
-    type: integer
+    rawshape:
+        type: string
+    size_v:
+        type: integer
+    size_h:
+        type: integer
 
 required:
-  - rawshape
-  - size_v
-  - size_h
+    - rawshape
+    - size_v
+    - size_h

@@ -1,13 +1,13 @@
 ---
 type: object
 properties:
-  inventories:
-    type: array
-    items:
-      $ref: '../types/Inventory.yml'
-  pagination:
-    $ref: '../types/Pagination.yml'
+    inventories:
+        type: array
+        items:
+            $ref: '../types/Inventory.yml'
+    pagination:
+        $ref: '../types/Pagination.yml'
 
 required:
-  - inventories
-  - pagination
+    - inventories
+    - pagination

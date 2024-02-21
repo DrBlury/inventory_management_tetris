@@ -1,42 +1,52 @@
 ---
 # Schemas
 item:
-  $ref: './types/Item.yml'
+    $ref: './types/Item.yml'
 inventory_item:
-  $ref: './types/InventoryItem.yml'
+    $ref: './types/InventoryItem.yml'
 inventory_position:
-  $ref: './types/InventoryPosition.yml'
+    $ref: './types/InventoryPosition.yml'
 item_type:
-  $ref: './types/ItemType.yml'
+    $ref: './types/ItemType.yml'
 item_shape:
-  $ref: './types/ItemShape.yml'
+    $ref: './types/ItemShape.yml'
 inventory:
-  $ref: './types/Inventory.yml'
+    $ref: './types/Inventory.yml'
 user:
-  $ref: './types/User.yml'
+    $ref: './types/User.yml'
+version:
+    $ref: './types/Version.yml'
+status:
+    $ref: './types/Status.yml'
 
 # Requests
 # Inventory
 inventory_post_request:
-  $ref: './requests/InventoryPostRequest.yml'
+    $ref: './requests/InventoryPostRequest.yml'
 add_item_request:
-  $ref: './requests/AddItemToInventoryRequest.yml'
+    $ref: './requests/AddItemToInventoryRequest.yml'
 move_item_request:
-  $ref: './requests/MoveItemRequest.yml'
+    $ref: './requests/MoveItemRequest.yml'
 
 # Item
 item_post_request:
-  $ref: './requests/ItemPostRequest.yml'
+    $ref: './requests/ItemPostRequest.yml'
 
 # User
 user_post_request:
-  $ref: './requests/UserPostRequest.yml'
-
+    $ref: './requests/UserPostRequest.yml'
 
 # Responses
 item_list_response:
-  $ref: './responses/ItemListResponse.yml'
+    $ref: './responses/ItemListResponse.yml'
 inventory_list_response:
-  $ref: './responses/InventoryListResponse.yml'
+    $ref: './responses/InventoryListResponse.yml'
 user_list_response:
-  $ref: './responses/UserListResponse.yml'
+    $ref: './responses/UserListResponse.yml'
+
+# Errors
+errorType:
+    $ref: './errors/ErrorType.yml'
+
+error:
+    $ref: './errors/Error.yml'

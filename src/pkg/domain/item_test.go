@@ -8,7 +8,8 @@ import (
 
 // Test_parseYamlExample tests the parseYAML function.
 func Test_parseYamlExample(t *testing.T) {
-	items, err := parseYAML("../../../data/example_item.yaml")
+	items := &Items{}
+	err := items.parseYAML("../../../data/example_item.yaml")
 	if err != nil {
 		t.Errorf("error parsing yaml: %s", err.Error())
 	}
@@ -27,7 +28,8 @@ func Test_parseShape(t *testing.T) {
 	rawShape := "#####..##..#####"
 	width := 4
 	height := 4
-	shape := parseShape(rawShape, width, height)
+	shape := &Shape{}
+	shape.parseShape(rawShape, width, height)
 
 	expectedShapeMatrix := [][]int{
 		{1, 1, 1, 1},

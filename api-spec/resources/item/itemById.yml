@@ -1,83 +1,91 @@
 ---
 get:
-  summary: Get item by ID
-  operationId: getItemById
-  tags:
-    - item
-  parameters:
-    - name: itemId
-      in: path
-      description: ID of item
-      required: true
-      schema:
-        type: integer
-        format: int64
-  responses:
-    '200':
-      description: successful operation
-      content:
-        application/json:
+    summary: Get item by ID
+    operationId: getItemById
+    tags:
+        - item
+    parameters:
+        - name: itemId
+          in: path
+          description: ID of item
+          required: true
           schema:
-            items: 
-              $ref: '../../schemas/_index.yml#/item'
-    '400':
-      description: Invalid ID supplied
-    '404':
-      description: Can not find item (item ID)
- 
-  # This API has no security
-  security: []
+              type: integer
+              format: int64
+    responses:
+        '200':
+            description: successful operation
+            content:
+                application/json:
+                    schema:
+                        items:
+                            $ref: '../../schemas/_index.yml#/item'
+        '400':
+            description: Invalid ID supplied
+        '404':
+            description: Can not find item (item ID)
+
+    # This API has no security
+    security: []
 
 put:
-  summary: Update an item
-  operationId: updateItemById
-  tags:
-    - item
-  parameters:
-    - name: itemId
-      in: path
-      description: ID of item that needs to be updated
-      required: true
-      schema:
-        type: integer
-        format: int64
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema: 
-          $ref: '../../schemas/_index.yml#/item'
-  responses:
-    '200':
-      description: Update done
-    '404':
-      description: Can not find item (item ID)
-    '400':
-      description: Invalid ID supplied
+    summary: Update an item
+    operationId: updateItemById
+    tags:
+        - item
+    parameters:
+        - name: itemId
+          in: path
+          description: ID of item that needs to be updated
+          required: true
+          schema:
+              type: integer
+              format: int64
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    $ref: '../../schemas/_index.yml#/item'
+    responses:
+        '200':
+            description: Update done
+        '404':
+            description: Can not find item (item ID)
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/error'
+        '400':
+            description: Invalid ID supplied
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/error'
 
-  # This API has no security
-  security: []
+    # This API has no security
+    security: []
 
 delete:
-  summary: Delete item by ID
-  operationId: deleteItemById
-  tags:
-    - item
-  parameters:
-    - name: itemId
-      in: path
-      description: ID of item to delete
-      required: true
-      schema:
-        type: integer
-        format: int64
-  responses:
-    '200':
-      description: Deleted item (item ID)
-    '400':
-      description: Invalid ID supplied
-    '404':
-      description: Can not find item (item ID)
+    summary: Delete item by ID
+    operationId: deleteItemById
+    tags:
+        - item
+    parameters:
+        - name: itemId
+          in: path
+          description: ID of item to delete
+          required: true
+          schema:
+              type: integer
+              format: int64
+    responses:
+        '200':
+            description: Deleted item (item ID)
+        '400':
+            description: Invalid ID supplied
+        '404':
+            description: Can not find item (item ID)
 
-  # This API has no security
-  security: []
+    # This API has no security
+    security: []

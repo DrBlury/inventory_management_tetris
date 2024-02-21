@@ -1,7 +1,7 @@
 package infohandler
 
 import (
-	"linuxcode/inventory_manager/pkg/model/dto"
+	server "linuxcode/inventory_manager/pkg/server/generated"
 	"net/http"
 
 	"github.com/go-chi/render"
@@ -29,7 +29,7 @@ func NewVersionHandler(version, buildDate, description, commitHash, commitDate s
 
 // VersionCheck provides the linuxcode/inventory_managerlication version information.
 func (h *VersionHandler) VersionCheck(w http.ResponseWriter, r *http.Request) {
-	resp := dto.Version{
+	resp := server.Version{
 		Version:     h.version,
 		BuildDate:   h.buildDate,
 		Description: h.description,

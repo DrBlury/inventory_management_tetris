@@ -1,24 +1,22 @@
-
-
 items:
-  - id: 1
-    name: Square
-    description: A 2x2 square shaped item.
-    width: 2
-    height: 2
-    rawshape: "####"
-    value: 25
-  - id: 2
-    name: Box
-    description: A 4x4 rectangle shaped item. That's empty on the inside.
-    width: 4
-    height: 4
-    rawshape: "#####..##..#####"
-    value: 50
-  - id: 3
-    name: T Shape
-    description: A 3x3 T shaped item.
-    width: 3
-    height: 3
-    rawshape: "###.#..#."
-    value: 35
+    - id: 1
+      name: Square
+      description: A 2x2 square shaped item.
+      width: 2
+      height: 2
+      rawshape: '####'
+      value: 25
+    - id: 2
+      name: Box
+      description: A 4x4 rectangle shaped item. That's empty on the inside.
+      width: 4
+      height: 4
+      rawshape: '#####..##..#####'
+      value: 50
+    - id: 3
+      name: T Shape
+      description: A 3x3 T shaped item.
+      width: 3
+      height: 3
+      rawshape: '###.#..#.'
+      value: 35

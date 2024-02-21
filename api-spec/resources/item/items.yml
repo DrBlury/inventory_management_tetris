@@ -1,40 +1,44 @@
 ---
 get:
-  summary: Get all items
-  operationId: getAllItems
-  tags:
-    - item
-  responses:
-    '200':
-      description: successful operation
-      content:
-        application/json:
-          schema:
-            type: array
-            items: 
-              $ref: '../../schemas/_index.yml#/item_list_response'
-    '404':
-      description: No items found
+    summary: Get all items
+    operationId: getAllItems
+    tags:
+        - item
+    responses:
+        '200':
+            description: successful operation
+            content:
+                application/json:
+                    schema:
+                        type: array
+                        items:
+                            $ref: '../../schemas/_index.yml#/item_list_response'
+        '404':
+            description: No items found
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/error'
 
-  # This API has no security
-  security: []
+    # This API has no security
+    security: []
 
 post:
-  summary: Add new item
-  operationId: addItem
-  tags:
-    - item
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema: 
-          $ref: '../../schemas/_index.yml#/item_post_request'
-  responses:
-    '201':
-      description: Added item
-    '400':
-      description: Bad request
+    summary: Add new item
+    operationId: addItem
+    tags:
+        - item
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    $ref: '../../schemas/_index.yml#/item_post_request'
+    responses:
+        '201':
+            description: Added item
+        '400':
+            description: Bad request
 
-  # This API has no security
-  security: []
+    # This API has no security
+    security: []

@@ -1,10 +1,10 @@
 ---
 type: string
 enum:
-  - consumable
-  - armor
-  - rangedWeapon
-  - meleeWeapon
-  - consumableWeapon
-  - quest
-  - resource
+    - consumable
+    - armor
+    - rangedWeapon
+    - meleeWeapon
+    - consumableWeapon
+    - quest
+    - resource

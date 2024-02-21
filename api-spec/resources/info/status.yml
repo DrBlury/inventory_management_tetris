@@ -1,0 +1,14 @@
+---
+get:
+    tags:
+        - info
+    summary: Get status
+    description: Get status
+    operationId: getStatus
+    responses:
+        '200':
+            description: OK
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/status'

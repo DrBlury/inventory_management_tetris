@@ -1,7 +1,6 @@
 package domain
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -93,15 +92,16 @@ func Test_inventoryItemAdd(t *testing.T) {
 			{1, 1},
 		},
 	}
-	exampleInventory.AddItemAtPosition(*exampleItem, Position{X: 6, Y: 2})
-
-	if len(exampleInventory.Items) != 1 {
-		t.Errorf("expected 1, got %d", len(exampleInventory.Items))
+	error := exampleInventory.AddItemAtPosition(*exampleItem, Position{X: 6, Y: 2})
+	if error != nil {
+		t.Errorf("expected nil, got %v", error)
+		t.FailNow()
 	}
 
-	exampleInventory.PrintInventory()
-
-	t.FailNow()
+	if len(exampleInventory.Items) != 5 {
+		t.Errorf("expected 1, got %d", len(exampleInventory.Items))
+		t.FailNow()
+	}
 }
 
 func createBox(width int, height int, filled bool) *Item {
@@ -170,8 +170,6 @@ func Test_inventoryAddItem(t *testing.T) {
 		t.FailNow()
 	}
 
-	exampleInventory.PrintInventory()
-
 	lShapedItem := createLShapedItem()
 	// add 3 L shaped items
 	for i := 0; i < 3; i++ {
@@ -181,34 +179,15 @@ func Test_inventoryAddItem(t *testing.T) {
 		}
 	}
 
-	exampleInventory.PrintInventory()
-
-	// add a big hollow box shaped item
-	a6by6Box := createBox(6, 6, false)
-	if exampleInventory.AddItem(*a6by6Box) != true {
-		t.Errorf("expected true, got false")
+	// add a 6x6 box that's hollow
+	if ok := exampleInventory.AddItem(*createBox(6, 6, false)); !ok {
 		t.FailNow()
 	}
 
-	exampleInventory.AddItem(*createBox(3, 3, true))
-
-	exampleInventory.AddItem(*createBox(2, 2, true))
-	exampleInventory.AddItem(*createBox(2, 2, true))
-	exampleInventory.PrintInventory()
-	fmt.Println("")
-	fmt.Println("---------------")
-	fmt.Println("")
-
-	exampleInventory.AddItem(*createBox(2, 2, true))
-
-	exampleInventory.PrintInventory()
-	fmt.Println("")
-	fmt.Println("---------------")
-	fmt.Println("")
-
-	// add 4x2 box
-	exampleInventory.AddItem(*createBox(4, 2, true))
-	exampleInventory.PrintInventory()
-	t.FailNow()
-
+	// add three 2x2 boxes
+	for i := 0; i < 3; i++ {
+		if ok := exampleInventory.AddItem(*createBox(2, 2, true)); !ok {
+			t.FailNow()
+		}
+	}
 }

@@ -1,17 +1,17 @@
 ---
 type: object
 properties:
-  item:
-    $ref: './Item.yml'
-  position:
-    $ref: './InventoryPosition.yml'
-  quantity:
-    type: integer
-  durability_left:
-    type: number
+    item:
+        $ref: './Item.yml'
+    position:
+        $ref: './InventoryPosition.yml'
+    quantity:
+        type: integer
+    durability_left:
+        type: number
 
 required:
-  - item
-  - position
-  - quantity
-  - durability_left
+    - item
+    - position
+    - quantity
+    - durability_left
