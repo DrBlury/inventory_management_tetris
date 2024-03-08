@@ -60,13 +60,13 @@ SELECT * FROM inventory
 ORDER BY id;
 
 -- name: CreateInventory :one
-INSERT INTO inventory (user_id, size_h, size_v, created_at)
-VALUES ($1, $2, $3, $4)
+INSERT INTO inventory (user_id, invname, size_h, size_v, max_weight, created_at)
+VALUES ($1, $2, $3, $4, $5, $6)
 RETURNING *;
 
 -- name: UpdateInventory :one
 UPDATE inventory
-SET user_id = $1, size_h = $2, size_v = $3, created_at = $4
+SET user_id = $1, invname = $2, size_h = $3, size_v = $4, created_at = $5
 WHERE id = $5
 RETURNING *;
 

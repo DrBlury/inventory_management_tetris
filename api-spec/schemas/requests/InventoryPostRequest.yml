@@ -1,17 +1,19 @@
 ---
 type: object
 properties:
+    id:
+        type: string
     name:
         type: string
+    user_id:
+        type: integer
     max_weight:
         type: integer
-    user:
-        $ref: '../types/User.yml'
     volume:
         $ref: '../types/Volume.yml'
 
 required:
     - name
+    - user_id
     - max_weight
-    - user
     - volume

@@ -88,10 +88,11 @@ type InventoryListResponse struct {
 
 // InventoryPostRequest defines model for InventoryPostRequest.
 type InventoryPostRequest struct {
-	MaxWeight int    `json:"max_weight"`
-	Name      string `json:"name"`
-	User      User   `json:"user"`
-	Volume    Volume `json:"volume"`
+	Id        *string `json:"id,omitempty"`
+	MaxWeight int     `json:"max_weight"`
+	Name      string  `json:"name"`
+	UserId    int     `json:"user_id"`
+	Volume    Volume  `json:"volume"`
 }
 
 // Item defines model for Item.
@@ -180,10 +181,10 @@ type UserListResponse struct {
 
 // UserPostRequest defines model for UserPostRequest.
 type UserPostRequest struct {
-	Email    string `json:"email"`
-	Id       string `json:"id"`
-	Name     string `json:"name"`
-	Password string `json:"password"`
+	Email    string  `json:"email"`
+	Id       *string `json:"id,omitempty"`
+	Name     string  `json:"name"`
+	Password string  `json:"password"`
 }
 
 // Version defines model for Version.

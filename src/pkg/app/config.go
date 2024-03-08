@@ -1,6 +1,7 @@
 package app
 
 import (
+	"linuxcode/inventory_manager/pkg/repo"
 	"linuxcode/inventory_manager/pkg/server"
 	"linuxcode/inventory_manager/pkg/server/router"
 	"time"
@@ -9,10 +10,10 @@ import (
 )
 
 type Config struct {
-	Info   *Info
-	Router *router.Config
-	Server *server.Config
-	// Add your configs below here
+	Info     *Info
+	Router   *router.Config
+	Server   *server.Config
+	Database *repo.Config
 }
 
 // Info is configurable information usually set at build time with ldflags.
@@ -60,16 +61,23 @@ func LoadConfig(
 		},
 	}
 
+	databaseConfig := &repo.Config{
+		Host:         viper.GetString("APP_DATABASE_HOST"),
+		Port:         viper.GetInt("APP_DATABASE_PORT"),
+		DatabaseName: viper.GetString("APP_DATABASE_NAME"),
+		Username:     viper.GetString("APP_DATABASE_USER"),
+		Password:     viper.GetString("APP_DATABASE_PASSWORD"),
+		Level:        viper.GetString("APP_DATABASE_LOG_LEVEL"),
+	}
+
 	serverConfig := &server.Config{
 		Address: "0.0.0.0:" + viper.GetString("APP_SERVER_PORT"),
 	}
 
-	// Add your configs below here
-
 	return &Config{
-		Info:   infoConfig,
-		Router: routerConfig,
-		Server: serverConfig,
-		// Add your config below here
+		Info:     infoConfig,
+		Router:   routerConfig,
+		Server:   serverConfig,
+		Database: databaseConfig,
 	}, nil
 }

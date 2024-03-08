@@ -16,15 +16,3 @@ func UserDTOFromDomain(u *domain.User) server.User {
 		Username:    u.Username,
 	}
 }
-
-func UserDomainFromDTO(u *server.User) domain.User {
-	domainInventories := make([]domain.Inventory, len(u.Inventories))
-	for i, inv := range u.Inventories {
-		domainInventories[i] = DomainInventoryFromDTO(&inv)
-	}
-	return domain.User{
-		ID:        u.Id,
-		Inventories: domainInventories,
-		Username:  u.Username,
-	}
-}

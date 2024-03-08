@@ -2,14 +2,20 @@ package domain
 
 import (
 	"context"
+	"fmt"
 	repo "linuxcode/inventory_manager/pkg/repo/generated"
+	"time"
+
+	"github.com/jackc/pgx/v5/pgtype"
+	"go.uber.org/zap"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type appLogicImpl struct {
-	queries repo.Queries
+	queries *repo.Queries
 }
 
-func NewAppLogic(queries repo.Queries) appLogicImpl {
+func NewAppLogic(queries *repo.Queries) appLogicImpl {
 	return appLogicImpl{
 		queries: queries,
 	}
@@ -18,7 +24,7 @@ func NewAppLogic(queries repo.Queries) appLogicImpl {
 type AppLogic interface {
 	// Inventories
 	GetAllInventories(ctx context.Context) ([]Inventory, error)
-	AddInventory(ctx context.Context, inventory Inventory) error
+	AddInventory(ctx context.Context, createInventoryParams CreateInventoryParams) (*repo.Inventory, error)
 	DeleteInventoryById(ctx context.Context, inventoryId int) error
 	GetInventoryById(ctx context.Context, inventoryId int) (Inventory, error)
 	AddItemInInventory(ctx context.Context, inventoryId int, item Item) error
@@ -34,7 +40,7 @@ type AppLogic interface {
 	// Users
 	GetUserById(ctx context.Context, userId int) (User, error)
 	GetUserByUsername(ctx context.Context, username string) (User, error)
-	AddUser(ctx context.Context, user User) error
+	AddUser(ctx context.Context, createUserParams CreateUserParams) (*repo.User, error)
 	DeleteUserById(ctx context.Context, userId int) error
 }
 
@@ -50,8 +56,22 @@ func (a appLogicImpl) GetAllInventories(ctx context.Context) ([]Inventory, error
 	return nil, nil
 }
 
-func (a appLogicImpl) AddInventory(ctx context.Context, inventory Inventory) error {
-	panic("not implemented") // TODO: Implement
+func (a appLogicImpl) AddInventory(ctx context.Context, createInventoryParams CreateInventoryParams) (*repo.Inventory, error) {
+	// log user the inventory is created for
+	fmt.Println("creating inventory for user", createInventoryParams.UserID)
+	zap.L().Info("creating inventory for user", zap.Int("userId", createInventoryParams.UserID))
+	createdInventory, err := a.queries.CreateInventory(ctx, repo.CreateInventoryParams{
+		UserID:    pgtype.Int4{Int32: int32(createInventoryParams.UserID), Valid: true},
+		Invname:   pgtype.Text{String: createInventoryParams.Name, Valid: true},
+		SizeH:     pgtype.Int4{Int32: int32(createInventoryParams.Width), Valid: true},
+		SizeV:     pgtype.Int4{Int32: int32(createInventoryParams.Height), Valid: true},
+		MaxWeight: pgtype.Int4{Int32: int32(createInventoryParams.MaxWeight), Valid: true},
+		CreatedAt: pgtype.Timestamp{Time: time.Now(), Valid: true},
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &createdInventory, nil
 }
 
 func (a appLogicImpl) DeleteInventoryById(ctx context.Context, inventoryId int) error {
@@ -100,8 +120,33 @@ func (a appLogicImpl) GetUserByUsername(ctx context.Context, username string) (U
 	panic("not implemented") // TODO: Implement
 }
 
-func (a appLogicImpl) AddUser(ctx context.Context, user User) error {
-	panic("not implemented") // TODO: Implement
+func HashPassword(password, salt string) (string, error) {
+	bcryptPassword, err := bcrypt.GenerateFromPassword([]byte(password+salt), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(bcryptPassword), nil
+}
+
+func (a appLogicImpl) AddUser(ctx context.Context, createUserParams CreateUserParams) (*repo.User, error) {
+	// hash password using bcrypt
+	salt := "saltySalt-" + createUserParams.Username
+	hashedPassword, err := HashPassword(createUserParams.Password, salt)
+	if err != nil {
+		return nil, err
+	}
+
+	createdUser, err := a.queries.CreateUser(ctx, repo.CreateUserParams{
+		Username:     pgtype.Text{String: createUserParams.Username, Valid: true},
+		Email:        pgtype.Text{String: createUserParams.Email, Valid: true},
+		Salt:         pgtype.Text{String: salt, Valid: true},
+		PasswordHash: pgtype.Text{String: hashedPassword, Valid: true},
+		CreatedAt:    pgtype.Timestamp{Time: time.Now(), Valid: true},
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &createdUser, nil
 }
 
 func (a appLogicImpl) DeleteUserById(ctx context.Context, userId int) error {

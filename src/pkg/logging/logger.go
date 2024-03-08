@@ -2,20 +2,35 @@ package logging
 
 import (
 	"os"
+	"strings"
 
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 func SetLogger() {
 	logger, ok := os.LookupEnv("LOGGER")
 	if !ok {
-		log.Fatalln("ENV ERROR: 'LOGGER' is missing")
+		zap.L().Warn("LOGGER environment variable not set, using default logger")
 	}
 
-	if logger == "JSON" || logger == "json" {
-		log.SetFormatter(&log.JSONFormatter{})
-	} else {
-		// The TextFormatter is default, you don't actually have to do this.
-		log.SetFormatter(&log.TextFormatter{})
+	// turn to uncapitalized string
+	logger = strings.ToLower(logger)
+
+	// set zap to json or console
+	switch logger {
+	case "json":
+		logger, err := zap.NewProduction()
+		if err != nil {
+			zap.L().Error("error creating prod logger", zap.Error(err))
+		}
+		zap.ReplaceGlobals(logger)
+	case "console":
+		logger, err := zap.NewDevelopment()
+		if err != nil {
+			zap.L().Error("error creating dev logger", zap.Error(err))
+		}
+		zap.ReplaceGlobals(logger)
+	default:
+		zap.L().Warn("LOGGER environment variable not set to json or console, using default logger")
 	}
 }

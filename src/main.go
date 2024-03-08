@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/signal"
 
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 // Application metadata that is set at compile time.
@@ -42,6 +42,6 @@ func main() {
 	)
 
 	if err != nil {
-		log.WithError(err).Error("server terminated")
+		zap.L().Error("error running app", zap.Error(err))
 	}
 }

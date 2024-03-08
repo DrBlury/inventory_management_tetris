@@ -19,7 +19,7 @@ table item {
   size_v int
   size_h int
   rawshape text
-  created_at timestamp
+  created_at timestamp [default: `now()`]
   type item_type
 }
 
@@ -29,15 +29,17 @@ table user {
   salt varchar(255)
   password_hash varchar(255)
   email varchar(255)
-  created_at timestamp
+  created_at timestamp [default: `now()`]
 }
 
 table inventory {
   id int [pk, increment]
+  invname varchar(255)
   user_id int [ref: > user.id]
   size_h int
   size_v int
-  created_at timestamp
+  max_weight int
+  created_at timestamp [default: `now()`]
 }
 
 table inventory_item {
@@ -48,5 +50,5 @@ table inventory_item {
   position_h int
   position_v int
   rotation int
-  created_at timestamp
+  created_at timestamp [default: `now()`]
 }

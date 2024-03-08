@@ -60,9 +60,11 @@ func (ns NullItemType) Value() (driver.Value, error) {
 
 type Inventory struct {
 	ID        int32
+	Invname   pgtype.Text
 	UserID    pgtype.Int4
 	SizeH     pgtype.Int4
 	SizeV     pgtype.Int4
+	MaxWeight pgtype.Int4
 	CreatedAt pgtype.Timestamp
 }
 

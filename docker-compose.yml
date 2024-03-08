@@ -1,53 +1,54 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  inventory_manager:
-    build: 
-      context: .
-      dockerfile: ./build/dockerfiles/app.dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      TZ: Europe/Berlin
-      APP_DATABASE_HOST: db
-      APP_DATABASE_PORT: 5432
-      APP_DATABASE_NAME: app_db
-      APP_DATABASE_USER: app_user
-      APP_DATABASE_PASSWORD: app_password
-      APP_SERVER_PORT: 8080
-    depends_on:
-      - db
-    restart: always
-    healthcheck:
-      test: curl --fail -s http://localhost/health || exit 1
-      start_period: 15s
-      interval: 15s
-      timeout: 5s
-      retries: 3
-      # disable: false
+    inventory_manager:
+        build:
+            context: .
+            dockerfile: ./build/dockerfiles/app.dockerfile
+        ports:
+            - '8080:8080'
+        environment:
+            TZ: Europe/Berlin
+            APP_DATABASE_HOST: db
+            APP_DATABASE_PORT: 5432
+            APP_DATABASE_NAME: app_db
+            APP_DATABASE_USER: app_user
+            APP_DATABASE_PASSWORD: app_password
+            APP_SERVER_PORT: 8080
+            LOGGER: console
+        depends_on:
+            - db
+        restart: always
+        healthcheck:
+            test: curl --fail -s http://localhost/health || exit 1
+            start_period: 15s
+            interval: 15s
+            timeout: 5s
+            retries: 3
+            # disable: false
 
-  db:
-    container_name: app-postgres
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_DB: app_db
-      POSTGRES_USER: app_user
-      POSTGRES_PASSWORD: app_password
-    ports:
-      - "5432:5432"
+    db:
+        container_name: app-postgres
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_DB: app_db
+            POSTGRES_USER: app_user
+            POSTGRES_PASSWORD: app_password
+        ports:
+            - '5432:5432'
 
-  dbmigration:
-    container_name: app-postgres-migration
-    build:
-      context: .
-      dockerfile: ./build/dockerfiles/migrate.dockerfile
-    restart: on-failure
-    environment:
-      APP_DATABASE_HOST: db
-      APP_DATABASE_PORT: 5432
-      APP_DATABASE_NAME: app_db
-      APP_DATABASE_USER: app_user
-      APP_DATABASE_PASSWORD: app_password
-    depends_on:
-      - db
+    dbmigration:
+        container_name: app-postgres-migration
+        build:
+            context: .
+            dockerfile: ./build/dockerfiles/migrate.dockerfile
+        restart: on-failure
+        environment:
+            APP_DATABASE_HOST: db
+            APP_DATABASE_PORT: 5432
+            APP_DATABASE_NAME: app_db
+            APP_DATABASE_USER: app_user
+            APP_DATABASE_PASSWORD: app_password
+        depends_on:
+            - db

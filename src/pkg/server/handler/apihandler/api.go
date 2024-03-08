@@ -1,15 +1,18 @@
 package apihandler
 
 import (
+	"encoding/json"
 	"linuxcode/inventory_manager/pkg/domain"
 	server "linuxcode/inventory_manager/pkg/server/generated"
+	handler "linuxcode/inventory_manager/pkg/server/handler"
+	transform "linuxcode/inventory_manager/pkg/server/transform"
 	"net/http"
 
-	transform "linuxcode/inventory_manager/pkg/server/transform"
-
 	"github.com/go-chi/render"
+	"go.uber.org/zap"
 )
-type APIHandler struct{
+
+type APIHandler struct {
 	AppLogic domain.AppLogic
 }
 
@@ -23,15 +26,15 @@ func NewAPIHandler(appLogic domain.AppLogic) *APIHandler {
 // (GET /api/inventories)
 func (a APIHandler) GetAllInventories(w http.ResponseWriter, r *http.Request) {
 	// call domain layer
-	inventories, err := a.AppLogic.GetAllInventories()
+	inventories, err := a.AppLogic.GetAllInventories(r.Context())
 	if err != nil {
-		// handle error
+		handler.HandleInternalServerError(w, r, err)
 	}
 
 	// map domain model to dto
 	inventoriesDTO := make([]server.Inventory, 0, len(inventories))
 	for _, inv := range inventories {
-		inventoriesDTO = append(inventoriesDTO, transform.DTOInventoryFromDomain(inv))
+		inventoriesDTO = append(inventoriesDTO, transform.DTOInventoryFromDomain(&inv))
 	}
 
 	// return response
@@ -42,7 +45,51 @@ func (a APIHandler) GetAllInventories(w http.ResponseWriter, r *http.Request) {
 // Add new inventory
 // (POST /api/inventories)
 func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotImplemented)
+	zap.L().Info("adding inventory: ", zap.String("request", r.RequestURI))
+	// read dto inventory from request using unmarshal
+	var dtoInventory server.InventoryPostRequest
+	// read request body into bytes
+	bodyBytes := make([]byte, r.ContentLength)
+
+	// log request body
+	zap.L().Error("request body", zap.String("body", string(bodyBytes)))
+
+	_, err := r.Body.Read(bodyBytes)
+	if err != nil {
+		handler.HandleInternalServerError(w, r, err)
+		// log error
+		zap.L().Error("error reading request body", zap.Error(err))
+		return
+	}
+	// unmarshal bytes into dto
+	err = json.Unmarshal(bodyBytes, &dtoInventory)
+	if err != nil {
+		handler.HandleInternalServerError(w, r, err)
+		// log error
+		zap.L().Error("error unmarshalling request body", zap.Error(err))
+		return
+	}
+
+	createInventoryParams := domain.CreateInventoryParams{
+		UserID:    dtoInventory.UserId,
+		Name:      dtoInventory.Name,
+		MaxWeight: dtoInventory.MaxWeight,
+		Width:     dtoInventory.Volume.SizeH,
+		Height:    dtoInventory.Volume.SizeV,
+	}
+
+	// call domain layer
+	addedInventory, err := a.AppLogic.AddInventory(r.Context(), createInventoryParams)
+	if err != nil {
+		handler.HandleInternalServerError(w, r, err)
+		// log error
+		zap.L().Error("error adding inventory", zap.Error(err))
+		return
+	}
+
+	// return response
+	w.WriteHeader(http.StatusCreated)
+	render.JSON(w, r, addedInventory)
 }
 
 // Delete inventory by ID
@@ -108,7 +155,45 @@ func (a APIHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 // Add new user
 // (POST /api/users)
 func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotImplemented)
+	// read dto user from request using unmarshal
+	var dtoUser server.UserPostRequest
+	// read request body into bytes
+	bodyBytes := make([]byte, r.ContentLength)
+
+	_, err := r.Body.Read(bodyBytes)
+	if err != nil {
+		handler.HandleInternalServerError(w, r, err)
+		// log error
+		zap.L().Error("error reading request body", zap.Error(err))
+		return
+	}
+	// unmarshal bytes into dto
+	err = json.Unmarshal(bodyBytes, &dtoUser)
+	if err != nil {
+		handler.HandleInternalServerError(w, r, err)
+		// log error
+		zap.L().Error("error unmarshalling request body", zap.Error(err))
+		return
+	}
+
+	createUserParams := domain.CreateUserParams{
+		Username: dtoUser.Name,
+		Email:    dtoUser.Email,
+		Password: dtoUser.Password,
+	}
+
+	// call domain layer
+	addedUser, err := a.AppLogic.AddUser(r.Context(), createUserParams)
+	if err != nil {
+		handler.HandleInternalServerError(w, r, err)
+		// log error
+		zap.L().Error("error adding user", zap.Error(err))
+		return
+	}
+
+	// return response
+	w.WriteHeader(http.StatusCreated)
+	render.JSON(w, r, addedUser)
 }
 
 // Delete user by ID

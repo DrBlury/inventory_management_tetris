@@ -29,13 +29,13 @@ gen-sqlc:
 	@echo "Generating the sqlc"
 	docker run --rm -v $(PWD)/database:/src -w /src sqlc/sqlc generate
 	rm -rf ./src/pkg/repo/generated
-	mv ./database/repo ./src/pkg/
+	mv ./database/generated ./src/pkg/repo
 
 lint-api:
 	@echo "Linting the api-spec"
-	docker run --rm -v ${PWD}/api-spec/:/spec redocly/cli lint api.yml
+	docker run --rm -v ${PWD}/api-spec/:/spec redocly/cli lint --generate-ignore-file api.yml
 
-bundle-api:
+bundle-api: lint-api
 	@echo "Bundling the api-spec using redocly/redoc"
 	docker run --rm -v ${PWD}/api-spec/:/spec redocly/cli bundle api.yml -o bundle.yml
 
