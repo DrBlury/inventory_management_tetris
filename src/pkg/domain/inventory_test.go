@@ -4,8 +4,21 @@ import (
 	"testing"
 )
 
+func genExampleInventoryMeta() InventoryMeta {
+	exampleInventoryMeta := InventoryMeta{
+		ID:        1,
+		Name:      "Test Inventory",
+		UserID:    1,
+		Width:     10,
+		Height:    10,
+		MaxWeight: 100,
+	}
+	return exampleInventoryMeta
+}
+
 func Test_inventoryItemPlaceCheck(t *testing.T) {
-	exampleInventory := NewInventory(10, 10)
+
+	exampleInventory := NewInventory(genExampleInventoryMeta())
 	exampleItem := &Item{
 		ID:          1,
 		Name:        "Test Item",
@@ -20,7 +33,7 @@ func Test_inventoryItemPlaceCheck(t *testing.T) {
 			},
 		},
 		SellValue: 100,
-		BuyValue: 100,
+		BuyValue:  100,
 	}
 
 	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0})
@@ -57,7 +70,7 @@ func Test_inventoryItemPlaceCheck(t *testing.T) {
 }
 
 func Test_inventoryItemAdd(t *testing.T) {
-	exampleInventory := NewInventory(10, 10)
+	exampleInventory := NewInventory(genExampleInventoryMeta())
 	exampleItem := &Item{
 		ID:          1,
 		Name:        "Test Item",
@@ -168,7 +181,7 @@ func createLShapedItem() *Item {
 }
 
 func Test_inventoryAddItem(t *testing.T) {
-	exampleInventory := NewInventory(10, 10)
+	exampleInventory := NewInventory(genExampleInventoryMeta())
 	if exampleInventory.AddItem(*createBox(3, 3, true)) != true {
 		t.Errorf("expected true, got false")
 		t.FailNow()

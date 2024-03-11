@@ -7,30 +7,26 @@ import (
 	"go.uber.org/zap"
 )
 
-func SetLogger() {
-	logger, ok := os.LookupEnv("LOGGER")
-	if !ok {
-		zap.L().Warn("LOGGER environment variable not set, using default logger")
-	}
-
-	// turn to uncapitalized string
-	logger = strings.ToLower(logger)
+func SetLogger() *zap.SugaredLogger {
+	loggerVar, ok := os.LookupEnv("LOGGER")
+	loggerVar = strings.ToLower(loggerVar)
 
 	// set zap to json or console
-	switch logger {
-	case "json":
+	if ok && loggerVar == "json" {
 		logger, err := zap.NewProduction()
 		if err != nil {
-			zap.L().Error("error creating prod logger", zap.Error(err))
+			zap.L().Sugar().Warnf("error creating prod logger: ", err)
 		}
 		zap.ReplaceGlobals(logger)
-	case "console":
-		logger, err := zap.NewDevelopment()
-		if err != nil {
-			zap.L().Error("error creating dev logger", zap.Error(err))
-		}
-		zap.ReplaceGlobals(logger)
-	default:
-		zap.L().Warn("LOGGER environment variable not set to json or console, using default logger")
+		return logger.Sugar()
 	}
+
+	// default to console
+	zap.L().Warn("LOGGER environment variable not set to json, using default logger")
+	logger, err := zap.NewDevelopment()
+	if err != nil {
+		zap.L().Sugar().Warnf("error creating dev logger: ", err)
+	}
+	zap.ReplaceGlobals(logger)
+	return logger.Sugar()
 }

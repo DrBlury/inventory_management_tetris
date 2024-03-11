@@ -2,7 +2,6 @@ package domain
 
 import (
 	"context"
-	"fmt"
 	repo "linuxcode/inventory_manager/pkg/repo/generated"
 	"time"
 
@@ -13,17 +12,19 @@ import (
 
 type appLogicImpl struct {
 	queries *repo.Queries
+	log     *zap.SugaredLogger
 }
 
-func NewAppLogic(queries *repo.Queries) appLogicImpl {
+func NewAppLogic(queries *repo.Queries, logger *zap.SugaredLogger) appLogicImpl {
 	return appLogicImpl{
 		queries: queries,
+		log:     logger,
 	}
 }
 
 type AppLogic interface {
 	// Inventories
-	GetAllInventories(ctx context.Context) ([]Inventory, error)
+	GetAllInventories(ctx context.Context) ([]repo.Inventory, error)
 	AddInventory(ctx context.Context, createInventoryParams CreateInventoryParams) (*repo.Inventory, error)
 	DeleteInventoryById(ctx context.Context, inventoryId int) error
 	GetInventoryById(ctx context.Context, inventoryId int) (Inventory, error)
@@ -33,7 +34,7 @@ type AppLogic interface {
 
 	// Items
 	GetAllItems(ctx context.Context) ([]Item, error)
-	AddItem(ctx context.Context, item Item) error
+	AddItem(ctx context.Context, createItemParams CreateItemParams) error
 	DeleteItemById(ctx context.Context, itemId int) error
 	GetItemById(ctx context.Context, itemId int) (Item, error)
 
@@ -42,24 +43,24 @@ type AppLogic interface {
 	GetUserByUsername(ctx context.Context, username string) (User, error)
 	AddUser(ctx context.Context, createUserParams CreateUserParams) (*repo.User, error)
 	DeleteUserById(ctx context.Context, userId int) error
+	GetAllUsers(ctx context.Context) ([]User, error)
 }
 
 // Inventories
-func (a appLogicImpl) GetAllInventories(ctx context.Context) ([]Inventory, error) {
-	_, err := a.queries.ListInventories(ctx)
+func (a appLogicImpl) GetAllInventories(ctx context.Context) ([]repo.Inventory, error) {
+	inventories, err := a.queries.ListInventories(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	// transform to domain model
 	// TODO
-	return nil, nil
+	return inventories, nil
 }
 
 func (a appLogicImpl) AddInventory(ctx context.Context, createInventoryParams CreateInventoryParams) (*repo.Inventory, error) {
 	// log user the inventory is created for
-	fmt.Println("creating inventory for user", createInventoryParams.UserID)
-	zap.L().Info("creating inventory for user", zap.Int("userId", createInventoryParams.UserID))
+	a.log.Info("creating inventory for user", zap.Int("userId", createInventoryParams.UserID))
 	createdInventory, err := a.queries.CreateInventory(ctx, repo.CreateInventoryParams{
 		UserID:    pgtype.Int4{Int32: int32(createInventoryParams.UserID), Valid: true},
 		Invname:   pgtype.Text{String: createInventoryParams.Name, Valid: true},
@@ -99,7 +100,7 @@ func (a appLogicImpl) GetAllItems(ctx context.Context) ([]Item, error) {
 	panic("not implemented") // TODO: Implement
 }
 
-func (a appLogicImpl) AddItem(ctx context.Context, item Item) error {
+func (a appLogicImpl) AddItem(ctx context.Context, createItemParams CreateItemParams) error {
 	panic("not implemented") // TODO: Implement
 }
 
@@ -112,6 +113,9 @@ func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (Item, error)
 }
 
 // Users
+func (a appLogicImpl) GetAllUsers(ctx context.Context) ([]User, error) {
+	panic("not implemented") // TODO: Implement
+}
 func (a appLogicImpl) GetUserById(ctx context.Context, userId int) (User, error) {
 	panic("not implemented") // TODO: Implement
 }

@@ -4,19 +4,17 @@ import (
 	"fmt"
 	server "linuxcode/inventory_manager/pkg/server/generated"
 	apihandler "linuxcode/inventory_manager/pkg/server/handler/apihandler"
-	"linuxcode/inventory_manager/pkg/server/handler/infohandler"
 	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	oapiMW "github.com/oapi-codegen/nethttp-middleware"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 // New returns a new *chi.Mux to be used for http request routing.
 func New(
-	versionHandle *infohandler.VersionHandler,
 	apiHandle *apihandler.APIHandler,
 	cfg *Config,
 ) *chi.Mux {
@@ -43,21 +41,22 @@ func New(
 		AllowCredentials: cfg.CORS.AllowCredentials,
 	}))
 
-	apiRouter := chi.NewRouter()
-	apiRouter.Use(oapiMW.OapiRequestValidator(swagger))
+	router.Use(oapiMW.OapiRequestValidator(swagger))
 	// register the APIHandler
 	// create handler from mux
 	// and mount it to the router
-	apiHandler := server.HandlerFromMux(apiHandle, apiRouter)
+	apiHandler := server.HandlerFromMux(apiHandle, router)
+	oTelHandler := otelhttp.NewHandler(apiHandler, "/")
 
-	router.Route("/info", func(r chi.Router) {
-		r.Get("/health", infohandler.HealthCheck)
-		r.Get("/version", versionHandle.VersionCheck)
-		r.Handle("/metrics", promhttp.Handler())
-	})
+	// What is a mux?
+	// A mux is an HTTP request multiplexer.
+	// It matches the URL of each incoming request
+	// against a list of registered patterns and calls \
+	// the handler for the pattern that most
+	// closely matches the URL.
 
 	// register subrouter to the main router
-	router.Mount("/", apiHandler)
+	router.Mount("/", oTelHandler)
 
 	return router
 }

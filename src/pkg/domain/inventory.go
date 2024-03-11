@@ -3,20 +3,14 @@ package domain
 import "fmt"
 
 type Inventory struct {
-	ID      int
-	Name    string
-	UserID  int
-	Width   int
-	Height  int
-	MaxWeight int
-	Items   []InventoryItem
+	InventoryMeta InventoryMeta
+	Items         []InventoryItem
 }
 
-func NewInventory(width int, height int) *Inventory {
+func NewInventory(inventoryMeta InventoryMeta) *Inventory {
 	return &Inventory{
-		Width:  width,
-		Height: height,
-		Items:  make([]InventoryItem, 0),
+		InventoryMeta: inventoryMeta,
+		Items:         make([]InventoryItem, 0),
 	}
 }
 
@@ -26,8 +20,8 @@ func (i *Inventory) AddItemAtPosition(item Item, position *Position) error {
 	}
 
 	i.Items = append(i.Items, InventoryItem{
-			Item:     item,
-			Position: *position,
+		Item:     item,
+		Position: *position,
 	})
 	return nil
 }
@@ -67,8 +61,8 @@ func (i *Inventory) GetFitPosition(item Item) (*Position, error) {
 
 	// for every possible cell, test all the possible rotations
 	var maybePosition Position
-	for y := 0; y < i.Height; y++ {
-		for x := 0; x < i.Width; x++ {
+	for y := 0; y < i.InventoryMeta.Height; y++ {
+		for x := 0; x < i.InventoryMeta.Width; x++ {
 			item.Shape = originalRotation
 			// check item placement for every rotation
 			for rotation := 0; rotation < POSSIBLE_ROTATIONS; rotation++ {
@@ -93,9 +87,9 @@ func (i *Inventory) GetFitPosition(item Item) (*Position, error) {
 
 func (i *Inventory) getItemsInMatrix() [][]int {
 	// create a temporary inventory matrix
-	tempInventoryMatrix := make([][]int, i.Height)
+	tempInventoryMatrix := make([][]int, i.InventoryMeta.Height)
 	for column := range tempInventoryMatrix {
-		tempInventoryMatrix[column] = make([]int, i.Width)
+		tempInventoryMatrix[column] = make([]int, i.InventoryMeta.Width)
 	}
 
 	// place all items matrixes into the temporary inventory matrix
@@ -115,7 +109,7 @@ func (i *Inventory) getItemsInMatrix() [][]int {
 
 func (i *Inventory) CheckItemPlacement(item *Item, position *Position) bool {
 	// Check if the item fits into the inventory or would reach out of bounds
-	if position.X+item.Shape.Width > i.Width || position.Y+item.Shape.Height > i.Height {
+	if position.X+item.Shape.Width > i.InventoryMeta.Width || position.Y+item.Shape.Height > i.InventoryMeta.Height {
 		return false
 	}
 

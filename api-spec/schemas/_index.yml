@@ -1,4 +1,10 @@
 ---
+# Enums
+item_type:
+    $ref: './enums/ItemType.yml'
+status:
+    $ref: './enums/Status.yml'
+
 # Schemas
 item:
     $ref: './types/Item.yml'
@@ -6,8 +12,6 @@ inventory_item:
     $ref: './types/InventoryItem.yml'
 position:
     $ref: './types/Position.yml'
-item_type:
-    $ref: './types/ItemType.yml'
 item_shape:
     $ref: './types/ItemShape.yml'
 inventory:
@@ -16,8 +20,6 @@ user:
     $ref: './types/User.yml'
 version:
     $ref: './types/Version.yml'
-status:
-    $ref: './types/Status.yml'
 
 # Requests
 # Inventory

@@ -4,14 +4,14 @@ import (
 	"context"
 	"errors"
 	"linuxcode/inventory_manager/pkg/domain"
+	"linuxcode/inventory_manager/pkg/logging"
 	"linuxcode/inventory_manager/pkg/repo"
 	"linuxcode/inventory_manager/pkg/server"
 	"linuxcode/inventory_manager/pkg/server/handler/apihandler"
-	"linuxcode/inventory_manager/pkg/server/handler/infohandler"
 	"linuxcode/inventory_manager/pkg/server/router"
-	"net/http"
+	"linuxcode/inventory_manager/pkg/telemetry"
 	"os"
-	"time"
+	"os/signal"
 
 	"go.uber.org/zap"
 )
@@ -19,50 +19,73 @@ import (
 // Run runs the linuxcode/inventory_managerlication
 // nolint: funlen
 func Run(cfg *Config, shutdownChannel chan os.Signal) error {
+	// ===== OpenTelemetry =====
+	// Handle SIGINT (CTRL+C) gracefully.
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+
+	// Set up OpenTelemetry.
+	otelShutdown, err := telemetry.SetupOTelSDK(ctx)
+	if err != nil {
+		return err
+	}
+	// Handle shutdown properly so nothing leaks.
+	defer func() {
+		err = errors.Join(err, otelShutdown(context.Background()))
+	}()
+
+	// ===== Logger =====
+	logger := logging.SetLogger()
+
 	// ===== Database =====
 	db, err := repo.CreateDB(cfg.Database)
 	if err != nil {
+		logger.Error("error connecting to database", zap.Error(err))
 		return err
 	}
 
 	// ===== App Logic =====
-	appLogic := domain.NewAppLogic(db)
+	appLogic := domain.NewAppLogic(db, logger)
 
 	// ===== Handlers =====
-	versionHandler := infohandler.NewVersionHandler(
-		cfg.Info.Version,
-		cfg.Info.BuildDate,
-		cfg.Info.Description,
-		cfg.Info.CommitHash,
-		cfg.Info.CommitDate,
-	)
+	versionInfo := apihandler.VersionInfo{
+		Version:     cfg.Info.Version,
+		BuildDate:   cfg.Info.BuildDate,
+		Description: cfg.Info.Description,
+		CommitHash:  cfg.Info.CommitHash,
+		CommitDate:  cfg.Info.CommitDate,
+	}
 
 	// Create an instance of our handler which satisfies the generated interface
-	apiHandler := apihandler.NewAPIHandler(appLogic)
+	apiHandler := apihandler.NewAPIHandler(appLogic, versionInfo, logger)
 
 	// ===== Router =====
-	r := router.New(versionHandler, apiHandler, cfg.Router)
+	r := router.New(apiHandler, cfg.Router)
 
 	// ===== Server =====
 	srv := server.NewServer(cfg.Server, r)
 
-	// let server serve with the given router
+	srvErr := make(chan error, 1)
 	go func() {
-		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			zap.L().Fatal("server error", zap.Error(err))
+		srvErr <- srv.ListenAndServe()
+		logger.Info("server started", zap.String("address", cfg.Server.Address))
+	}()
+
+	// Wait for interruption.
+	select {
+	case err = <-srvErr:
+		// Error when starting HTTP server.
+		logger.Fatal("server error", zap.Error(err))
+		return err
+	case <-ctx.Done():
+		// Wait for first CTRL+C.
+		// Stop receiving signal notifications as soon as possible.
+		err := srv.Shutdown(context.Background())
+		if err != nil {
+			logger.Fatal("server shutdown error", zap.Error(err))
+			return err
 		}
-	}()
-
-	zap.L().Info("server started", zap.String("address", cfg.Server.Address))
-
-	<-shutdownChannel
-
-	zap.L().Info("shutting down server")
-
-	ctxShutDown, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer func() {
-		cancel()
-	}()
-
-	return srv.Shutdown(ctxShutDown)
+		stop()
+	}
+	return nil
 }

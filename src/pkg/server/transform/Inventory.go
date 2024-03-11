@@ -12,13 +12,13 @@ func DTOInventoryFromDomain(i *domain.Inventory) server.Inventory {
 	}
 
 	return server.Inventory{
-		Id:        i.ID,
-		MaxWeight: i.MaxWeight,
-		Name:      i.Name,
-		UserId:    i.UserID,
-		Volume:    server.Volume{
-			SizeH: i.Width,
-			SizeV: i.Height,
+		Id:        i.InventoryMeta.ID,
+		MaxWeight: i.InventoryMeta.MaxWeight,
+		Name:      i.InventoryMeta.Name,
+		UserId:    i.InventoryMeta.UserID,
+		Volume: server.Volume{
+			SizeH: i.InventoryMeta.Width,
+			SizeV: i.InventoryMeta.Height,
 		},
 		Items: serverInventoryItems,
 	}
@@ -30,13 +30,17 @@ func DomainInventoryFromDTO(i *server.Inventory) domain.Inventory {
 		domainInventoryItems[j] = InventoryItemDomainFromDTO(&invItem)
 	}
 
-	return domain.Inventory{
+	inventoryMeta := domain.InventoryMeta{
 		ID:        i.Id,
 		MaxWeight: i.MaxWeight,
 		Name:      i.Name,
 		UserID:    i.UserId,
 		Width:     i.Volume.SizeH,
 		Height:    i.Volume.SizeV,
-		Items:     domainInventoryItems,
+	}
+
+	return domain.Inventory{
+		InventoryMeta: inventoryMeta,
+		Items:         domainInventoryItems,
 	}
 }
