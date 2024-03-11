@@ -3,6 +3,7 @@ package telemetry
 import (
 	"context"
 	"errors"
+	"os"
 	"time"
 
 	"go.opentelemetry.io/otel"
@@ -11,7 +12,14 @@ import (
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/metric"
 	"go.opentelemetry.io/otel/sdk/trace"
+	"go.uber.org/zap"
 )
+
+type noopWriter struct{}
+
+func (n *noopWriter) Write(p []byte) (int, error) {
+	return len(p), nil
+}
 
 // SetupOTelSDK bootstraps the OpenTelemetry pipeline.
 // If it does not return an error, make sure to call shutdown for proper cleanup.
@@ -46,6 +54,7 @@ func SetupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, er
 		return
 	}
 	shutdownFuncs = append(shutdownFuncs, tracerProvider.Shutdown)
+
 	otel.SetTracerProvider(tracerProvider)
 
 	// Set up meter provider.
@@ -68,16 +77,30 @@ func newPropagator() propagation.TextMapPropagator {
 }
 
 func newTraceProvider() (*trace.TracerProvider, error) {
+	// default stdout exporter
 	traceExporter, err := stdouttrace.New(
 		stdouttrace.WithPrettyPrint())
 	if err != nil {
 		return nil, err
 	}
 
+	// no exporter if DISABLE_OTEL_STDOUT
+	disable, ok := os.LookupEnv("DISABLE_OTEL_STDOUT")
+	if ok && disable == "true" {
+		zap.L().Info("OpenTelemetry stdout exporter is disabled")
+
+		noopwriter := &noopWriter{}
+
+		traceExporter, err = stdouttrace.New(stdouttrace.WithWriter(noopwriter))
+		if err != nil {
+			zap.L().Warn("Failed to create noop trace exporter: ", zap.Error(err))
+			return nil, err
+		}
+	}
+
 	traceProvider := trace.NewTracerProvider(
 		trace.WithBatcher(traceExporter,
-			// Default is 5s. Set to 1s for demonstrative purposes.
-			trace.WithBatchTimeout(time.Second)),
+			trace.WithBatchTimeout(5*time.Second)),
 	)
 	return traceProvider, nil
 }
@@ -90,8 +113,7 @@ func newMeterProvider() (*metric.MeterProvider, error) {
 
 	meterProvider := metric.NewMeterProvider(
 		metric.WithReader(metric.NewPeriodicReader(metricExporter,
-			// Default is 1m. Set to 3s for demonstrative purposes.
-			metric.WithInterval(3*time.Second))),
+			metric.WithInterval(1*time.Minute))),
 	)
 	return meterProvider, nil
 }

@@ -19,6 +19,9 @@ import (
 // Run runs the linuxcode/inventory_managerlication
 // nolint: funlen
 func Run(cfg *Config, shutdownChannel chan os.Signal) error {
+	// ===== Logger =====
+	logger := logging.SetLogger()
+
 	// ===== OpenTelemetry =====
 	// Handle SIGINT (CTRL+C) gracefully.
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
@@ -33,9 +36,6 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 	defer func() {
 		err = errors.Join(err, otelShutdown(context.Background()))
 	}()
-
-	// ===== Logger =====
-	logger := logging.SetLogger()
 
 	// ===== Database =====
 	db, err := repo.CreateDB(cfg.Database)
