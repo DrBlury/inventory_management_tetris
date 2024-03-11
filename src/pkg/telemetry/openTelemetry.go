@@ -15,12 +15,6 @@ import (
 	"go.uber.org/zap"
 )
 
-type noopWriter struct{}
-
-func (n *noopWriter) Write(p []byte) (int, error) {
-	return len(p), nil
-}
-
 // SetupOTelSDK bootstraps the OpenTelemetry pipeline.
 // If it does not return an error, make sure to call shutdown for proper cleanup.
 func SetupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, err error) {
@@ -48,24 +42,60 @@ func SetupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, er
 	otel.SetTextMapPropagator(prop)
 
 	// Set up trace provider.
-	tracerProvider, err := newTraceProvider()
+	osVar, ok := os.LookupEnv("OTEL_TRACER_PROVIDER")
+	if !ok {
+		zap.L().Info("OTEL_TRACER_PROVIDER environment variable not set, using default console exporter")
+		osVar = "console"
+	}
+	// set default to console
+	tracerProvider, err := newConsoleTraceProvider()
 	if err != nil {
 		handleErr(err)
 		return
 	}
+	// Override with none if set
+	switch osVar {
+	case "console":
+		zap.L().Info("OTEL_TRACER_PROVIDER environment variable set to console, using default console exporter")
+	case "otlp":
+		// OTLP exporter
+		// TODO: Add OTLP exporter
+		zap.L().Info("OTEL_TRACER_PROVIDER environment variable set to otlp")
+	// Add other exporters here
+	default:
+		zap.L().Info("OTEL_TRACER_PROVIDER environment variable set to unknown value, using default console exporter")
+	}
+
 	shutdownFuncs = append(shutdownFuncs, tracerProvider.Shutdown)
 
 	otel.SetTracerProvider(tracerProvider)
 
 	// Set up meter provider.
-	meterProvider, err := newMeterProvider()
+	osVarMeter, ok := os.LookupEnv("OTEL_METER_PROVIDER")
+	if !ok {
+		zap.L().Info("OTEL_METER_PROVIDER environment variable not set, using default console exporter")
+		osVarMeter = "console"
+	}
+	meterProvider, err := newConsoleMeterProvider()
 	if err != nil {
 		handleErr(err)
 		return
 	}
+	// Override with none if set
+	switch osVarMeter {
+	case "console":
+		zap.L().Info("OTEL_METER_PROVIDER environment variable set to console, using default console exporter")
+	case "otlp":
+		// OTLP exporter
+		// TODO: Add OTLP exporter
+		zap.L().Info("OTEL_METER_PROVIDER environment variable set to otlp")
+	// Add other exporters here
+	default:
+		zap.L().Info("OTEL_METER_PROVIDER environment variable set to unknown value, using default console exporter")
+	}
+
 	shutdownFuncs = append(shutdownFuncs, meterProvider.Shutdown)
 	otel.SetMeterProvider(meterProvider)
-
 	return
 }
 
@@ -76,26 +106,11 @@ func newPropagator() propagation.TextMapPropagator {
 	)
 }
 
-func newTraceProvider() (*trace.TracerProvider, error) {
-	// default stdout exporter
+func newConsoleTraceProvider() (*trace.TracerProvider, error) {
 	traceExporter, err := stdouttrace.New(
 		stdouttrace.WithPrettyPrint())
 	if err != nil {
 		return nil, err
-	}
-
-	// no exporter if DISABLE_OTEL_STDOUT
-	disable, ok := os.LookupEnv("DISABLE_OTEL_STDOUT")
-	if ok && disable == "true" {
-		zap.L().Info("OpenTelemetry stdout exporter is disabled")
-
-		noopwriter := &noopWriter{}
-
-		traceExporter, err = stdouttrace.New(stdouttrace.WithWriter(noopwriter))
-		if err != nil {
-			zap.L().Warn("Failed to create noop trace exporter: ", zap.Error(err))
-			return nil, err
-		}
 	}
 
 	traceProvider := trace.NewTracerProvider(
@@ -105,7 +120,7 @@ func newTraceProvider() (*trace.TracerProvider, error) {
 	return traceProvider, nil
 }
 
-func newMeterProvider() (*metric.MeterProvider, error) {
+func newConsoleMeterProvider() (*metric.MeterProvider, error) {
 	metricExporter, err := stdoutmetric.New()
 	if err != nil {
 		return nil, err
@@ -113,7 +128,7 @@ func newMeterProvider() (*metric.MeterProvider, error) {
 
 	meterProvider := metric.NewMeterProvider(
 		metric.WithReader(metric.NewPeriodicReader(metricExporter,
-			metric.WithInterval(1*time.Minute))),
+			metric.WithInterval(5*time.Minute))),
 	)
 	return meterProvider, nil
 }
