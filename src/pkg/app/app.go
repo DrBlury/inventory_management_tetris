@@ -32,6 +32,7 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 	if err != nil {
 		return err
 	}
+	logger.Info("OpenTelemetry SDK initialized")
 	// Handle shutdown properly so nothing leaks.
 	defer func() {
 		err = errors.Join(err, otelShutdown(context.Background()))
@@ -43,9 +44,11 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 		logger.Error("error connecting to database", zap.Error(err))
 		return err
 	}
+	logger.Info("database connection established")
 
 	// ===== App Logic =====
 	appLogic := domain.NewAppLogic(db, logger)
+	logger.Info("app logic initialized")
 
 	// ===== Handlers =====
 	versionInfo := apihandler.VersionInfo{
@@ -58,17 +61,19 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 
 	// Create an instance of our handler which satisfies the generated interface
 	apiHandler := apihandler.NewAPIHandler(appLogic, versionInfo, logger)
-
+	logger.Info("api handler initialized")
 	// ===== Router =====
 	r := router.New(apiHandler, cfg.Router)
+	logger.Info("router initialized")
 
 	// ===== Server =====
 	srv := server.NewServer(cfg.Server, r)
+	logger.Info("server initialized")
 
 	srvErr := make(chan error, 1)
 	go func() {
-		srvErr <- srv.ListenAndServe()
 		logger.Info("server started", zap.String("address", cfg.Server.Address))
+		srvErr <- srv.ListenAndServe()
 	}()
 
 	// Wait for interruption.
