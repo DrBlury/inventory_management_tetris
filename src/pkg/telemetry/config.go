@@ -1,7 +1,7 @@
 package telemetry
 
 type Config struct {
-	DisableOTel    bool
+	EnableOTel     bool
 	MeterProvider  string
 	TracerProvider string
 }

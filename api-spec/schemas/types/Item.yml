@@ -1,38 +1,38 @@
 ---
 type: object
 properties:
-    id:
-        type: integer
-    variant:
-        type: string
-    name:
-        type: string
-    description:
-        type: string
-    buy_value:
-        type: integer
-    sell_value:
-        type: integer
-    weight:
-        type: integer
-    durability:
-        type: integer
-    max_stack:
-        type: integer
-    shape:
-        $ref: './ItemShape.yml'
-    type:
-        $ref: './ItemType.yml'
+  id:
+    type: integer
+  variant:
+    type: string
+  name:
+    type: string
+  description:
+    type: string
+  buy_value:
+    type: integer
+  sell_value:
+    type: integer
+  weight:
+    type: integer
+  durability:
+    type: integer
+  max_stack:
+    type: integer
+  shape:
+    $ref: './ItemShape.yml'
+  type:
+    $ref: './ItemType.yml'
 
 required:
-    - id
-    - variant
-    - name
-    - description
-    - buy_value
-    - sell_value
-    - weight
-    - durability
-    - max_stack
-    - shape
-    - type
+  - id
+  - variant
+  - name
+  - description
+  - buy_value
+  - sell_value
+  - weight
+  - durability
+  - max_stack
+  - shape
+  - type

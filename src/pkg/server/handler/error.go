@@ -15,9 +15,9 @@ func HandleInternalServerError(w http.ResponseWriter, r *http.Request, err error
 
 	render.Status(r, http.StatusInternalServerError)
 	render.Respond(w, r, &server.Error{
-		ErrorId: uniqueErrID,
-		Code: 500,
-		Error: "Internal Server Error",
+		ErrorId:   uniqueErrID,
+		Code:      500,
+		Error:     "Internal Server Error",
 		ErrorType: server.InternalServerError,
 		Timestamp: time.Now(),
 	})
@@ -29,9 +29,9 @@ func HandleBadRequestError(w http.ResponseWriter, r *http.Request, err error, lo
 
 	render.Status(r, http.StatusBadRequest)
 	render.Respond(w, r, &server.Error{
-		ErrorId: uniqueErrID,
-		Code: 400,
-		Error: err.Error(),
+		ErrorId:   uniqueErrID,
+		Code:      400,
+		Error:     err.Error(),
 		ErrorType: server.BadRequest,
 		Timestamp: time.Now(),
 	})

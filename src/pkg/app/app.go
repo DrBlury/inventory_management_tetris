@@ -27,9 +27,8 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 	logger := logging.SetLogger()
 
 	// ===== OpenTelemetry =====
-	if cfg.OTelConfig.DisableOTel {
-		logger.Info("OpenTelemetry is disabled")
-	} else {
+	if cfg.OTelConfig.EnableOTel {
+		logger.Info("OpenTelemetry is enabled")
 		otelService := telemetry.NewOtelService(cfg.OTelConfig, ctx)
 		otelShutdown, err := otelService.SetupOTelSDK(ctx)
 		if err != nil {
@@ -39,6 +38,7 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 		defer func() {
 			err = errors.Join(err, otelShutdown(context.Background()))
 		}()
+		logger.Info("OpenTelemetry SDK initialized")
 	}
 	// ===== Database =====
 	db, err := repo.CreateDB(cfg.Database)
@@ -62,7 +62,7 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 
 	srvErr := make(chan error, 1)
 	go func() {
-		logger.Info("server started", zap.String("address", cfg.Server.Address))
+		logger.Info("server started, address: ", cfg.Server.Address)
 		srvErr <- srv.ListenAndServe()
 	}()
 

@@ -4,9 +4,9 @@ import "fmt"
 
 type Shape struct {
 	RawShape string
-	Width  int
-	Height int
-	Matrix [][]int
+	Width    int
+	Height   int
+	Matrix   [][]int
 }
 
 func (s *Shape) parseShape(rawShape string, width int, height int) {

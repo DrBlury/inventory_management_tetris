@@ -69,7 +69,7 @@ func LoadConfig(
 	}
 
 	otelConfig := &telemetry.Config{
-		DisableOTel:    viper.GetBool("OTEL_DISABLED"),
+		EnableOTel:     viper.GetBool("OTEL_ENABLED"),
 		MeterProvider:  viper.GetString("OTEL_METER_PROVIDER"),
 		TracerProvider: viper.GetString("OTEL_TRACER_PROVIDER"),
 	}
