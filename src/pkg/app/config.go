@@ -1,28 +1,22 @@
 package app
 
 import (
+	"linuxcode/inventory_manager/pkg/domain"
 	"linuxcode/inventory_manager/pkg/repo"
 	"linuxcode/inventory_manager/pkg/server"
 	"linuxcode/inventory_manager/pkg/server/router"
+	"linuxcode/inventory_manager/pkg/telemetry"
 	"time"
 
 	"github.com/spf13/viper"
 )
 
 type Config struct {
-	Info     *Info
-	Router   *router.Config
-	Server   *server.Config
-	Database *repo.Config
-}
-
-// Info is configurable information usually set at build time with ldflags.
-type Info struct {
-	Version     string
-	BuildDate   string
-	Description string
-	CommitHash  string
-	CommitDate  string
+	Info       *domain.Info
+	Router     *router.Config
+	Server     *server.Config
+	Database   *repo.Config
+	OTelConfig *telemetry.Config
 }
 
 func SetDefaults() {
@@ -43,7 +37,7 @@ func LoadConfig(
 	SetDefaults()
 	viper.AutomaticEnv()
 
-	infoConfig := &Info{
+	infoConfig := &domain.Info{
 		Version:     version,
 		BuildDate:   buildDate,
 		Description: description,
@@ -74,10 +68,17 @@ func LoadConfig(
 		Address: "0.0.0.0:" + viper.GetString("APP_SERVER_PORT"),
 	}
 
+	otelConfig := &telemetry.Config{
+		DisableOTel:    viper.GetBool("OTEL_DISABLED"),
+		MeterProvider:  viper.GetString("OTEL_METER_PROVIDER"),
+		TracerProvider: viper.GetString("OTEL_TRACER_PROVIDER"),
+	}
+
 	return &Config{
-		Info:     infoConfig,
-		Router:   routerConfig,
-		Server:   serverConfig,
-		Database: databaseConfig,
+		Info:       infoConfig,
+		Router:     routerConfig,
+		Server:     serverConfig,
+		Database:   databaseConfig,
+		OTelConfig: otelConfig,
 	}, nil
 }

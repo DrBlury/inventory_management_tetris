@@ -19,25 +19,27 @@ import (
 // Run runs the linuxcode/inventory_managerlication
 // nolint: funlen
 func Run(cfg *Config, shutdownChannel chan os.Signal) error {
-	// ===== Logger =====
-	logger := logging.SetLogger()
-
-	// ===== OpenTelemetry =====
 	// Handle SIGINT (CTRL+C) gracefully.
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 
-	// Set up OpenTelemetry.
-	otelShutdown, err := telemetry.SetupOTelSDK(ctx)
-	if err != nil {
-		return err
-	}
-	logger.Info("OpenTelemetry SDK initialized")
-	// Handle shutdown properly so nothing leaks.
-	defer func() {
-		err = errors.Join(err, otelShutdown(context.Background()))
-	}()
+	// ===== Logger =====
+	logger := logging.SetLogger()
 
+	// ===== OpenTelemetry =====
+	if cfg.OTelConfig.DisableOTel {
+		logger.Info("OpenTelemetry is disabled")
+	} else {
+		otelService := telemetry.NewOtelService(cfg.OTelConfig, ctx)
+		otelShutdown, err := otelService.SetupOTelSDK(ctx)
+		if err != nil {
+			return err
+		}
+		// Handle shutdown properly so nothing leaks.
+		defer func() {
+			err = errors.Join(err, otelShutdown(context.Background()))
+		}()
+	}
 	// ===== Database =====
 	db, err := repo.CreateDB(cfg.Database)
 	if err != nil {
@@ -48,27 +50,15 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 
 	// ===== App Logic =====
 	appLogic := domain.NewAppLogic(db, logger)
-	logger.Info("app logic initialized")
 
 	// ===== Handlers =====
-	versionInfo := apihandler.VersionInfo{
-		Version:     cfg.Info.Version,
-		BuildDate:   cfg.Info.BuildDate,
-		Description: cfg.Info.Description,
-		CommitHash:  cfg.Info.CommitHash,
-		CommitDate:  cfg.Info.CommitDate,
-	}
+	apiHandler := apihandler.NewAPIHandler(appLogic, cfg.Info, logger)
 
-	// Create an instance of our handler which satisfies the generated interface
-	apiHandler := apihandler.NewAPIHandler(appLogic, versionInfo, logger)
-	logger.Info("api handler initialized")
 	// ===== Router =====
 	r := router.New(apiHandler, cfg.Router)
-	logger.Info("router initialized")
 
 	// ===== Server =====
 	srv := server.NewServer(cfg.Server, r)
-	logger.Info("server initialized")
 
 	srvErr := make(chan error, 1)
 	go func() {

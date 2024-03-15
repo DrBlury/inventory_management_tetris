@@ -3,7 +3,6 @@ package telemetry
 import (
 	"context"
 	"errors"
-	"os"
 	"time"
 
 	"go.opentelemetry.io/otel"
@@ -15,9 +14,23 @@ import (
 	"go.uber.org/zap"
 )
 
+type OtelService struct {
+	cfg *Config
+	ctx context.Context
+}
+
+func NewOtelService(cfg *Config, ctx context.Context) *OtelService {
+	otelService := OtelService{
+		cfg: cfg,
+		ctx: ctx,
+	}
+
+	return &otelService
+}
+
 // SetupOTelSDK bootstraps the OpenTelemetry pipeline.
 // If it does not return an error, make sure to call shutdown for proper cleanup.
-func SetupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, err error) {
+func (o *OtelService) SetupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, err error) {
 	var shutdownFuncs []func(context.Context) error
 
 	// shutdown calls cleanup functions registered via shutdownFuncs.
@@ -41,12 +54,6 @@ func SetupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, er
 	prop := newPropagator()
 	otel.SetTextMapPropagator(prop)
 
-	// Set up trace provider.
-	osVar, ok := os.LookupEnv("OTEL_TRACER_PROVIDER")
-	if !ok {
-		zap.L().Info("OTEL_TRACER_PROVIDER environment variable not set, using default console exporter")
-		osVar = "console"
-	}
 	// set default to console
 	tracerProvider, err := newConsoleTraceProvider()
 	if err != nil {
@@ -54,7 +61,7 @@ func SetupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, er
 		return
 	}
 	// Override with none if set
-	switch osVar {
+	switch o.cfg.TracerProvider {
 	case "console":
 		zap.L().Info("OTEL_TRACER_PROVIDER environment variable set to console, using default console exporter")
 	case "otlp":
@@ -70,19 +77,14 @@ func SetupOTelSDK(ctx context.Context) (shutdown func(context.Context) error, er
 
 	otel.SetTracerProvider(tracerProvider)
 
-	// Set up meter provider.
-	osVarMeter, ok := os.LookupEnv("OTEL_METER_PROVIDER")
-	if !ok {
-		zap.L().Info("OTEL_METER_PROVIDER environment variable not set, using default console exporter")
-		osVarMeter = "console"
-	}
+	// set default to console
 	meterProvider, err := newConsoleMeterProvider()
 	if err != nil {
 		handleErr(err)
 		return
 	}
 	// Override with none if set
-	switch osVarMeter {
+	switch o.cfg.MeterProvider {
 	case "console":
 		zap.L().Info("OTEL_METER_PROVIDER environment variable set to console, using default console exporter")
 	case "otlp":

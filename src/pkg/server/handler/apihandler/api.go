@@ -15,14 +15,14 @@ import (
 
 type APIHandler struct {
 	AppLogic domain.AppLogic
-	version  VersionInfo
+	Info     *domain.Info
 	log      *zap.SugaredLogger
 }
 
-func NewAPIHandler(appLogic domain.AppLogic, versionInfo VersionInfo, logger *zap.SugaredLogger) *APIHandler {
+func NewAPIHandler(appLogic domain.AppLogic, info *domain.Info, logger *zap.SugaredLogger) *APIHandler {
 	return &APIHandler{
 		AppLogic: appLogic,
-		version:  versionInfo,
+		Info:     info,
 		log:      logger,
 	}
 }
@@ -352,5 +352,5 @@ func (a APIHandler) GetStatus(w http.ResponseWriter, r *http.Request) {
 // (GET /info/version)
 func (a APIHandler) GetVersion(w http.ResponseWriter, r *http.Request) {
 	render.Status(r, http.StatusOK)
-	render.Respond(w, r, a.version)
+	render.Respond(w, r, a.Info)
 }

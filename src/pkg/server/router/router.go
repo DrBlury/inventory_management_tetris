@@ -3,7 +3,7 @@ package router
 import (
 	"fmt"
 	server "linuxcode/inventory_manager/pkg/server/generated"
-	apihandler "linuxcode/inventory_manager/pkg/server/handler/apihandler"
+	"linuxcode/inventory_manager/pkg/server/handler/apihandler"
 	"os"
 
 	"github.com/go-chi/chi/v5"
