@@ -1,13 +1,7 @@
 ---
 version: 3
 
-vars:
-  DOCKER_URL: 'your-docker-url'
-  DOCKER_USER: 'your-docker-user'
-  DOCKER_PASS: 'your-docker-password'
-  IMAGE: 'example'
-  TAG: 'latest'
-  CURRENT_DIR: '.'
+dotenv: ['.env']
 
 # To run this taskfile, install taskfile using
 # go install github.com/go-task/task/v3/cmd/task@latest
@@ -32,7 +26,7 @@ tasks:
     desc: 'Lint the project using golangci-lint'
     cmds:
       - echo "linting the project"
-      - docker run --rm -v "{{.CURRENT_DIR }}/src:/src" golangci/golangci-lint:latest /bin/sh -c "cd /src
+      - docker run --rm -v "./src:/src" golangci/golangci-lint:latest /bin/sh -c "cd /src
       - golangci-lint run"
 
   build-push:
@@ -54,7 +48,7 @@ tasks:
     desc: 'Generate the sqlc files to create the database repo'
     cmds:
       - echo "Generating the sqlc"
-      - docker run --rm -v {{ .CURRENT_DIR }}/database:/src -w /src sqlc/sqlc generate
+      - docker run --rm -v ./database:/src -w /src sqlc/sqlc generate
       - rm -rf ./src/pkg/repo/generated
       - mv ./database/generated ./src/pkg/repo
 
@@ -62,13 +56,13 @@ tasks:
     desc: 'Lint the api-spec using redocly'
     cmds:
       - echo "Linting the api-spec"
-      - docker run --rm -v {{ .CURRENT_DIR }}/api-spec/:/spec redocly/cli lint --generate-ignore-file api.yml
+      - docker run --rm -v ./api-spec/:/spec redocly/cli lint --generate-ignore-file api.yml
 
   bundle-api:
     desc: 'Bundle the api-spec using redocly'
     cmds:
       - echo "Bundling the api-spec using redocly/redoc"
-      - docker run --rm -v {{ .CURRENT_DIR }}/api-spec/:/spec redocly/cli bundle api.yml -o bundle.yml
+      - docker run --rm -v ./api-spec/:/spec redocly/cli bundle api.yml -o bundle.yml
 
   generate-api-chi:
     desc: 'Generate the api for chi server using oapi-codegen'
