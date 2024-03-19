@@ -1,9 +1,9 @@
 ---
 # Enums
 item_type:
-  $ref: './enums/ItemType.yml'
+  $ref: './enum/ItemType.yml'
 status:
-  $ref: './enums/Status.yml'
+  $ref: './enum/Status.yml'
 
 # Schemas
 item:

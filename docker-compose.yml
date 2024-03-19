@@ -7,19 +7,8 @@ services:
       dockerfile: ./build/dockerfiles/app.dockerfile
     ports:
       - '8080:8080'
-    environment:
-      TZ: Europe/Berlin
-      APP_DATABASE_HOST: db
-      APP_DATABASE_PORT: 5432
-      APP_DATABASE_NAME: app_db
-      APP_DATABASE_USER: app_user
-      APP_DATABASE_PASSWORD: app_password
-      APP_SERVER_PORT: 8080
-      LOGGER: console
-      OTEL_RESOURCE_ATTRIBUTES: service.name=inventory-manager
-      OTEL_TRACER_PROVIDER: console
-      OTEL_METER_PROVIDER: console
-      OTEL_ENABLED: false
+    env_file:
+      - .env
     depends_on:
       - db
     restart: always
@@ -36,9 +25,9 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_DB: app_db
-      POSTGRES_USER: app_user
-      POSTGRES_PASSWORD: app_password
+      POSTGRES_DB: ${APP_DATABASE_NAME}
+      POSTGRES_USER: ${APP_DATABASE_USER}
+      POSTGRES_PASSWORD: ${APP_DATABASE_PASSWORD}
     ports:
       - '5432:5432'
 
@@ -48,11 +37,7 @@ services:
       context: .
       dockerfile: ./build/dockerfiles/migrate.dockerfile
     restart: on-failure
-    environment:
-      APP_DATABASE_HOST: db
-      APP_DATABASE_PORT: 5432
-      APP_DATABASE_NAME: app_db
-      APP_DATABASE_USER: app_user
-      APP_DATABASE_PASSWORD: app_password
+    env_file:
+      - .env
     depends_on:
       - db

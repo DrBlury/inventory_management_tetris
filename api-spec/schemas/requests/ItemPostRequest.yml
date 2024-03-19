@@ -18,7 +18,7 @@ properties:
   max_stack:
     type: integer
   type:
-    $ref: '../types/ItemType.yml'
+    $ref: '../enum/ItemType.yml'
   shape:
     $ref: '../types/ItemShape.yml'
 

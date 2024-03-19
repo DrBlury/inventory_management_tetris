@@ -4,7 +4,7 @@
 package server
 
 import (
-    "bytes"
+	"bytes"
 	"compress/gzip"
 	"encoding/base64"
 	"fmt"

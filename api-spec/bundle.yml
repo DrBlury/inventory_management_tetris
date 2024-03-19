@@ -835,14 +835,16 @@ components:
         - UNHEALTHY
         - UNKNOWN
       description: The status of the API
+    item_type:
+      $ref: '#/components/schemas/ItemType'
+    status:
+      $ref: '#/components/schemas/Status'
     item:
       $ref: '#/components/schemas/Item'
     inventory_item:
       $ref: '#/components/schemas/InventoryItem'
     position:
       $ref: '#/components/schemas/Position'
-    item_type:
-      $ref: '#/components/schemas/ItemType'
     item_shape:
       $ref: '#/components/schemas/ItemShape'
     inventory:
@@ -851,8 +853,6 @@ components:
       $ref: '#/components/schemas/User'
     version:
       $ref: '#/components/schemas/Version'
-    status:
-      $ref: '#/components/schemas/Status'
     inventory_post_request:
       $ref: '#/components/schemas/InventoryPostRequest'
     add_item_request:

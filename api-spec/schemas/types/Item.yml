@@ -22,7 +22,7 @@ properties:
   shape:
     $ref: './ItemShape.yml'
   type:
-    $ref: './ItemType.yml'
+    $ref: '../enum/ItemType.yml'
 
 required:
   - id

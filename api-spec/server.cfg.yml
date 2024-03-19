@@ -1,5 +1,5 @@
 package: server
-output: ./server.gen.go
+output: ./src/pkg/server/generated/api.gen.go
 generate:
   embedded-spec: true
   strict-server: false
