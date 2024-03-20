@@ -62,7 +62,8 @@ tasks:
     desc: 'Generate the sql files to create the database schema'
     cmds:
       - echo "Generating the sql"
-      - npx -p @dbml/cli dbml2sql ./database/schema.dbml -o ./database/schema.sql
+      - docker run --rm -v ./database:/app gitea.linuxcode.net/linuxcode/dbml-cli dbml2sql ./schema.dbml -o ./schema.sql
+      - task format
     silent: true
 
   gen-sqlc:
@@ -116,9 +117,6 @@ tasks:
       - echo "Installing go based tools"
       - go install github.com/deepmap/oapi-codegen/v2/cmd/oapi-codegen@latest
 
-      - echo "Installing npx globally"
-      - npm i -g -f npx
-
       - echo "Installing Prettier & plugins into the project folder"
       - echo "Prettier recommends against installing plugins globally"
       - npm i -D prettier
@@ -126,8 +124,43 @@ tasks:
       - npm i -D prettier-plugin-go-template
     silent: true
 
-  format:
-    cmds:
-      - prettier --write "**/*.{yaml,yml,json,md,env,sql,go.templ}"
+  format-all:
     desc: Format all project files
-  silent: true
+    cmds:
+      - echo "Formatting all files"
+      - task format-md
+      - task format-sql
+      - task format-yml
+      - task format-json
+      # - task format-go-templ # Removed as no go.tmpl files are present
+    silent: true
+
+  format-go-templ:
+    desc: Format all go template files
+    cmds:
+      - prettier --write "**/*.tmpl"
+    silent: true
+
+  format-md:
+    desc: Format all markdown files
+    cmds:
+      - prettier --write "**/*.md"
+    silent: true
+
+  format-sql:
+    desc: Format all sql files
+    cmds:
+      - prettier --write "**/*.sql"
+    silent: true
+
+  format-yml:
+    desc: Format all yml files
+    cmds:
+      - prettier --write "**/*.{yml,yaml}"
+    silent: true
+
+  format-json:
+    desc: Format all json files
+    cmds:
+      - prettier --write "**/*.json"
+    silent: true
