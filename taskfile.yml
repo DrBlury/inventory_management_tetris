@@ -10,24 +10,43 @@ dotenv: ['.env']
 # task <task-name>
 
 tasks:
-  generate-env-file:
+  quickstart:
+    desc: 'Quickstart the project for running'
+    cmds:
+      - task gen-env-file
+      - echo "Please fill the .env file with the required values"
+      - echo "Run 'task start' to start the application"
+    silent: true
+
+  quickstart-dev:
+    desc: 'Quickstart the project for development'
+    cmds:
+      - echo "Installing local tools for development..."
+      - task install-tools
+      - task gen-env-file
+      - echo "Please fill the .env file with the required values"
+    silent: true
+
+  gen-env-file:
     desc: 'Generate the .env file'
     cmds:
       - echo "Generating the .env file"
       - cp .env.example .env
+    silent: true
 
   start:
     desc: 'Run the docker-compose file'
     cmds:
       - echo "Starting the application with docker."
       - docker-compose up --build
+    silent: true
 
   lint:
     desc: 'Lint the project using golangci-lint'
     cmds:
       - echo "linting the project"
-      - docker run --rm -v "./src:/src" golangci/golangci-lint:latest /bin/sh -c "cd /src
-      - golangci-lint run"
+      - docker run --rm -v "./src:/src" golangci/golangci-lint:latest /bin/sh -c "cd /src golangci-lint run"
+    silent: true
 
   build-push:
     desc: 'Build and push the docker image to the docker repo'
@@ -37,12 +56,14 @@ tasks:
       - docker build . -t ${DOCKER_URL}/${IMAGE}:${TAG}
       - docker push ${DOCKER_URL}/${IMAGE}:${TAG}
       - docker logout
+    silent: true
 
   gen-sql:
     desc: 'Generate the sql files to create the database schema'
     cmds:
       - echo "Generating the sql"
       - npx -p @dbml/cli dbml2sql ./database/schema.dbml -o ./database/schema.sql
+    silent: true
 
   gen-sqlc:
     desc: 'Generate the sqlc files to create the database repo'
@@ -51,47 +72,62 @@ tasks:
       - docker run --rm -v ./database:/src -w /src sqlc/sqlc generate
       - rm -rf ./src/pkg/repo/generated
       - mv ./database/generated ./src/pkg/repo
+    silent: true
 
   lint-api:
     desc: 'Lint the api-spec using redocly'
     cmds:
       - echo "Linting the api-spec"
       - docker run --rm -v ./api-spec/:/spec redocly/cli lint --generate-ignore-file api.yml
+    silent: true
 
   bundle-api:
     desc: 'Bundle the api-spec using redocly'
     cmds:
       - echo "Bundling the api-spec using redocly/redoc"
       - docker run --rm -v ./api-spec/:/spec redocly/cli bundle api.yml -o bundle.yml
+    silent: true
 
-  generate-api-chi:
+  gen-api-chi:
     desc: 'Generate the api wrapper interfaces for chi server using oapi-codegen'
     cmds:
       - echo "Generate the api wrapper interfaces for chi server using oapi-codegen"
       - oapi-codegen --config ./api-spec/server.cfg.yml ./api-spec/bundle.yml > ./src/pkg/server/generated/api.gen.go
+    silent: true
 
-  generate-api-types:
+  gen-api-types:
     desc: 'Generate the types for the api using oapi-codegen'
     cmds:
       - echo "Generating the types for the api using oapi-codegen"
       - oapi-codegen -generate types -package server ./api-spec/bundle.yml > ./src/pkg/server/generated/types.gen.go
+    silent: true
 
-  generate-api:
+  gen-api:
     desc: 'Generate the api for the server using oapi-codegen'
     cmds:
       - task bundle-api
       - task generate-api-types
       - task generate-api-chi
+    silent: true
 
-  install-local-tools:
-    desc: 'Install the local tools'
+  install-tools:
+    desc: 'Install the local tools globally'
     cmds:
-      - echo "Installing the dependencies"
+      - echo "Installing go based tools"
       - go install github.com/deepmap/oapi-codegen/v2/cmd/oapi-codegen@latest
-      - echo "Installing prettier and prettier plugins"
-      - pnpm i -D prettier prettier-plugin-sql
+
+      - echo "Installing npx globally"
+      - npm i -g -f npx
+
+      - echo "Installing Prettier & plugins into the project folder"
+      - echo "Prettier recommends against installing plugins globally"
+      - npm i -D prettier
+      - npm i -D prettier-plugin-sql
+      - npm i -D prettier-plugin-go-template
+    silent: true
 
   format:
     cmds:
-      - npx prettier --write "**/*.{yaml,yml,json,md,env,sql}"
+      - prettier --write "**/*.{yaml,yml,json,md,env,sql,go.templ}"
     desc: Format all project files
+  silent: true

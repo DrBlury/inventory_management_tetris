@@ -1,9 +1,12 @@
 {
+  "plugins": ["prettier-plugin-sql", "prettier-plugin-go-template"],
   "tabWidth": 2,
   "useTabs": false,
   "printWidth": 80,
   "singleQuote": true,
   "trailingComma": "all",
   "bracketSpacing": true,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "language": "postgresql",
+  "goTemplateBracketSpacing": true
 }
