@@ -16,10 +16,10 @@ tasks:
       - echo "Generating the .env file"
       - cp .env.example .env
 
-  run-local-build-docker:
+  start:
     desc: 'Run the docker-compose file'
     cmds:
-      - echo "Starting the linuxcode/inventory_managerlication with docker."
+      - echo "Starting the application with docker."
       - docker-compose up --build
 
   lint:
@@ -65,9 +65,9 @@ tasks:
       - docker run --rm -v ./api-spec/:/spec redocly/cli bundle api.yml -o bundle.yml
 
   generate-api-chi:
-    desc: 'Generate the api for chi server using oapi-codegen'
+    desc: 'Generate the api wrapper interfaces for chi server using oapi-codegen'
     cmds:
-      - echo "Generating the api for chi server using oapi-codegen"
+      - echo "Generate the api wrapper interfaces for chi server using oapi-codegen"
       - oapi-codegen --config ./api-spec/server.cfg.yml ./api-spec/bundle.yml > ./src/pkg/server/generated/api.gen.go
 
   generate-api-types:
@@ -77,15 +77,21 @@ tasks:
       - oapi-codegen -generate types -package server ./api-spec/bundle.yml > ./src/pkg/server/generated/types.gen.go
 
   generate-api:
+    desc: 'Generate the api for the server using oapi-codegen'
     cmds:
       - task bundle-api
       - task generate-api-types
       - task generate-api-chi
-    desc: 'Generate the api for the server using oapi-codegen'
 
   install-local-tools:
     desc: 'Install the local tools'
     cmds:
       - echo "Installing the dependencies"
-      - npm install -g @dbml/cli
       - go install github.com/deepmap/oapi-codegen/v2/cmd/oapi-codegen@latest
+      - echo "Installing prettier and prettier plugins"
+      - pnpm i -D prettier prettier-plugin-sql
+
+  format:
+    cmds:
+      - npx prettier --write "**/*.{yaml,yml,json,md,env,sql}"
+    desc: Format all project files

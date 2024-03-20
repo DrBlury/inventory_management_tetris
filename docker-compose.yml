@@ -13,12 +13,10 @@ services:
       - db
     restart: always
     healthcheck:
-      test: curl --fail -s http://localhost/health || exit 1
-      start_period: 15s
-      interval: 15s
-      timeout: 5s
-      retries: 3
-      # disable: false
+      test: curl --fail -s localhost:8080/status || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   db:
     container_name: app-postgres

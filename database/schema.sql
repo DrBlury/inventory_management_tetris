@@ -1,8 +1,7 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
 -- Generated at: 2024-03-08T16:54:44.931Z
-
-CREATE TYPE "item_type" AS ENUM (
+CREATE TYPE "item_type" AS ENUM(
   'consumable',
   'armor',
   'rangedWeapon',
@@ -57,8 +56,11 @@ CREATE TABLE "inventory_item" (
   "created_at" timestamp DEFAULT (now())
 );
 
-ALTER TABLE "inventory" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "inventory"
+ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
 
-ALTER TABLE "inventory_item" ADD FOREIGN KEY ("inventory_id") REFERENCES "inventory" ("id");
+ALTER TABLE "inventory_item"
+ADD FOREIGN KEY ("inventory_id") REFERENCES "inventory" ("id");
 
-ALTER TABLE "inventory_item" ADD FOREIGN KEY ("item_id") REFERENCES "item" ("id");
+ALTER TABLE "inventory_item"
+ADD FOREIGN KEY ("item_id") REFERENCES "item" ("id");
