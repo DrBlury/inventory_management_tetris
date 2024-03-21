@@ -5,6 +5,7 @@ import (
 	"linuxcode/inventory_manager/pkg/repo"
 	"linuxcode/inventory_manager/pkg/server"
 	"linuxcode/inventory_manager/pkg/server/router"
+	"linuxcode/inventory_manager/pkg/service/cache"
 	"linuxcode/inventory_manager/pkg/telemetry"
 	"time"
 
@@ -12,11 +13,12 @@ import (
 )
 
 type Config struct {
-	Info       *domain.Info
-	Router     *router.Config
-	Server     *server.Config
-	Database   *repo.Config
-	OTelConfig *telemetry.Config
+	Info        *domain.Info
+	Router      *router.Config
+	Server      *server.Config
+	Database    *repo.Config
+	OTelConfig  *telemetry.Config
+	CacheConfig *cache.Config
 }
 
 func SetDefaults() {
@@ -74,11 +76,17 @@ func LoadConfig(
 		TracerProvider: viper.GetString("OTEL_TRACER_PROVIDER"),
 	}
 
+	cacheConfig := &cache.Config{
+		Host: viper.GetString("APP_CACHE_HOST"),
+		Port: viper.GetInt("APP_CACHE_PORT"),
+	}
+
 	return &Config{
-		Info:       infoConfig,
-		Router:     routerConfig,
-		Server:     serverConfig,
-		Database:   databaseConfig,
-		OTelConfig: otelConfig,
+		Info:        infoConfig,
+		Router:      routerConfig,
+		Server:      serverConfig,
+		Database:    databaseConfig,
+		OTelConfig:  otelConfig,
+		CacheConfig: cacheConfig,
 	}, nil
 }

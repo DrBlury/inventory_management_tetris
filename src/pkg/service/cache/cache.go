@@ -26,7 +26,6 @@ func NewCache(config Config) *Cache {
 	}
 }
 
-// Get gets a value from the cache
 func (c *Cache) GetString(ctx context.Context, key string) (string, error) {
 	val, err := c.Client.Get(ctx, "foo").Result()
 	if err != nil {
@@ -35,9 +34,17 @@ func (c *Cache) GetString(ctx context.Context, key string) (string, error) {
 	return val, nil
 }
 
-// Set sets a value in the cache
 func (c *Cache) SetString(ctx context.Context, key, value string) error {
 	err := c.Client.Set(ctx, key, value, 0).Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// Invalidate a key
+func (c *Cache) Invalidate(ctx context.Context, key string) error {
+	err := c.Client.Del(ctx, key).Err()
 	if err != nil {
 		return err
 	}

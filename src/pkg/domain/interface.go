@@ -3,8 +3,10 @@ package domain
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	repo "linuxcode/inventory_manager/pkg/repo/generated"
 	"linuxcode/inventory_manager/pkg/service/cache"
+	"strconv"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -27,50 +29,84 @@ func NewAppLogic(queries *repo.Queries, logger *zap.SugaredLogger) appLogicImpl 
 
 type AppLogic interface {
 	// Inventories
-	GetAllInventories(ctx context.Context) ([]InventoryMeta, error)
-	AddInventory(ctx context.Context, createInventoryParams CreateInventoryParams) (*repo.Inventory, error)
+	GetAllInventories(ctx context.Context) ([]*InventoryMeta, error)
+	AddInventory(ctx context.Context, createInventoryParams CreateInventoryParams) (*Inventory, error)
 	DeleteInventoryById(ctx context.Context, inventoryId int) error
-	GetInventoryById(ctx context.Context, inventoryId int) (Inventory, error)
+	GetInventoryById(ctx context.Context, inventoryId int) (*Inventory, error)
 	AddItemInInventory(ctx context.Context, inventoryId int, item Item) error
 	AddItemInInventoryAtPosition(ctx context.Context, inventoryId int, item Item, position Position) error
 	DeleteItemFromInventory(ctx context.Context, inventoryId int, itemId int, position Position, amount int) error
 
 	// Items
-	GetAllItems(ctx context.Context) ([]Item, error)
+	GetAllItems(ctx context.Context) ([]*Item, error)
 	AddItem(ctx context.Context, createItemParams CreateItemParams) error
 	DeleteItemById(ctx context.Context, itemId int) error
-	GetItemById(ctx context.Context, itemId int) (Item, error)
+	GetItemById(ctx context.Context, itemId int) (*Item, error)
 
 	// Users
-	GetUserById(ctx context.Context, userId int) (User, error)
-	GetUserByUsername(ctx context.Context, username string) (User, error)
-	AddUser(ctx context.Context, createUserParams CreateUserParams) (*repo.User, error)
+	GetUserById(ctx context.Context, userId int) (*User, error)
+	GetUserByUsername(ctx context.Context, username string) (*User, error)
+	AddUser(ctx context.Context, createUserParams CreateUserParams) (*User, error)
 	DeleteUserById(ctx context.Context, userId int) error
-	GetAllUsers(ctx context.Context) ([]User, error)
+	GetAllUsers(ctx context.Context) ([]*User, error)
+
+	// TODO all update functions are missing
 }
 
-func (a appLogicImpl) SetItemInCache(ctx context.Context, itemID string, item Item) error {
+func (a appLogicImpl) SetItemInCache(ctx context.Context, itemID int, item *Item) error {
 	// marshal the item into a json
 	itemJSON, err := json.Marshal(item)
 	if err != nil {
 		return err
 	}
-	return a.cache.SetString(ctx, itemID, string(itemJSON))
+	itemIDString := strconv.Itoa(itemID)
+	key := fmt.Sprint("itemID-", itemIDString)
+	return a.cache.SetString(ctx, key, string(itemJSON))
 }
 
-func (a appLogicImpl) GetItemFromCache(ctx context.Context, itemID string) (Item, error) {
-	val, err := a.cache.GetString(ctx, itemID)
+func (a appLogicImpl) GetItemFromCache(ctx context.Context, itemID int) (*Item, error) {
+	itemIDString := strconv.Itoa(itemID)
+	key := fmt.Sprint("itemID-", itemIDString)
+	val, err := a.cache.GetString(ctx, key)
 	if err != nil {
-		return Item{}, err
+		return nil, err
 	}
 	// Unmarshal the value into a domain.Item
 	var item Item
 	err = json.Unmarshal([]byte(val), &item)
 	if err != nil {
-		return Item{}, err
+		return nil, err
 	}
 
-	return item, nil
+	return &item, nil
+}
+
+func (a appLogicImpl) SetInventoryInCache(ctx context.Context, inventoryID int, inventory *Inventory) error {
+	// marshal the inventory into a json
+	inventoryJSON, err := json.Marshal(inventory)
+	if err != nil {
+		return err
+	}
+	itemIDString := strconv.Itoa(inventoryID)
+	key := fmt.Sprint("inventoryID-", itemIDString)
+	return a.cache.SetString(ctx, key, string(inventoryJSON))
+}
+
+func (a appLogicImpl) GetInventoryFromCache(ctx context.Context, inventoryID int) (*Inventory, error) {
+	inventoryIDString := strconv.Itoa(inventoryID)
+	key := fmt.Sprint("inventoryID-", inventoryIDString)
+	val, err := a.cache.GetString(ctx, key)
+	if err != nil {
+		return nil, err
+	}
+	// Unmarshal the value into a domain.Item
+	var inventory Inventory
+	err = json.Unmarshal([]byte(val), &inventory)
+	if err != nil {
+		return nil, err
+	}
+
+	return &inventory, nil
 }
 
 // GetAllInventories returns metadata of all inventories
@@ -149,7 +185,7 @@ func (a appLogicImpl) GetInventoryById(ctx context.Context, inventoryId int) (*I
 		}
 
 		domainInventoryItems[i] = InventoryItem{
-			Item: item,
+			Item: *item,
 			Position: Position{
 				X:        int(rItem.PositionX.Int32),
 				Y:        int(rItem.PositionY.Int32),
@@ -190,12 +226,66 @@ func (a appLogicImpl) DeleteItemFromInventory(ctx context.Context, inventoryId i
 
 // GetAllItems returns all items that exist
 func (a appLogicImpl) GetAllItems(ctx context.Context) ([]Item, error) {
-	panic("not implemented") // TODO: Implement
+	// check for cache hit
+	allItems, err := a.cache.GetString(ctx, "allItems")
+	if err == nil {
+		// We got a cache hit! Wonderful!
+		var domainItems []Item
+		err = json.Unmarshal([]byte(allItems), &domainItems)
+		if err != nil {
+			a.log.Error("error unmarshalling all items from json", zap.Error(err))
+			return domainItems, err
+		}
+		return domainItems, nil
+	}
+
+	repoItems, err := a.queries.ListItems(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	// map repo model to domain model
+	var domainItems = make([]Item, 0, len(repoItems))
+	for i, rItem := range repoItems {
+		domainItemType := ItemType(rItem.Type.ItemType)
+		domainItem := Item{
+			ID:          int(rItem.ID),
+			Name:        rItem.Name.String,
+			Description: rItem.Description.String,
+			Type:        domainItemType,
+			Variant:     rItem.Variant.String,
+			BuyValue:    int(rItem.BuyValue.Int32),
+			SellValue:   int(rItem.SellValue.Int32),
+			MaxStack:    int(rItem.MaxStack.Int32),
+			Weight:      int(rItem.Weight.Int32),
+			Durability:  int(rItem.Durability.Int32),
+			Shape: Shape{
+				Height:   int(rItem.Height.Int32),
+				Width:    int(rItem.Width.Int32),
+				RawShape: rItem.Rawshape.String,
+			},
+		}
+		domainItems[i] = domainItem
+	}
+
+	// turn ALL to json and store in cache as one
+	jsonAllItems, err := json.Marshal(domainItems)
+	if err != nil {
+		a.log.Error("error marshalling all items to json", zap.Error(err))
+		return domainItems, err
+	}
+	err = a.cache.SetString(ctx, "allItems", string(jsonAllItems))
+	if err != nil {
+		a.log.Error("error setting all items in cache", zap.Error(err))
+		return domainItems, err
+	}
+
+	return domainItems, nil
 }
 
 // AddItem adds a new item to the database
 func (a appLogicImpl) AddItem(ctx context.Context, createItemParams CreateItemParams) error {
-	// TODO maybe item needs a weight variable???
+	// TODO Invalidate cache ( 1. allItems, 2. ItemById )
 	repoItemType := repo.ItemType(createItemParams.Type)
 	createdItem, err := a.queries.CreateItem(ctx, repo.CreateItemParams{
 		Name:        pgtype.Text{String: createItemParams.Name, Valid: true},
@@ -218,6 +308,10 @@ func (a appLogicImpl) AddItem(ctx context.Context, createItemParams CreateItemPa
 
 	// log what item was created
 	a.log.Info("created item", zap.String("name", createdItem.Name.String))
+	err = a.cache.Invalidate(ctx, "allItems")
+	if err != nil {
+		a.log.Error("error invalidating allItems in cache", zap.Error(err))
+	}
 	return nil
 }
 
@@ -230,12 +324,25 @@ func (a appLogicImpl) DeleteItemById(ctx context.Context, itemId int) error {
 
 	// log what item was deleted
 	a.log.Info("deleted item", zap.String("name", repoItem.Name.String))
+
+	// invalidate cache for this item
+	err = a.cache.Invalidate(ctx, strconv.Itoa(itemId))
+	if err != nil {
+		a.log.Error("error invalidating item in cache", zap.Error(err))
+	}
+
+	// invalidate cache for all items
+	err = a.cache.Invalidate(ctx, "allItems")
+	if err != nil {
+		a.log.Error("error invalidating allItems in cache", zap.Error(err))
+	}
+
 	return nil
 }
 
 // GetItemById returns the item with the given id
-func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (Item, error) {
-	result, err := a.GetItemFromCache(ctx, string(itemId))
+func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (*Item, error) {
+	result, err := a.GetItemFromCache(ctx, itemId)
 	if err == nil {
 		// We got a cache hit! Wonderful!
 		return result, nil
@@ -243,14 +350,13 @@ func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (Item, error)
 
 	repoItem, err := a.queries.GetItem(ctx, int32(itemId))
 	if err != nil {
-		return Item{}, err
+		return nil, err
 	}
 
 	// map repo model to domain model
-
 	// TODO check if they are named the same or if we need explicit mapping
 	domainItemType := ItemType(repoItem.Type.ItemType)
-	domainItem := Item{
+	domainItem := &Item{
 		ID:          int(repoItem.ID),
 		Name:        repoItem.Name.String,
 		Description: repoItem.Description.String,
@@ -269,7 +375,7 @@ func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (Item, error)
 	}
 
 	// Store the item in the cache, ignore error for now
-	err = a.SetItemInCache(ctx, string(itemId), domainItem)
+	err = a.SetItemInCache(ctx, itemId, domainItem)
 	if err != nil {
 		a.log.Error("error setting item in cache", zap.Error(err))
 	}

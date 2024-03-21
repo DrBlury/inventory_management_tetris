@@ -124,7 +124,7 @@ func (a APIHandler) GetInventoryById(w http.ResponseWriter, r *http.Request, inv
 	}
 
 	// map domain model to dto
-	inventoryDTO := transform.DTOInventoryFromDomain(&inventory)
+	inventoryDTO := transform.DTOInventoryFromDomain(inventory)
 
 	// return response
 	w.WriteHeader(http.StatusOK)
@@ -154,7 +154,7 @@ func (a APIHandler) GetAllItems(w http.ResponseWriter, r *http.Request) {
 	// map domain model to dto
 	itemsDTO := make([]server.Item, 0, len(items))
 	for _, item := range items {
-		itemsDTO = append(itemsDTO, transform.ItemDTOfromDomain(&item))
+		itemsDTO = append(itemsDTO, transform.ItemDTOfromDomain(item))
 	}
 
 	// return response
@@ -241,7 +241,7 @@ func (a APIHandler) GetItemById(w http.ResponseWriter, r *http.Request, itemId i
 	}
 
 	// map domain model to dto
-	itemDTO := transform.ItemDTOfromDomain(&item)
+	itemDTO := transform.ItemDTOfromDomain(item)
 
 	// return response
 	w.WriteHeader(http.StatusOK)
@@ -266,7 +266,7 @@ func (a APIHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	// map domain model to dto
 	usersDTO := make([]server.User, 0, len(users))
 	for _, user := range users {
-		usersDTO = append(usersDTO, transform.UserDTOFromDomain(&user))
+		usersDTO = append(usersDTO, transform.UserDTOFromDomain(user))
 	}
 
 	// return response
