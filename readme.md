@@ -6,17 +6,17 @@ This is a simple inventory management system API. It is built using golang and u
 
 ### Running the application
 
-- [Docker](https://docs.docker.com/get-docker/) (preferably)
-- [Docker Compose](https://docs.docker.com/compose/install/) (preferably)
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 - [Taskfile](https://taskfile.dev/#/installation) (optional, you can run the commands manually)
 
 ### Development
 
 - [Golang](https://golang.org/dl/) (or only run it inside a container)
-- [Node.js](https://nodejs.org/en/download/) (to run the pnpm command)
-- [NPM](https://www.npmjs.com/get-npm) (to install the required node modules)
-- [NPX](https://www.npmjs.com/package/npx) (to run )
 - [oapi-codegen](https://github.com/deepmap/oapi-codegen) (to generate the API Types and server code from the openapi specification)
+- [Node.js](https://nodejs.org/en/download/) & [NPM](https://www.npmjs.com/get-npm) (to install the formatter/plugins)
+
+Alternative: Use `task format-in-docker`
 
 ## Getting started
 

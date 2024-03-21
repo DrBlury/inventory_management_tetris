@@ -16,7 +16,7 @@ import (
 	"go.uber.org/zap"
 )
 
-// Run runs the linuxcode/inventory_managerlication
+// Run runs the app
 // nolint: funlen
 func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 	// Handle SIGINT (CTRL+C) gracefully.

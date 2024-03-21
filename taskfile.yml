@@ -119,12 +119,12 @@ tasks:
 
       - echo "Installing Prettier & plugins into the project folder"
       - echo "Prettier recommends against installing plugins globally"
-      - npm i -D prettier
+      - npm i -g prettier
       - npm i -D prettier-plugin-sql
       - npm i -D prettier-plugin-go-template
     silent: true
 
-  format-all:
+  format:
     desc: Format all project files
     cmds:
       - echo "Formatting all files"
@@ -163,4 +163,13 @@ tasks:
     desc: Format all json files
     cmds:
       - prettier --write "**/*.json"
+    silent: true
+
+  format-in-docker:
+    desc: Format using dockered prettier with plugins
+    cmds:
+      # Build the prettier with plugins image
+      - docker build -t format-all -f ./build/dockerfiles/format.dockerfile .
+      # Run with mounted volume
+      - docker run --rm -v $(pwd):/app/project format-all
     silent: true

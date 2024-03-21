@@ -18,7 +18,7 @@ RUN go mod download
 # Copy sources to build container
 ADD ./src /build/
 
-# Build the linuxcode/inventory_managerlication
+# Build the app
 WORKDIR /build
 RUN ls -al 
 RUN go build -a -tags musl -ldflags="-X 'main.version=v0.0.1' -X 'main.buildUser=$(id -u -n)' -X 'main.buildDate=$(date)'" -o /build/linuxcode/inventory_manager
