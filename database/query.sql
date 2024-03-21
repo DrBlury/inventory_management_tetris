@@ -17,39 +17,57 @@ ORDER BY
 -- name: CreateItem :one
 INSERT INTO
   item (
-    variant,
     name,
     description,
+    variant,
     buy_value,
     sell_value,
+    weight,
+    durability,
     max_stack,
-    size_v,
-    size_h,
+    height,
+    width,
     rawshape,
-    created_at,
-    type
+    type,
+    created_at
   )
 VALUES
-  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+  (
+    $1,
+    $2,
+    $3,
+    $4,
+    $5,
+    $6,
+    $7,
+    $8,
+    $9,
+    $10,
+    $11,
+    $12,
+    $13
+  )
 RETURNING
   *;
-
+  
 -- name: UpdateItem :one
-UPDATE item
+UPDATE "item"
 SET
-  variant = $1,
-  name = $2,
-  description = $3,
+  name = $1,
+  description = $2,
+  variant = $3,
   buy_value = $4,
   sell_value = $5,
-  max_stack = $6,
-  size_v = $7,
-  size_h = $8,
-  rawshape = $9,
-  created_at = $10,
-  type = $11
+  weight = $6,
+  durability = $7,
+  max_stack = $8,
+  height = $9,
+  width = $10,
+  rawshape = $11,
+  type = $12,
+  created_at = $13
 WHERE
-  id = $12
+  id = $14
 RETURNING
   *;
 
@@ -77,6 +95,14 @@ FROM
   "user"
 WHERE
   id = $1;
+
+-- name: GetUserByUsername :one
+SELECT
+  *
+FROM
+  "user"
+WHERE
+  username = $1;
 
 -- name: ListUsers :many
 SELECT
@@ -135,8 +161,8 @@ INSERT INTO
   inventory (
     user_id,
     invname,
-    size_h,
-    size_v,
+    width,
+    height,
     max_weight,
     created_at
   )
@@ -150,8 +176,8 @@ UPDATE inventory
 SET
   user_id = $1,
   invname = $2,
-  size_h = $3,
-  size_v = $4,
+  width = $3,
+  height = $4,
   created_at = $5
 WHERE
   id = $5
@@ -180,8 +206,8 @@ INSERT INTO
   inventory_item (
     inventory_id,
     item_id,
-    position_h,
-    position_v,
+    position_x,
+    position_y,
     rotation,
     quantity,
     created_at
@@ -203,8 +229,8 @@ UPDATE inventory_item
 SET
   inventory_id = $1,
   item_id = $2,
-  position_h = $3,
-  position_v = $4,
+  position_x = $3,
+  position_y = $4,
   rotation = $5,
   quantity = $6,
   created_at = $7

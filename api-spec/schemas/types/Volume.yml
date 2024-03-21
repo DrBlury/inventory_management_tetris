@@ -1,11 +1,11 @@
 ---
 type: object
 properties:
-  size_v:
+  height:
     type: integer
-  size_h:
+  width:
     type: integer
 
 required:
-  - size_v
-  - size_h
+  - height
+  - width

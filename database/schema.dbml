@@ -10,14 +10,16 @@ enum item_type {
 
 table item {
   id int [pk, increment]
-  variant varchar(255)
   name varchar(255)
   description text
-  buy_value float
-  sell_value float
+  variant varchar(255)
+  buy_value int
+  sell_value int
+  weight int
+  durability int
   max_stack int
-  size_v int
-  size_h int
+  height int
+  width int
   rawshape text
   created_at timestamp [default: `now()`]
   type item_type
@@ -36,8 +38,8 @@ table inventory {
   id int [pk, increment]
   invname varchar(255)
   user_id int [ref: > user.id]
-  size_h int
-  size_v int
+  width int
+  height int
   max_weight int
   created_at timestamp [default: `now()`]
 }
@@ -47,8 +49,9 @@ table inventory_item {
   inventory_id int [ref: > inventory.id]
   item_id int [ref: > item.id]
   quantity int
-  position_h int
-  position_v int
+  position_x int
+  position_y int
   rotation int
+  durabilityLeft int
   created_at timestamp [default: `now()`]
 }

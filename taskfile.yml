@@ -10,21 +10,12 @@ dotenv: ['.env']
 # task <task-name>
 
 tasks:
-  quickstart:
+  setup:
     desc: 'Quickstart the project for running'
     cmds:
       - task gen-env-file
       - echo "Please fill the .env file with the required values"
       - echo "Run 'task start' to start the application"
-    silent: true
-
-  quickstart-dev:
-    desc: 'Quickstart the project for development'
-    cmds:
-      - echo "Installing local tools for development..."
-      - task install-tools
-      - task gen-env-file
-      - echo "Please fill the .env file with the required values"
     silent: true
 
   gen-env-file:
@@ -63,7 +54,6 @@ tasks:
     cmds:
       - echo "Generating the sql"
       - docker run --rm -v ./database:/app gitea.linuxcode.net/linuxcode/dbml-cli dbml2sql ./schema.dbml -o ./schema.sql
-      - task format
     silent: true
 
   gen-sqlc:

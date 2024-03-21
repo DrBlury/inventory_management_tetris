@@ -133,8 +133,8 @@ type ItemPostRequest struct {
 // ItemShape defines model for ItemShape.
 type ItemShape struct {
 	Rawshape string `json:"rawshape"`
-	SizeH    int    `json:"size_h"`
-	SizeV    int    `json:"size_v"`
+	Width    int    `json:"width"`
+	Height    int    `json:"height"`
 }
 
 // ItemType defines model for ItemType.
@@ -207,8 +207,8 @@ type Version struct {
 
 // Volume defines model for Volume.
 type Volume struct {
-	SizeH int `json:"size_h"`
-	SizeV int `json:"size_v"`
+	Width int `json:"width"`
+	Height int `json:"height"`
 }
 
 // AddInventoryJSONRequestBody defines body for AddInventory for application/json ContentType.

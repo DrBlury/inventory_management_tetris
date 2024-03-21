@@ -7,8 +7,8 @@ INSERT INTO
     buy_value,
     sell_value,
     max_stack,
-    size_v,
-    size_h,
+    height,
+    width,
     rawshape,
     type
   )
@@ -34,8 +34,8 @@ INSERT INTO
     buy_value,
     sell_value,
     max_stack,
-    size_v,
-    size_h,
+    height,
+    width,
     rawshape,
     type
   )

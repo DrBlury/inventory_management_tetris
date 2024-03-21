@@ -62,33 +62,36 @@ type Inventory struct {
 	ID        int32
 	Invname   pgtype.Text
 	UserID    pgtype.Int4
-	SizeH     pgtype.Int4
-	SizeV     pgtype.Int4
+	Width     pgtype.Int4
+	Height    pgtype.Int4
 	MaxWeight pgtype.Int4
 	CreatedAt pgtype.Timestamp
 }
 
 type InventoryItem struct {
-	ID          int32
-	InventoryID pgtype.Int4
-	ItemID      pgtype.Int4
-	Quantity    pgtype.Int4
-	PositionH   pgtype.Int4
-	PositionV   pgtype.Int4
-	Rotation    pgtype.Int4
-	CreatedAt   pgtype.Timestamp
+	ID             int32
+	InventoryID    pgtype.Int4
+	ItemID         pgtype.Int4
+	Quantity       pgtype.Int4
+	PositionX      pgtype.Int4
+	PositionY      pgtype.Int4
+	Rotation       pgtype.Int4
+	DurabilityLeft pgtype.Int4
+	CreatedAt      pgtype.Timestamp
 }
 
 type Item struct {
 	ID          int32
-	Variant     pgtype.Text
 	Name        pgtype.Text
 	Description pgtype.Text
-	BuyValue    pgtype.Float8
-	SellValue   pgtype.Float8
+	Variant     pgtype.Text
+	BuyValue    pgtype.Int4
+	SellValue   pgtype.Int4
+	Weight      pgtype.Int4
+	Durability  pgtype.Int4
 	MaxStack    pgtype.Int4
-	SizeV       pgtype.Int4
-	SizeH       pgtype.Int4
+	Height      pgtype.Int4
+	Width       pgtype.Int4
 	Rawshape    pgtype.Text
 	CreatedAt   pgtype.Timestamp
 	Type        NullItemType

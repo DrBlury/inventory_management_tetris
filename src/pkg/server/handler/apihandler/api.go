@@ -80,8 +80,8 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 		UserID:    dtoInventory.UserId,
 		Name:      dtoInventory.Name,
 		MaxWeight: dtoInventory.MaxWeight,
-		Width:     dtoInventory.Volume.SizeH,
-		Height:    dtoInventory.Volume.SizeV,
+		Width:     dtoInventory.Volume.Width,
+		Height:    dtoInventory.Volume.Height,
 	}
 
 	// call domain layer

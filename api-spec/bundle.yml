@@ -477,14 +477,14 @@ components:
       properties:
         rawshape:
           type: string
-        size_v:
+        height:
           type: integer
-        size_h:
+        width:
           type: integer
       required:
         - rawshape
-        - size_v
-        - size_h
+        - height
+        - width
     ItemType:
       type: string
       enum:
@@ -639,13 +639,13 @@ components:
     Volume:
       type: object
       properties:
-        size_v:
+        height:
           type: integer
-        size_h:
+        width:
           type: integer
       required:
-        - size_v
-        - size_h
+        - height
+        - width
     Position:
       type: object
       properties:

@@ -29,6 +29,13 @@ services:
     ports:
       - '5432:5432'
 
+  cache:
+    container_name: app-redis
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+
   dbmigration:
     container_name: app-postgres-migration
     build:

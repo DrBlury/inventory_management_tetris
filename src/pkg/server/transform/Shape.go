@@ -8,15 +8,15 @@ import (
 func DTOShapeFromDomain(s *domain.Shape) server.ItemShape {
 	return server.ItemShape{
 		Rawshape: s.RawShape,
-		SizeH:    s.Width,
-		SizeV:    s.Height,
+		Width:    s.Width,
+		Height:   s.Height,
 	}
 }
 
 func DomainShapeFromDTO(s *server.ItemShape) domain.Shape {
 	return domain.Shape{
 		RawShape: s.Rawshape,
-		Width:    s.SizeH,
-		Height:   s.SizeV,
+		Width:    s.Width,
+		Height:   s.Height,
 	}
 }

@@ -12,16 +12,27 @@ import (
 )
 
 const addItemToInventory = `-- name: AddItemToInventory :one
-INSERT INTO inventory_item (inventory_id, item_id, position_h, position_v, rotation, quantity, created_at)
-VALUES ($1, $2, $3, $4, $5, $6, $7)
-RETURNING id, inventory_id, item_id, quantity, position_h, position_v, rotation, created_at
+INSERT INTO
+  inventory_item (
+    inventory_id,
+    item_id,
+    position_x,
+    position_y,
+    rotation,
+    quantity,
+    created_at
+  )
+VALUES
+  ($1, $2, $3, $4, $5, $6, $7)
+RETURNING
+  id, inventory_id, item_id, quantity, position_x, position_y, rotation, "durabilityLeft", created_at
 `
 
 type AddItemToInventoryParams struct {
 	InventoryID pgtype.Int4
 	ItemID      pgtype.Int4
-	PositionH   pgtype.Int4
-	PositionV   pgtype.Int4
+	PositionX   pgtype.Int4
+	PositionY   pgtype.Int4
 	Rotation    pgtype.Int4
 	Quantity    pgtype.Int4
 	CreatedAt   pgtype.Timestamp
@@ -31,8 +42,8 @@ func (q *Queries) AddItemToInventory(ctx context.Context, arg AddItemToInventory
 	row := q.db.QueryRow(ctx, addItemToInventory,
 		arg.InventoryID,
 		arg.ItemID,
-		arg.PositionH,
-		arg.PositionV,
+		arg.PositionX,
+		arg.PositionY,
 		arg.Rotation,
 		arg.Quantity,
 		arg.CreatedAt,
@@ -43,25 +54,36 @@ func (q *Queries) AddItemToInventory(ctx context.Context, arg AddItemToInventory
 		&i.InventoryID,
 		&i.ItemID,
 		&i.Quantity,
-		&i.PositionH,
-		&i.PositionV,
+		&i.PositionX,
+		&i.PositionY,
 		&i.Rotation,
+		&i.DurabilityLeft,
 		&i.CreatedAt,
 	)
 	return i, err
 }
 
 const createInventory = `-- name: CreateInventory :one
-INSERT INTO inventory (user_id, invname, size_h, size_v, max_weight, created_at)
-VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id, invname, user_id, size_h, size_v, max_weight, created_at
+INSERT INTO
+  inventory (
+    user_id,
+    invname,
+    width,
+    height,
+    max_weight,
+    created_at
+  )
+VALUES
+  ($1, $2, $3, $4, $5, $6)
+RETURNING
+  id, invname, user_id, width, height, max_weight, created_at
 `
 
 type CreateInventoryParams struct {
 	UserID    pgtype.Int4
 	Invname   pgtype.Text
-	SizeH     pgtype.Int4
-	SizeV     pgtype.Int4
+	Width     pgtype.Int4
+	Height    pgtype.Int4
 	MaxWeight pgtype.Int4
 	CreatedAt pgtype.Timestamp
 }
@@ -70,8 +92,8 @@ func (q *Queries) CreateInventory(ctx context.Context, arg CreateInventoryParams
 	row := q.db.QueryRow(ctx, createInventory,
 		arg.UserID,
 		arg.Invname,
-		arg.SizeH,
-		arg.SizeV,
+		arg.Width,
+		arg.Height,
 		arg.MaxWeight,
 		arg.CreatedAt,
 	)
@@ -80,8 +102,8 @@ func (q *Queries) CreateInventory(ctx context.Context, arg CreateInventoryParams
 		&i.ID,
 		&i.Invname,
 		&i.UserID,
-		&i.SizeH,
-		&i.SizeV,
+		&i.Width,
+		&i.Height,
 		&i.MaxWeight,
 		&i.CreatedAt,
 	)
@@ -89,50 +111,87 @@ func (q *Queries) CreateInventory(ctx context.Context, arg CreateInventoryParams
 }
 
 const createItem = `-- name: CreateItem :one
-INSERT INTO item (variant, name, description, buy_value, sell_value, max_stack, size_v, size_h, rawshape, created_at, type)
-VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-RETURNING id, variant, name, description, buy_value, sell_value, max_stack, size_v, size_h, rawshape, created_at, type
+INSERT INTO
+  item (
+    name,
+    description,
+    variant,
+    buy_value,
+    sell_value,
+    weight,
+    durability,
+    max_stack,
+    height,
+    width,
+    rawshape,
+    type,
+    created_at
+  )
+VALUES
+  (
+    $1,
+    $2,
+    $3,
+    $4,
+    $5,
+    $6,
+    $7,
+    $8,
+    $9,
+    $10,
+    $11,
+    $12,
+    $13
+  )
+RETURNING
+  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
 `
 
 type CreateItemParams struct {
-	Variant     pgtype.Text
 	Name        pgtype.Text
 	Description pgtype.Text
-	BuyValue    pgtype.Float8
-	SellValue   pgtype.Float8
+	Variant     pgtype.Text
+	BuyValue    pgtype.Int4
+	SellValue   pgtype.Int4
+	Weight      pgtype.Int4
+	Durability  pgtype.Int4
 	MaxStack    pgtype.Int4
-	SizeV       pgtype.Int4
-	SizeH       pgtype.Int4
+	Height      pgtype.Int4
+	Width       pgtype.Int4
 	Rawshape    pgtype.Text
-	CreatedAt   pgtype.Timestamp
 	Type        NullItemType
+	CreatedAt   pgtype.Timestamp
 }
 
 func (q *Queries) CreateItem(ctx context.Context, arg CreateItemParams) (Item, error) {
 	row := q.db.QueryRow(ctx, createItem,
-		arg.Variant,
 		arg.Name,
 		arg.Description,
+		arg.Variant,
 		arg.BuyValue,
 		arg.SellValue,
+		arg.Weight,
+		arg.Durability,
 		arg.MaxStack,
-		arg.SizeV,
-		arg.SizeH,
+		arg.Height,
+		arg.Width,
 		arg.Rawshape,
-		arg.CreatedAt,
 		arg.Type,
+		arg.CreatedAt,
 	)
 	var i Item
 	err := row.Scan(
 		&i.ID,
-		&i.Variant,
 		&i.Name,
 		&i.Description,
+		&i.Variant,
 		&i.BuyValue,
 		&i.SellValue,
+		&i.Weight,
+		&i.Durability,
 		&i.MaxStack,
-		&i.SizeV,
-		&i.SizeH,
+		&i.Height,
+		&i.Width,
 		&i.Rawshape,
 		&i.CreatedAt,
 		&i.Type,
@@ -141,9 +200,12 @@ func (q *Queries) CreateItem(ctx context.Context, arg CreateItemParams) (Item, e
 }
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO "user" (username, email, salt, password_hash, created_at)
-VALUES ($1, $2, $3, $4, $5)
-RETURNING id, username, salt, password_hash, email, created_at
+INSERT INTO
+  "user" (username, email, salt, password_hash, created_at)
+VALUES
+  ($1, $2, $3, $4, $5)
+RETURNING
+  id, username, salt, password_hash, email, created_at
 `
 
 type CreateUserParams struct {
@@ -176,8 +238,10 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 
 const deleteInventory = `-- name: DeleteInventory :one
 DELETE FROM inventory
-WHERE id = $1
-RETURNING id, invname, user_id, size_h, size_v, max_weight, created_at
+WHERE
+  id = $1
+RETURNING
+  id, invname, user_id, width, height, max_weight, created_at
 `
 
 func (q *Queries) DeleteInventory(ctx context.Context, id int32) (Inventory, error) {
@@ -187,8 +251,8 @@ func (q *Queries) DeleteInventory(ctx context.Context, id int32) (Inventory, err
 		&i.ID,
 		&i.Invname,
 		&i.UserID,
-		&i.SizeH,
-		&i.SizeV,
+		&i.Width,
+		&i.Height,
 		&i.MaxWeight,
 		&i.CreatedAt,
 	)
@@ -197,8 +261,10 @@ func (q *Queries) DeleteInventory(ctx context.Context, id int32) (Inventory, err
 
 const deleteItem = `-- name: DeleteItem :one
 DELETE FROM item
-WHERE id = $1
-RETURNING id, variant, name, description, buy_value, sell_value, max_stack, size_v, size_h, rawshape, created_at, type
+WHERE
+  id = $1
+RETURNING
+  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
 `
 
 func (q *Queries) DeleteItem(ctx context.Context, id int32) (Item, error) {
@@ -206,14 +272,16 @@ func (q *Queries) DeleteItem(ctx context.Context, id int32) (Item, error) {
 	var i Item
 	err := row.Scan(
 		&i.ID,
-		&i.Variant,
 		&i.Name,
 		&i.Description,
+		&i.Variant,
 		&i.BuyValue,
 		&i.SellValue,
+		&i.Weight,
+		&i.Durability,
 		&i.MaxStack,
-		&i.SizeV,
-		&i.SizeH,
+		&i.Height,
+		&i.Width,
 		&i.Rawshape,
 		&i.CreatedAt,
 		&i.Type,
@@ -223,8 +291,10 @@ func (q *Queries) DeleteItem(ctx context.Context, id int32) (Item, error) {
 
 const deleteUser = `-- name: DeleteUser :one
 DELETE FROM "user"
-WHERE id = $1
-RETURNING id, username, salt, password_hash, email, created_at
+WHERE
+  id = $1
+RETURNING
+  id, username, salt, password_hash, email, created_at
 `
 
 func (q *Queries) DeleteUser(ctx context.Context, id int32) (User, error) {
@@ -242,8 +312,12 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) (User, error) {
 }
 
 const getInventory = `-- name: GetInventory :one
-SELECT id, invname, user_id, size_h, size_v, max_weight, created_at FROM inventory
-WHERE id = $1
+SELECT
+  id, invname, user_id, width, height, max_weight, created_at
+FROM
+  inventory
+WHERE
+  id = $1
 `
 
 func (q *Queries) GetInventory(ctx context.Context, id int32) (Inventory, error) {
@@ -253,8 +327,8 @@ func (q *Queries) GetInventory(ctx context.Context, id int32) (Inventory, error)
 		&i.ID,
 		&i.Invname,
 		&i.UserID,
-		&i.SizeH,
-		&i.SizeV,
+		&i.Width,
+		&i.Height,
 		&i.MaxWeight,
 		&i.CreatedAt,
 	)
@@ -262,8 +336,12 @@ func (q *Queries) GetInventory(ctx context.Context, id int32) (Inventory, error)
 }
 
 const getItem = `-- name: GetItem :one
-SELECT id, variant, name, description, buy_value, sell_value, max_stack, size_v, size_h, rawshape, created_at, type FROM item
-WHERE id = $1
+SELECT
+  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
+FROM
+  item
+WHERE
+  id = $1
 `
 
 func (q *Queries) GetItem(ctx context.Context, id int32) (Item, error) {
@@ -271,14 +349,16 @@ func (q *Queries) GetItem(ctx context.Context, id int32) (Item, error) {
 	var i Item
 	err := row.Scan(
 		&i.ID,
-		&i.Variant,
 		&i.Name,
 		&i.Description,
+		&i.Variant,
 		&i.BuyValue,
 		&i.SellValue,
+		&i.Weight,
+		&i.Durability,
 		&i.MaxStack,
-		&i.SizeV,
-		&i.SizeH,
+		&i.Height,
+		&i.Width,
 		&i.Rawshape,
 		&i.CreatedAt,
 		&i.Type,
@@ -287,9 +367,14 @@ func (q *Queries) GetItem(ctx context.Context, id int32) (Item, error) {
 }
 
 const getItemByType = `-- name: GetItemByType :many
-SELECT id, variant, name, description, buy_value, sell_value, max_stack, size_v, size_h, rawshape, created_at, type FROM item
-WHERE type = $1
-ORDER BY id
+SELECT
+  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
+FROM
+  item
+WHERE
+  type = $1
+ORDER BY
+  id
 `
 
 func (q *Queries) GetItemByType(ctx context.Context, type_ NullItemType) ([]Item, error) {
@@ -303,14 +388,16 @@ func (q *Queries) GetItemByType(ctx context.Context, type_ NullItemType) ([]Item
 		var i Item
 		if err := rows.Scan(
 			&i.ID,
-			&i.Variant,
 			&i.Name,
 			&i.Description,
+			&i.Variant,
 			&i.BuyValue,
 			&i.SellValue,
+			&i.Weight,
+			&i.Durability,
 			&i.MaxStack,
-			&i.SizeV,
-			&i.SizeH,
+			&i.Height,
+			&i.Width,
 			&i.Rawshape,
 			&i.CreatedAt,
 			&i.Type,
@@ -326,8 +413,12 @@ func (q *Queries) GetItemByType(ctx context.Context, type_ NullItemType) ([]Item
 }
 
 const getUser = `-- name: GetUser :one
-SELECT id, username, salt, password_hash, email, created_at FROM "user"
-WHERE id = $1
+SELECT
+  id, username, salt, password_hash, email, created_at
+FROM
+  "user"
+WHERE
+  id = $1
 `
 
 func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
@@ -344,9 +435,36 @@ func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 	return i, err
 }
 
+const getUserByUsername = `-- name: GetUserByUsername :one
+SELECT
+  id, username, salt, password_hash, email, created_at
+FROM
+  "user"
+WHERE
+  username = $1
+`
+
+func (q *Queries) GetUserByUsername(ctx context.Context, username pgtype.Text) (User, error) {
+	row := q.db.QueryRow(ctx, getUserByUsername, username)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Username,
+		&i.Salt,
+		&i.PasswordHash,
+		&i.Email,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const listInventories = `-- name: ListInventories :many
-SELECT id, invname, user_id, size_h, size_v, max_weight, created_at FROM inventory
-ORDER BY id
+SELECT
+  id, invname, user_id, width, height, max_weight, created_at
+FROM
+  inventory
+ORDER BY
+  id
 `
 
 func (q *Queries) ListInventories(ctx context.Context) ([]Inventory, error) {
@@ -362,8 +480,8 @@ func (q *Queries) ListInventories(ctx context.Context) ([]Inventory, error) {
 			&i.ID,
 			&i.Invname,
 			&i.UserID,
-			&i.SizeH,
-			&i.SizeV,
+			&i.Width,
+			&i.Height,
 			&i.MaxWeight,
 			&i.CreatedAt,
 		); err != nil {
@@ -378,9 +496,14 @@ func (q *Queries) ListInventories(ctx context.Context) ([]Inventory, error) {
 }
 
 const listInventoryItems = `-- name: ListInventoryItems :many
-SELECT id, inventory_id, item_id, quantity, position_h, position_v, rotation, created_at FROM inventory_item
-WHERE inventory_id = $1
-ORDER BY id
+SELECT
+  id, inventory_id, item_id, quantity, position_x, position_y, rotation, "durabilityLeft", created_at
+FROM
+  inventory_item
+WHERE
+  inventory_id = $1
+ORDER BY
+  id
 `
 
 func (q *Queries) ListInventoryItems(ctx context.Context, inventoryID pgtype.Int4) ([]InventoryItem, error) {
@@ -397,9 +520,10 @@ func (q *Queries) ListInventoryItems(ctx context.Context, inventoryID pgtype.Int
 			&i.InventoryID,
 			&i.ItemID,
 			&i.Quantity,
-			&i.PositionH,
-			&i.PositionV,
+			&i.PositionX,
+			&i.PositionY,
 			&i.Rotation,
+			&i.DurabilityLeft,
 			&i.CreatedAt,
 		); err != nil {
 			return nil, err
@@ -413,8 +537,12 @@ func (q *Queries) ListInventoryItems(ctx context.Context, inventoryID pgtype.Int
 }
 
 const listItems = `-- name: ListItems :many
-SELECT id, variant, name, description, buy_value, sell_value, max_stack, size_v, size_h, rawshape, created_at, type FROM item
-ORDER BY id
+SELECT
+  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
+FROM
+  item
+ORDER BY
+  id
 `
 
 func (q *Queries) ListItems(ctx context.Context) ([]Item, error) {
@@ -428,14 +556,16 @@ func (q *Queries) ListItems(ctx context.Context) ([]Item, error) {
 		var i Item
 		if err := rows.Scan(
 			&i.ID,
-			&i.Variant,
 			&i.Name,
 			&i.Description,
+			&i.Variant,
 			&i.BuyValue,
 			&i.SellValue,
+			&i.Weight,
+			&i.Durability,
 			&i.MaxStack,
-			&i.SizeV,
-			&i.SizeH,
+			&i.Height,
+			&i.Width,
 			&i.Rawshape,
 			&i.CreatedAt,
 			&i.Type,
@@ -451,8 +581,12 @@ func (q *Queries) ListItems(ctx context.Context) ([]Item, error) {
 }
 
 const listUsers = `-- name: ListUsers :many
-SELECT id, username, salt, password_hash, email, created_at FROM "user"
-ORDER BY id
+SELECT
+  id, username, salt, password_hash, email, created_at
+FROM
+  "user"
+ORDER BY
+  id
 `
 
 func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
@@ -484,8 +618,10 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 
 const removeItemFromInventory = `-- name: RemoveItemFromInventory :one
 DELETE FROM inventory_item
-WHERE id = $1
-RETURNING id, inventory_id, item_id, quantity, position_h, position_v, rotation, created_at
+WHERE
+  id = $1
+RETURNING
+  id, inventory_id, item_id, quantity, position_x, position_y, rotation, "durabilityLeft", created_at
 `
 
 func (q *Queries) RemoveItemFromInventory(ctx context.Context, id int32) (InventoryItem, error) {
@@ -496,9 +632,10 @@ func (q *Queries) RemoveItemFromInventory(ctx context.Context, id int32) (Invent
 		&i.InventoryID,
 		&i.ItemID,
 		&i.Quantity,
-		&i.PositionH,
-		&i.PositionV,
+		&i.PositionX,
+		&i.PositionY,
 		&i.Rotation,
+		&i.DurabilityLeft,
 		&i.CreatedAt,
 	)
 	return i, err
@@ -506,16 +643,23 @@ func (q *Queries) RemoveItemFromInventory(ctx context.Context, id int32) (Invent
 
 const updateInventory = `-- name: UpdateInventory :one
 UPDATE inventory
-SET user_id = $1, invname = $2, size_h = $3, size_v = $4, created_at = $5
-WHERE id = $5
-RETURNING id, invname, user_id, size_h, size_v, max_weight, created_at
+SET
+  user_id = $1,
+  invname = $2,
+  width = $3,
+  height = $4,
+  created_at = $5
+WHERE
+  id = $5
+RETURNING
+  id, invname, user_id, width, height, max_weight, created_at
 `
 
 type UpdateInventoryParams struct {
 	UserID    pgtype.Int4
 	Invname   pgtype.Text
-	SizeH     pgtype.Int4
-	SizeV     pgtype.Int4
+	Width     pgtype.Int4
+	Height    pgtype.Int4
 	CreatedAt pgtype.Timestamp
 }
 
@@ -523,8 +667,8 @@ func (q *Queries) UpdateInventory(ctx context.Context, arg UpdateInventoryParams
 	row := q.db.QueryRow(ctx, updateInventory,
 		arg.UserID,
 		arg.Invname,
-		arg.SizeH,
-		arg.SizeV,
+		arg.Width,
+		arg.Height,
 		arg.CreatedAt,
 	)
 	var i Inventory
@@ -532,8 +676,8 @@ func (q *Queries) UpdateInventory(ctx context.Context, arg UpdateInventoryParams
 		&i.ID,
 		&i.Invname,
 		&i.UserID,
-		&i.SizeH,
-		&i.SizeV,
+		&i.Width,
+		&i.Height,
 		&i.MaxWeight,
 		&i.CreatedAt,
 	)
@@ -542,16 +686,25 @@ func (q *Queries) UpdateInventory(ctx context.Context, arg UpdateInventoryParams
 
 const updateInventoryItem = `-- name: UpdateInventoryItem :one
 UPDATE inventory_item
-SET inventory_id = $1, item_id = $2, position_h = $3, position_v = $4, rotation = $5, quantity = $6, created_at = $7
-WHERE id = $8
-RETURNING id, inventory_id, item_id, quantity, position_h, position_v, rotation, created_at
+SET
+  inventory_id = $1,
+  item_id = $2,
+  position_x = $3,
+  position_y = $4,
+  rotation = $5,
+  quantity = $6,
+  created_at = $7
+WHERE
+  id = $8
+RETURNING
+  id, inventory_id, item_id, quantity, position_x, position_y, rotation, "durabilityLeft", created_at
 `
 
 type UpdateInventoryItemParams struct {
 	InventoryID pgtype.Int4
 	ItemID      pgtype.Int4
-	PositionH   pgtype.Int4
-	PositionV   pgtype.Int4
+	PositionX   pgtype.Int4
+	PositionY   pgtype.Int4
 	Rotation    pgtype.Int4
 	Quantity    pgtype.Int4
 	CreatedAt   pgtype.Timestamp
@@ -562,8 +715,8 @@ func (q *Queries) UpdateInventoryItem(ctx context.Context, arg UpdateInventoryIt
 	row := q.db.QueryRow(ctx, updateInventoryItem,
 		arg.InventoryID,
 		arg.ItemID,
-		arg.PositionH,
-		arg.PositionV,
+		arg.PositionX,
+		arg.PositionY,
 		arg.Rotation,
 		arg.Quantity,
 		arg.CreatedAt,
@@ -575,62 +728,84 @@ func (q *Queries) UpdateInventoryItem(ctx context.Context, arg UpdateInventoryIt
 		&i.InventoryID,
 		&i.ItemID,
 		&i.Quantity,
-		&i.PositionH,
-		&i.PositionV,
+		&i.PositionX,
+		&i.PositionY,
 		&i.Rotation,
+		&i.DurabilityLeft,
 		&i.CreatedAt,
 	)
 	return i, err
 }
 
 const updateItem = `-- name: UpdateItem :one
-UPDATE item
-SET variant = $1, name = $2, description = $3, buy_value = $4, sell_value = $5, max_stack = $6, size_v = $7, size_h = $8, rawshape = $9, created_at = $10, type = $11
-WHERE id = $12
-RETURNING id, variant, name, description, buy_value, sell_value, max_stack, size_v, size_h, rawshape, created_at, type
+UPDATE "item"
+SET
+  name = $1,
+  description = $2,
+  variant = $3,
+  buy_value = $4,
+  sell_value = $5,
+  weight = $6,
+  durability = $7,
+  max_stack = $8,
+  height = $9,
+  width = $10,
+  rawshape = $11,
+  type = $12,
+  created_at = $13
+WHERE
+  id = $14
+RETURNING
+  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
 `
 
 type UpdateItemParams struct {
-	Variant     pgtype.Text
 	Name        pgtype.Text
 	Description pgtype.Text
-	BuyValue    pgtype.Float8
-	SellValue   pgtype.Float8
+	Variant     pgtype.Text
+	BuyValue    pgtype.Int4
+	SellValue   pgtype.Int4
+	Weight      pgtype.Int4
+	Durability  pgtype.Int4
 	MaxStack    pgtype.Int4
-	SizeV       pgtype.Int4
-	SizeH       pgtype.Int4
+	Height      pgtype.Int4
+	Width       pgtype.Int4
 	Rawshape    pgtype.Text
-	CreatedAt   pgtype.Timestamp
 	Type        NullItemType
+	CreatedAt   pgtype.Timestamp
 	ID          int32
 }
 
 func (q *Queries) UpdateItem(ctx context.Context, arg UpdateItemParams) (Item, error) {
 	row := q.db.QueryRow(ctx, updateItem,
-		arg.Variant,
 		arg.Name,
 		arg.Description,
+		arg.Variant,
 		arg.BuyValue,
 		arg.SellValue,
+		arg.Weight,
+		arg.Durability,
 		arg.MaxStack,
-		arg.SizeV,
-		arg.SizeH,
+		arg.Height,
+		arg.Width,
 		arg.Rawshape,
-		arg.CreatedAt,
 		arg.Type,
+		arg.CreatedAt,
 		arg.ID,
 	)
 	var i Item
 	err := row.Scan(
 		&i.ID,
-		&i.Variant,
 		&i.Name,
 		&i.Description,
+		&i.Variant,
 		&i.BuyValue,
 		&i.SellValue,
+		&i.Weight,
+		&i.Durability,
 		&i.MaxStack,
-		&i.SizeV,
-		&i.SizeH,
+		&i.Height,
+		&i.Width,
 		&i.Rawshape,
 		&i.CreatedAt,
 		&i.Type,
@@ -640,9 +815,16 @@ func (q *Queries) UpdateItem(ctx context.Context, arg UpdateItemParams) (Item, e
 
 const updateUser = `-- name: UpdateUser :one
 UPDATE "user"
-SET username = $1, email = $2, salt = $3, password_hash = $4, created_at = $5
-WHERE id = $6
-RETURNING id, username, salt, password_hash, email, created_at
+SET
+  username = $1,
+  email = $2,
+  salt = $3,
+  password_hash = $4,
+  created_at = $5
+WHERE
+  id = $6
+RETURNING
+  id, username, salt, password_hash, email, created_at
 `
 
 type UpdateUserParams struct {
