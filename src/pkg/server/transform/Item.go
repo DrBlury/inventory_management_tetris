@@ -6,37 +6,43 @@ import (
 )
 
 func ItemDTOfromDomain(i *domain.Item) server.Item {
-	dtoShape := DTOShapeFromDomain(&i.Shape)
+	dtoShape := DTOShapeFromDomain(&i.ItemMeta.Shape)
 	dtoItemType := DTOItemTypeFromDomain(&i.Type)
 	return server.Item{
 		BuyValue:    i.BuyValue,
 		Description: i.Description,
 		Durability:  i.Durability,
-		Id:          i.ID,
-		MaxStack:    i.MaxStack,
+		Id:          i.ItemMeta.ID,
+		MaxStack:    i.ItemMeta.MaxStack,
 		Name:        i.Name,
 		SellValue:   i.SellValue,
 		Shape:       dtoShape,
 		Type:        dtoItemType,
 		Variant:     i.Variant,
-		Weight:      i.Weight,
+		Weight:      i.ItemMeta.Weight,
+	}
+}
+
+func ItemMetaFromDTO(i *server.Item) domain.ItemMeta {
+	return domain.ItemMeta{
+		ID:       i.Id,
+		Shape:    DomainShapeFromDTO(&i.Shape),
+		Weight:   i.Weight,
+		MaxStack: i.MaxStack,
 	}
 }
 
 func ItemDomainFromDTO(i *server.Item) domain.Item {
-	domainShape := DomainShapeFromDTO(&i.Shape)
 	domainItemType := DomainItemTypeFromDTO(&i.Type)
+	domainItemMeta := ItemMetaFromDTO(i)
 	return domain.Item{
+		ItemMeta:    domainItemMeta,
 		BuyValue:    i.BuyValue,
 		Description: i.Description,
 		Durability:  i.Durability,
-		ID:          i.Id,
-		MaxStack:    i.MaxStack,
 		Name:        i.Name,
 		SellValue:   i.SellValue,
-		Shape:       domainShape,
 		Type:        domainItemType,
 		Variant:     i.Variant,
-		Weight:      i.Weight,
 	}
 }

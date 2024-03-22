@@ -9,6 +9,7 @@ import (
 	"linuxcode/inventory_manager/pkg/server"
 	"linuxcode/inventory_manager/pkg/server/handler/apihandler"
 	"linuxcode/inventory_manager/pkg/server/router"
+	"linuxcode/inventory_manager/pkg/service/cache"
 	"linuxcode/inventory_manager/pkg/telemetry"
 	"os"
 	"os/signal"
@@ -48,8 +49,11 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 	}
 	logger.Info("database connection established")
 
+	// ===== Cache =====
+	cache := cache.NewCache(cfg.CacheConfig)
+
 	// ===== App Logic =====
-	appLogic := domain.NewAppLogic(db, logger)
+	appLogic := domain.NewAppLogic(db, logger, cache)
 
 	// ===== Handlers =====
 	apiHandler := apihandler.NewAPIHandler(appLogic, cfg.Info, logger)

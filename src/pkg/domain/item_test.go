@@ -46,44 +46,28 @@ func Test_printShape(t *testing.T) {
 	t.FailNow()
 }
 
-// Test_rotateShapeCCW tests the rotateShape function.
-func Test_rotateShapeCCW(t *testing.T) {
-	tShapeMatrix := [][]int{
+// Test_rotateShape tests the currentShape function with rotation.
+func Test_rotateShape(t *testing.T) {
+	exampleItem := genExampleItemWithMatrix([][]int{
 		{1, 1, 1},
 		{0, 1, 0},
 		{0, 1, 0},
 		{0, 1, 0},
+	})
+
+	// create a real instance of the item
+	inventoryItem := InventoryItem{
+		Item:           *exampleItem,
+		Position:       Position{X: 0, Y: 0, Rotation: 0},
+		Quantity:       1,
+		DurabilityLeft: 100,
 	}
 
-	// create shape
-	tShape := Shape{Width: 3, Height: 4, Matrix: tShapeMatrix}
+	// rotate the item
+	inventoryItem.RotateCW(1)
 
-	tShape.rotateCCW()
-
-	expectedShape := [][]int{
-		{1, 0, 0, 0},
-		{1, 1, 1, 1},
-		{1, 0, 0, 0},
-	}
-
-	if !reflect.DeepEqual(tShape.Matrix, expectedShape) {
-		t.Errorf("Rotation failed.\nExpected:\n%v\nGot:\n%v", expectedShape, tShape.Matrix)
-	}
-}
-
-// Test_rotateShapeCW tests the rotateShape function.
-func Test_rotateShapeCW(t *testing.T) {
-	tShapeMatrix := [][]int{
-		{1, 1, 1},
-		{0, 1, 0},
-		{0, 1, 0},
-		{0, 1, 0},
-	}
-
-	// create shape
-	tShape := Shape{Width: 3, Height: 4, Matrix: tShapeMatrix}
-
-	tShape.rotateCW()
+	// get the rotated shape
+	rotatedShape := inventoryItem.CurrentShape()
 
 	expectedShape := [][]int{
 		{0, 0, 0, 1},
@@ -91,53 +75,7 @@ func Test_rotateShapeCW(t *testing.T) {
 		{0, 0, 0, 1},
 	}
 
-	if !reflect.DeepEqual(tShape.Matrix, expectedShape) {
-		t.Errorf("Rotation failed.\nExpected:\n%v\nGot:\n%v", expectedShape, tShape.Matrix)
-	}
-}
-
-// Test_rotateShapeCWAndCCW tests the rotateShape function.
-func Test_rotateShapeCWAndCCW(t *testing.T) {
-	tShapeMatrix := [][]int{
-		{1, 1, 1},
-		{0, 1, 0},
-		{0, 1, 0},
-		{0, 1, 0},
-	}
-
-	// create shape
-	tShape := Shape{Width: 3, Height: 4, Matrix: tShapeMatrix}
-
-	tShape.rotateCW()
-	tShape.rotateCCW()
-
-	if !reflect.DeepEqual(tShapeMatrix, tShape.Matrix) {
-		t.Errorf("Rotation failed.\nExpected:\n%v\nGot:\n%v", tShape, tShape)
-	}
-}
-
-// Test_doubleRotateOrFlip tests the doubleRotateOrFlip function.
-func Test_doubleRotateOrFlip(t *testing.T) {
-	tShape := [][]int{
-		{1, 1, 1},
-		{0, 1, 0},
-		{0, 1, 0},
-		{0, 1, 0},
-	}
-
-	// create item
-	tShapeItem := Shape{Width: 3, Height: 4, Matrix: tShape}
-
-	tShapeItem.flip()
-
-	expectedShape := [][]int{
-		{0, 1, 0},
-		{0, 1, 0},
-		{0, 1, 0},
-		{1, 1, 1},
-	}
-
-	if !reflect.DeepEqual(tShapeItem.Matrix, expectedShape) {
-		t.Errorf("Rotation failed.\nExpected:\n%v\nGot:\n%v", expectedShape, tShapeItem.Matrix)
+	if !reflect.DeepEqual(rotatedShape.Matrix, expectedShape) {
+		t.Errorf("Rotation failed.\nExpected:\n%v\nGot:\n%v", expectedShape, rotatedShape.Matrix)
 	}
 }

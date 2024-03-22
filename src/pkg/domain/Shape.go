@@ -51,26 +51,17 @@ func (s *Shape) printShape() {
 	}
 }
 
-func (s *Shape) rotateCCW() {
-	// Create a new matrix with the same dimensions as the original shape but with the width and height swapped
-	newMatrix := make([][]int, s.Width)
-	for i := range newMatrix {
-		newMatrix[i] = make([]int, s.Height)
+func (s *Shape) printShapeWithRotation(rotation int) {
+	// Rotate the shape matrix
+	var newShape Shape
+	for i := 0; i < rotation; i++ {
+		newShape = rotateCW(*s)
 	}
-
-	// Fill the new matrix with the rotated values (counter-clockwise)
-	for i := 0; i < s.Height; i++ {
-		for j := 0; j < s.Width; j++ {
-			newMatrix[s.Width-j-1][i] = s.Matrix[i][j]
-		}
-	}
-
-	// Update the item's shape with the new shape
-	s.Matrix = newMatrix
-	s.Width, s.Height = s.Height, s.Width
+	newShape.printShape()
 }
 
-func (s *Shape) rotateCW() {
+// TODO maybe add amount of rotations to apply
+func rotateCW(s Shape) Shape {
 	// Create a new matrix with the same dimensions as the original shape but with the width and height swapped
 	newMatrix := make([][]int, s.Width)
 	for i := range newMatrix {
@@ -87,10 +78,5 @@ func (s *Shape) rotateCW() {
 	// Update the item's shape with the new shape
 	s.Matrix = newMatrix
 	s.Width, s.Height = s.Height, s.Width // Swap width and height
-}
-
-func (s *Shape) flip() {
-	// rotate the item twice to get the flipped shape
-	s.rotateCW()
-	s.rotateCW()
+	return s
 }

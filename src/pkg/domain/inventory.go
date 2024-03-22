@@ -14,19 +14,23 @@ func NewInventory(inventoryMeta InventoryMeta) *Inventory {
 	}
 }
 
-func (i *Inventory) AddItemAtPosition(item Item, position *Position) error {
+func (i *Inventory) AddItemAtPosition(item Item, position *Position, quantity int, durability int) (*InventoryItem, error) {
 	if !i.CheckItemPlacement(&item, position) {
-		return &NoFitPositionError{}
+		return nil, &NoFitPositionError{}
 	}
 
-	i.Items = append(i.Items, InventoryItem{
-		Item:     item,
-		Position: *position,
-	})
-	return nil
+	inventoryItem := &InventoryItem{
+		Item:           item,
+		Position:       *position,
+		Quantity:       quantity,
+		DurabilityLeft: durability,
+	}
+
+	i.Items = append(i.Items, *inventoryItem)
+	return inventoryItem, nil
 }
 
-func (i *Inventory) AddItem(item Item) bool {
+func (i *Inventory) AddItem(item Item, quantity int, durability int) bool {
 	positionSuggestion, err := i.GetFitPosition(item)
 	if err != nil {
 		return false // item was not added because it did not fit
@@ -34,21 +38,23 @@ func (i *Inventory) AddItem(item Item) bool {
 
 	// rotate the item if necessary
 	for rotation := 0; rotation < positionSuggestion.Rotation; rotation++ {
-		item.Shape.rotateCW()
+		item.ItemMeta.Shape = rotateCW(item.ItemMeta.Shape)
 	}
 
 	// add the item to the inventory
 	i.Items = append(i.Items, InventoryItem{
-		Item:     item,
-		Position: *positionSuggestion,
+		Item:           item,
+		Position:       *positionSuggestion,
+		Quantity:       quantity,
+		DurabilityLeft: durability,
 	})
 
 	return true // item was added
 }
 
-func (i *Inventory) RemoveItem(item Item) {
+func (i *Inventory) RemoveItem(itemID int) {
 	for idx, inventoryItem := range i.Items {
-		if inventoryItem.Item.ID == item.ID {
+		if inventoryItem.Item.ItemMeta.ID == itemID {
 			i.Items = append(i.Items[:idx], i.Items[idx+1:]...)
 		}
 	}
@@ -56,18 +62,20 @@ func (i *Inventory) RemoveItem(item Item) {
 
 // GetFitPosition returns the first position where the item fits into the inventory
 func (i *Inventory) GetFitPosition(item Item) (*Position, error) {
-	originalRotation := item.Shape
+	originalRotation := item.ItemMeta.Shape
 	const POSSIBLE_ROTATIONS = 3 // 4 possible rotations (No rotation, 90, 180, 270 degrees)
 
 	// for every possible cell, test all the possible rotations
 	var maybePosition Position
+	tempShape := item.ItemMeta.Shape
 	for y := 0; y < i.InventoryMeta.Height; y++ {
 		for x := 0; x < i.InventoryMeta.Width; x++ {
-			item.Shape = originalRotation
+			tempShape = originalRotation
 			// check item placement for every rotation
 			for rotation := 0; rotation < POSSIBLE_ROTATIONS; rotation++ {
 				if rotation > 0 {
-					item.Shape.rotateCW()
+					// TODO Maybe there's a bug here?
+					tempShape = rotateCW(tempShape)
 				}
 
 				// Overwrite the maybePosition with the new values
@@ -95,7 +103,8 @@ func (i *Inventory) getItemsInMatrix() [][]int {
 	// place all items matrixes into the temporary inventory matrix
 	for itemIdx, inventoryItem := range i.Items {
 		// place the item into the temporary inventory matrix
-		for y, row := range inventoryItem.Item.Shape.Matrix {
+
+		for y, row := range inventoryItem.Item.ItemMeta.Shape.Matrix {
 			for x, cell := range row {
 				// only add the item and not the empty cells
 				if cell == 1 {
@@ -109,14 +118,19 @@ func (i *Inventory) getItemsInMatrix() [][]int {
 
 func (i *Inventory) CheckItemPlacement(item *Item, position *Position) bool {
 	// Check if the item fits into the inventory or would reach out of bounds
-	if position.X+item.Shape.Width > i.InventoryMeta.Width || position.Y+item.Shape.Height > i.InventoryMeta.Height {
+	if position.X+item.ItemMeta.Shape.Width > i.InventoryMeta.Width || position.Y+item.ItemMeta.Shape.Height > i.InventoryMeta.Height {
 		return false
 	}
 
 	tempInventoryMatrix := i.getItemsInMatrix()
+	var rotatedShape Shape
+	// temporarily apply the rotation to the item shape
+	for rotation := 0; rotation < position.Rotation; rotation++ {
+		rotatedShape = rotateCW(item.ItemMeta.Shape)
+	}
 
 	// check if the item can be placed into the inventory
-	for y, row := range item.Shape.Matrix {
+	for y, row := range rotatedShape.Matrix {
 		for x, cell := range row {
 			cellIsUsed := cell != 0
 			inventoryCellIsUsed := tempInventoryMatrix[position.Y+y][position.X+x] != 0
@@ -125,6 +139,8 @@ func (i *Inventory) CheckItemPlacement(item *Item, position *Position) bool {
 			}
 		}
 	}
+
+	// TODO check for weight and max stack
 
 	return true
 }

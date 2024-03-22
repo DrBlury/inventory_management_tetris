@@ -7,12 +7,12 @@ import (
 )
 
 type Cache struct {
-	Config Config
+	Config *Config
 	Client *redis.Client
 }
 
 // NewCache creates a new cache
-func NewCache(config Config) *Cache {
+func NewCache(config *Config) *Cache {
 
 	client := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",

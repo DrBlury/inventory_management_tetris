@@ -16,27 +16,51 @@ func genExampleInventoryMeta() InventoryMeta {
 	return exampleInventoryMeta
 }
 
+func genExampleItemWithMatrix(matrix [][]int) *Item {
+	// create raw shape using the matrix
+	rawShape := ""
+	for _, row := range matrix {
+		for _, cell := range row {
+			if cell == 1 {
+				rawShape += "#"
+			} else {
+				rawShape += "."
+			}
+		}
+	}
+	return &Item{
+		ItemMeta: ItemMeta{
+			ID: 1,
+			Shape: Shape{
+				Width:    len(matrix[0]),
+				Height:   len(matrix),
+				Matrix:   matrix,
+				RawShape: rawShape,
+			},
+			Weight:   10,
+			MaxStack: 1,
+		},
+
+		Name:        "Test Item",
+		Description: "This is a test item",
+		SellValue:   100,
+		BuyValue:    100,
+		Durability:  100,
+		Variant:     "Test Variant",
+		Type:        Armor,
+	}
+}
+
 func Test_inventoryItemPlaceCheck(t *testing.T) {
 
 	exampleInventory := NewInventory(genExampleInventoryMeta())
-	exampleItem := &Item{
-		ID:          1,
-		Name:        "Test Item",
-		Description: "This is a test item",
-		Shape: Shape{
-			Width:  4,
-			Height: 3,
-			Matrix: [][]int{
-				{1, 0, 0, 0},
-				{1, 1, 1, 1},
-				{1, 0, 0, 0},
-			},
-		},
-		SellValue: 100,
-		BuyValue:  100,
-	}
+	exampleItem := genExampleItemWithMatrix([][]int{
+		{1, 0, 0, 0},
+		{1, 1, 1, 1},
+		{1, 0, 0, 0},
+	})
 
-	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0})
+	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0}, 1, 100)
 
 	testCases := []struct {
 		name     string
@@ -71,35 +95,24 @@ func Test_inventoryItemPlaceCheck(t *testing.T) {
 
 func Test_inventoryItemAdd(t *testing.T) {
 	exampleInventory := NewInventory(genExampleInventoryMeta())
-	exampleItem := &Item{
-		ID:          1,
-		Name:        "Test Item",
-		Description: "This is a test item",
-		Shape: Shape{
-			Width:  3,
-			Height: 3,
-			Matrix: [][]int{
-				{1, 0, 0},
-				{1, 1, 1},
-				{1, 0, 0},
-			},
-		},
-		SellValue: 100,
-		BuyValue:  100,
-	}
+	exampleItem := genExampleItemWithMatrix([][]int{
+		{1, 0, 0},
+		{1, 1, 1},
+		{1, 0, 0},
+	})
 
-	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0})
+	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0}, 1, 100)
 
 	// add a few more items
-	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 4, Y: 7, Rotation: 0})
-	// rotated item
-	exampleItem.Shape.rotateCW()
-	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 7, Y: 7, Rotation: 0})
+	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 4, Y: 7, Rotation: 0}, 1, 100)
 
-	exampleInventory.AddItemAtPosition(*createBox(6, 6, false), &Position{X: 4, Y: 0, Rotation: 0})
+	// rotated item
+	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 7, Y: 7, Rotation: 1}, 1, 100)
+
+	exampleInventory.AddItemAtPosition(*createBox(6, 6, false), &Position{X: 4, Y: 0, Rotation: 0}, 1, 100)
 
 	// add another box shaped item
-	exampleItem.Shape = Shape{
+	exampleItem.ItemMeta.Shape = Shape{
 		Width:  2,
 		Height: 2,
 		Matrix: [][]int{
@@ -107,7 +120,7 @@ func Test_inventoryItemAdd(t *testing.T) {
 			{1, 1},
 		},
 	}
-	error := exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 6, Y: 2, Rotation: 0})
+	_, error := exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 6, Y: 2, Rotation: 0}, 1, 100)
 	if error != nil {
 		t.Errorf("expected nil, got %v", error)
 		t.FailNow()
@@ -147,42 +160,22 @@ func createBox(width int, height int, filled bool) *Item {
 		}
 	}
 
-	return &Item{
-		ID:          1,
-		Name:        "Box",
-		Description: "A box",
-		Shape: Shape{
-			Width:  width,
-			Height: height,
-			Matrix: matrix,
-		},
-		SellValue: 100,
-		BuyValue:  100,
-	}
+	exampleItem := genExampleItemWithMatrix(matrix)
+	exampleItem.Name = "Box"
+	return exampleItem
 }
 
 func createLShapedItem() *Item {
-	return &Item{
-		ID:          2,
-		Name:        "L Shaped Item",
-		Description: "An L shaped item",
-		Shape: Shape{
-			Width:  3,
-			Height: 3,
-			Matrix: [][]int{
-				{1, 0, 0},
-				{1, 0, 0},
-				{1, 1, 1},
-			},
-		},
-		SellValue: 100,
-		BuyValue:  100,
-	}
+	return genExampleItemWithMatrix([][]int{
+		{1, 0, 0},
+		{1, 0, 0},
+		{1, 1, 1},
+	})
 }
 
 func Test_inventoryAddItem(t *testing.T) {
 	exampleInventory := NewInventory(genExampleInventoryMeta())
-	if exampleInventory.AddItem(*createBox(3, 3, true)) != true {
+	if exampleInventory.AddItem(*createBox(3, 3, true), 1, 100) != true {
 		t.Errorf("expected true, got false")
 		t.FailNow()
 	}
@@ -190,20 +183,20 @@ func Test_inventoryAddItem(t *testing.T) {
 	lShapedItem := createLShapedItem()
 	// add 3 L shaped items
 	for i := 0; i < 3; i++ {
-		if exampleInventory.AddItem(*lShapedItem) != true {
+		if exampleInventory.AddItem(*lShapedItem, 1, 100) != true {
 			t.Errorf("expected true, got false")
 			t.FailNow()
 		}
 	}
 
 	// add a 6x6 box that's hollow
-	if ok := exampleInventory.AddItem(*createBox(6, 6, false)); !ok {
+	if ok := exampleInventory.AddItem(*createBox(6, 6, false), 1, 100); !ok {
 		t.FailNow()
 	}
 
 	// add three 2x2 boxes
 	for i := 0; i < 3; i++ {
-		if ok := exampleInventory.AddItem(*createBox(2, 2, true)); !ok {
+		if ok := exampleInventory.AddItem(*createBox(2, 2, true), 1, 100); !ok {
 			t.FailNow()
 		}
 	}
