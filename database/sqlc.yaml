@@ -1,7 +1,11 @@
 version: '2'
 sql:
   - engine: 'postgresql'
-    queries: 'query.sql'
+    queries:
+      - 'inventories.sql'
+      - 'item.sql'
+      - 'inventoryItem.sql'
+      - 'user.sql'
     schema: 'schema.sql'
     gen:
       go:

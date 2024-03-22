@@ -6,6 +6,7 @@ import (
 	server "linuxcode/inventory_manager/pkg/server/generated"
 	handler "linuxcode/inventory_manager/pkg/server/handler"
 	transform "linuxcode/inventory_manager/pkg/server/transform"
+	usecase "linuxcode/inventory_manager/pkg/usecase"
 	"net/http"
 
 	"github.com/go-chi/render"
@@ -14,12 +15,12 @@ import (
 )
 
 type APIHandler struct {
-	AppLogic domain.AppLogic
+	AppLogic usecase.AppLogic
 	Info     *domain.Info
 	log      *zap.SugaredLogger
 }
 
-func NewAPIHandler(appLogic domain.AppLogic, info *domain.Info, logger *zap.SugaredLogger) *APIHandler {
+func NewAPIHandler(appLogic usecase.AppLogic, info *domain.Info, logger *zap.SugaredLogger) *APIHandler {
 	return &APIHandler{
 		AppLogic: appLogic,
 		Info:     info,
