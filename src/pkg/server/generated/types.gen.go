@@ -64,12 +64,8 @@ type ErrorType string
 
 // Inventory defines model for Inventory.
 type Inventory struct {
-	Id        int             `json:"id"`
-	Items     []InventoryItem `json:"items"`
-	MaxWeight int             `json:"max_weight"`
-	Name      string          `json:"name"`
-	UserId    int             `json:"userId"`
-	Volume    Volume          `json:"volume"`
+	InventoryMeta InventoryMeta   `json:"inventoryMeta"`
+	Items         []InventoryItem `json:"items"`
 }
 
 // InventoryItem defines model for InventoryItem.
@@ -84,6 +80,15 @@ type InventoryItem struct {
 type InventoryListResponse struct {
 	Inventories []Inventory `json:"inventories"`
 	Pagination  Pagination  `json:"pagination"`
+}
+
+// InventoryMeta defines model for InventoryMeta.
+type InventoryMeta struct {
+	Id        int    `json:"id"`
+	MaxWeight int    `json:"max_weight"`
+	Name      string `json:"name"`
+	UserId    int    `json:"userId"`
+	Volume    Volume `json:"volume"`
 }
 
 // InventoryPostRequest defines model for InventoryPostRequest.
@@ -132,9 +137,9 @@ type ItemPostRequest struct {
 
 // ItemShape defines model for ItemShape.
 type ItemShape struct {
+	Height   int    `json:"height"`
 	Rawshape string `json:"rawshape"`
 	Width    int    `json:"width"`
-	Height    int    `json:"height"`
 }
 
 // ItemType defines model for ItemType.
@@ -168,9 +173,9 @@ type Status string
 
 // User defines model for User.
 type User struct {
-	Id          int         `json:"id"`
-	Inventories []Inventory `json:"inventories"`
-	Username    string      `json:"username"`
+	Id          int             `json:"id"`
+	Inventories []InventoryMeta `json:"inventories"`
+	Username    string          `json:"username"`
 }
 
 // UserListResponse defines model for UserListResponse.
@@ -207,8 +212,8 @@ type Version struct {
 
 // Volume defines model for Volume.
 type Volume struct {
-	Width int `json:"width"`
 	Height int `json:"height"`
+	Width  int `json:"width"`
 }
 
 // AddInventoryJSONRequestBody defines body for AddInventory for application/json ContentType.

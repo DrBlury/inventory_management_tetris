@@ -8,7 +8,7 @@ properties:
   inventories:
     type: array
     items:
-      $ref: './Inventory.yml'
+      $ref: './InventoryMeta.yml'
 
 required:
   - id

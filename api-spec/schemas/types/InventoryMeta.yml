@@ -1,0 +1,19 @@
+type: object
+properties:
+  id:
+    type: integer
+  name:
+    type: string
+  userId:
+    type: integer
+  max_weight:
+    type: integer
+  volume:
+    $ref: './Volume.yml'
+
+required:
+  - id
+  - name
+  - userId
+  - max_weight
+  - volume

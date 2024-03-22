@@ -16,6 +16,8 @@ item_shape:
   $ref: './types/ItemShape.yml'
 inventory:
   $ref: './types/Inventory.yml'
+inventory_meta:
+  $ref: './types/InventoryMeta.yml'
 user:
   $ref: './types/User.yml'
 version:

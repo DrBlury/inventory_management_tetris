@@ -6,6 +6,14 @@ FROM
 ORDER BY
   id;
 
+-- name: ListInventoriesByUserID :many
+SELECT
+  *
+FROM
+  inventory
+WHERE
+  user_id = $1;
+
 -- name: GetInventory :one
 SELECT
   *

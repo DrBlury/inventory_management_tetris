@@ -20,14 +20,29 @@ func (a appLogicImpl) GetAllUsers(ctx context.Context) (*[]domain.User, error) {
 
 	// map repo model to domain model
 	var domainUsers = make([]domain.User, 0, len(users))
-	for i, rUser := range users {
+	for _, rUser := range users {
 		user := domain.User{
 			ID:       int(rUser.ID),
 			Username: rUser.Username.String,
 			Email:    rUser.Email.String,
 		}
-		domainUsers[i] = user
+		domainUsers = append(domainUsers, user)
 	}
+
+	// get inventories for each user
+	for i, user := range domainUsers {
+		inventories, err := a.queries.ListInventoriesByUserID(ctx, pgtype.Int4{Int32: int32(user.ID), Valid: true})
+		if err != nil {
+			return nil, err
+		}
+
+		// map inventories to domain model
+		for _, rInv := range inventories {
+			inventory := domain.MapRepoInventoryToDomainInventoryMeta(&rInv)
+			domainUsers[i].Inventories = append(domainUsers[i].Inventories, *inventory)
+		}
+	}
+
 	return &domainUsers, nil
 }
 

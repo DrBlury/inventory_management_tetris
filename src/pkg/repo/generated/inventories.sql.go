@@ -142,6 +142,43 @@ func (q *Queries) ListInventories(ctx context.Context) ([]Inventory, error) {
 	return items, nil
 }
 
+const listInventoriesByUserID = `-- name: ListInventoriesByUserID :many
+SELECT
+  id, invname, user_id, width, height, max_weight, created_at
+FROM
+  inventory
+WHERE
+  user_id = $1
+`
+
+func (q *Queries) ListInventoriesByUserID(ctx context.Context, userID pgtype.Int4) ([]Inventory, error) {
+	rows, err := q.db.Query(ctx, listInventoriesByUserID, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Inventory
+	for rows.Next() {
+		var i Inventory
+		if err := rows.Scan(
+			&i.ID,
+			&i.Invname,
+			&i.UserID,
+			&i.Width,
+			&i.Height,
+			&i.MaxWeight,
+			&i.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const updateInventory = `-- name: UpdateInventory :one
 UPDATE inventory
 SET

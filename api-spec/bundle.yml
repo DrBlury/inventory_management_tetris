@@ -646,6 +646,67 @@ components:
       required:
         - height
         - width
+    InventoryMeta:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        userId:
+          type: integer
+        max_weight:
+          type: integer
+        volume:
+          $ref: '#/components/schemas/Volume'
+      required:
+        - id
+        - name
+        - userId
+        - max_weight
+        - volume
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        inventories:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryMeta'
+      required:
+        - id
+        - username
+        - inventories
+    UserListResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      required:
+        - users
+        - pagination
+    UserPostRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - email
+        - password
     Position:
       type: object
       properties:
@@ -678,69 +739,15 @@ components:
     Inventory:
       type: object
       properties:
-        id:
-          type: integer
-        name:
-          type: string
-        userId:
-          type: integer
-        max_weight:
-          type: integer
-        volume:
-          $ref: '#/components/schemas/Volume'
+        inventoryMeta:
+          $ref: '#/components/schemas/InventoryMeta'
         items:
           type: array
           items:
             $ref: '#/components/schemas/InventoryItem'
       required:
-        - id
-        - name
-        - userId
-        - max_weight
-        - volume
+        - inventoryMeta
         - items
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-        username:
-          type: string
-        inventories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Inventory'
-      required:
-        - id
-        - username
-        - inventories
-    UserListResponse:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      required:
-        - users
-        - pagination
-    UserPostRequest:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-      required:
-        - name
-        - email
-        - password
     InventoryListResponse:
       type: object
       properties:
@@ -849,6 +856,8 @@ components:
       $ref: '#/components/schemas/ItemShape'
     inventory:
       $ref: '#/components/schemas/Inventory'
+    inventory_meta:
+      $ref: '#/components/schemas/InventoryMeta'
     user:
       $ref: '#/components/schemas/User'
     version:

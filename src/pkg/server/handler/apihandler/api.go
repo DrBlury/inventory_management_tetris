@@ -260,6 +260,7 @@ func (a APIHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	// call domain layer
 	users, err := a.AppLogic.GetAllUsers(r.Context())
 	if err != nil {
+
 		handler.HandleInternalServerError(w, r, err)
 		return
 	}
@@ -271,7 +272,6 @@ func (a APIHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// return response
-	w.WriteHeader(http.StatusOK)
 	render.JSON(w, r, usersDTO)
 }
 
