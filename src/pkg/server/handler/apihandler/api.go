@@ -153,9 +153,9 @@ func (a APIHandler) GetAllItems(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// map domain model to dto
-	itemsDTO := make([]server.Item, 0, len(items))
-	for _, item := range items {
-		itemsDTO = append(itemsDTO, transform.ItemDTOfromDomain(item))
+	itemsDTO := make([]server.Item, 0, len(*items))
+	for _, item := range *items {
+		itemsDTO = append(itemsDTO, transform.ItemDTOfromDomain(&item))
 	}
 
 	// return response
@@ -265,9 +265,9 @@ func (a APIHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// map domain model to dto
-	usersDTO := make([]server.User, 0, len(users))
-	for _, user := range users {
-		usersDTO = append(usersDTO, transform.UserDTOFromDomain(user))
+	usersDTO := make([]server.User, 0, len(*users))
+	for _, user := range *users {
+		usersDTO = append(usersDTO, transform.UserDTOFromDomain(&user))
 	}
 
 	// return response

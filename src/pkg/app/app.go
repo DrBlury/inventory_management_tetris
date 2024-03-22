@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"errors"
-	"linuxcode/inventory_manager/pkg/domain"
 	"linuxcode/inventory_manager/pkg/logging"
 	"linuxcode/inventory_manager/pkg/repo"
 	"linuxcode/inventory_manager/pkg/server"
@@ -11,6 +10,7 @@ import (
 	"linuxcode/inventory_manager/pkg/server/router"
 	"linuxcode/inventory_manager/pkg/service/cache"
 	"linuxcode/inventory_manager/pkg/telemetry"
+	"linuxcode/inventory_manager/pkg/usecase"
 	"os"
 	"os/signal"
 
@@ -53,7 +53,7 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 	cache := cache.NewCache(cfg.CacheConfig)
 
 	// ===== App Logic =====
-	appLogic := domain.NewAppLogic(db, logger, cache)
+	appLogic := usecase.NewAppLogic(db, logger, cache)
 
 	// ===== Handlers =====
 	apiHandler := apihandler.NewAPIHandler(appLogic, cfg.Info, logger)

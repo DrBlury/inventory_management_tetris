@@ -18,12 +18,19 @@ func (a appLogicImpl) AddItemInInventory(ctx context.Context, inventoryId int, i
 
 	inventory.AddItem(item, quantity, durability)
 
-	// TODO update the inventory in the database and invalidate cache for this inventory
+	// TODO update the inventory in the database
+
+	// invalidate cache
+	key := fmt.Sprint("inventoryID-", inventoryId)
+	err = a.cache.Invalidate(ctx, key)
+	if err != nil {
+		a.log.Error("error invalidating inventory in cache", zap.String("key", key), zap.Error(err))
+	}
 	return nil
 }
 
 // AddItemInInventoryAtPosition adds an item to the inventory at the given position
-func (a appLogicImpl) AddItemInInventoryAtPosition(ctx context.Context, inventoryId int, item domain.Item, position domain.Position) error {
+func (a appLogicImpl) AddItemInInventoryAtPosition(ctx context.Context, inventoryId int, item domain.Item, position domain.Position, quantity int, durability int) error {
 	// get inventory
 	inventory, err := a.GetInventoryById(ctx, inventoryId)
 	if err != nil {
@@ -31,13 +38,21 @@ func (a appLogicImpl) AddItemInInventoryAtPosition(ctx context.Context, inventor
 	}
 
 	// add the item to the inventory
-	inventoryItem, err := inventory.AddItemAtPosition(item, &position, 1, 100)
+	inventoryItem, err := inventory.AddItemAtPosition(item, &position, quantity, durability)
 	if err != nil {
 		return err
 	}
 	a.log.Info("added item to inventory", zap.Int("inventoryId", inventoryId), zap.Int("itemId", inventoryItem.Item.ItemMeta.ID), zap.Any("position", position))
 
-	// TODO update the inventory in the database and invalidate cache for this inventory
+	// TODO update the inventory in the database
+
+	// invalidate cache
+	key := fmt.Sprint("inventoryID-", inventoryId)
+	err = a.cache.Invalidate(ctx, key)
+	if err != nil {
+		a.log.Error("error invalidating inventory in cache", zap.String("key", key), zap.Error(err))
+	}
+
 	return nil
 }
 

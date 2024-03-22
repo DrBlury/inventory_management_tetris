@@ -36,9 +36,10 @@ SET
   invname = $2,
   width = $3,
   height = $4,
-  created_at = $5
+  max_weight = $5,
+  created_at = $6
 WHERE
-  id = $5
+  id = $7
 RETURNING
   *;
 

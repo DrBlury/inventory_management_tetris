@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"linuxcode/inventory_manager/pkg/domain"
 	repo "linuxcode/inventory_manager/pkg/repo/generated"
+	"strconv"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgtype"
@@ -13,15 +14,15 @@ import (
 
 // GetAllInventories returns metadata of all inventories
 // TODO add pagination
-func (a appLogicImpl) GetAllInventories(ctx context.Context) ([]*domain.InventoryMeta, error) {
+func (a appLogicImpl) GetAllInventories(ctx context.Context) (*[]domain.InventoryMeta, error) {
 	// Try to hit cache
 	allInventories, err := a.cache.GetString(ctx, "allInventories")
 	if err == nil {
 		// We got a cache hit! Wonderful!
-		var domainInventories []*domain.InventoryMeta
+		var domainInventories []domain.InventoryMeta
 		err = json.Unmarshal([]byte(allInventories), &domainInventories)
 		if err == nil {
-			return domainInventories, err
+			return &domainInventories, err
 		} else {
 			a.log.Error("error unmarshalling all inventories from json", zap.Error(err))
 		}
@@ -31,9 +32,9 @@ func (a appLogicImpl) GetAllInventories(ctx context.Context) ([]*domain.Inventor
 		return nil, err
 	}
 	// map repo model to domain model
-	var inventoryMetas = make([]*domain.InventoryMeta, 0, len(repoInventories))
+	var inventoryMetas = make([]domain.InventoryMeta, 0, len(repoInventories))
 	for i, rInv := range repoInventories {
-		inventoryMetas[i] = domain.MapRepoInventoryToDomainInventoryMeta(&rInv)
+		inventoryMetas[i] = *domain.MapRepoInventoryToDomainInventoryMeta(&rInv)
 	}
 
 	// store all inventories in cache
@@ -41,14 +42,14 @@ func (a appLogicImpl) GetAllInventories(ctx context.Context) ([]*domain.Inventor
 	// marshal to json
 	inventoryMetasJSON, err := json.Marshal(inventoryMetas)
 	if err != nil {
-		return inventoryMetas, err
+		return &inventoryMetas, err
 	}
 	err = a.cache.SetString(ctx, "allInventories", string(inventoryMetasJSON))
 	if err != nil {
-		return inventoryMetas, err
+		return &inventoryMetas, err
 	}
 
-	return inventoryMetas, nil
+	return &inventoryMetas, nil
 }
 
 // AddInventory creates a new inventory without any items for the given user
@@ -144,4 +145,32 @@ func (a appLogicImpl) GetInventoryById(ctx context.Context, inventoryId int) (*d
 	}
 
 	return domainInventory, nil
+}
+
+// UpdateInventory updates the inventory with the given id
+func (a appLogicImpl) UpdateInventory(ctx context.Context, inventoryId int, updateInventoryParams domain.CreateInventoryParams) error {
+	_, err := a.queries.UpdateInventory(ctx, repo.UpdateInventoryParams{
+		UserID:    pgtype.Int4{Int32: int32(updateInventoryParams.UserID), Valid: true},
+		Invname:   pgtype.Text{String: updateInventoryParams.Name, Valid: true},
+		Width:     pgtype.Int4{Int32: int32(updateInventoryParams.Width), Valid: true},
+		Height:    pgtype.Int4{Int32: int32(updateInventoryParams.Height), Valid: true},
+		MaxWeight: pgtype.Int4{Int32: int32(updateInventoryParams.MaxWeight), Valid: true},
+	})
+	if err != nil {
+		return err
+	}
+
+	// invalidate cache
+	key := "inventoryID-" + strconv.Itoa(inventoryId)
+	err = a.cache.Invalidate(ctx, key)
+	if err != nil {
+		a.log.Error("error invalidating inventory in cache", zap.String("key", key), zap.Error(err))
+	}
+
+	err = a.cache.Invalidate(ctx, "allInventories")
+	if err != nil {
+		a.log.Error("error invalidating all inventories in cache", zap.String("key", key), zap.Error(err))
+	}
+
+	return nil
 }

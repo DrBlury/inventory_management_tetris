@@ -12,7 +12,7 @@ import (
 )
 
 // GetAllUsers returns all users that exist
-func (a appLogicImpl) GetAllUsers(ctx context.Context) ([]domain.User, error) {
+func (a appLogicImpl) GetAllUsers(ctx context.Context) (*[]domain.User, error) {
 	users, err := a.queries.ListUsers(ctx)
 	if err != nil {
 		return nil, err
@@ -28,14 +28,14 @@ func (a appLogicImpl) GetAllUsers(ctx context.Context) ([]domain.User, error) {
 		}
 		domainUsers[i] = user
 	}
-	return domainUsers, nil
+	return &domainUsers, nil
 }
 
 // GetUserById returns the user with the given id
-func (a appLogicImpl) GetUserById(ctx context.Context, userId int) (domain.User, error) {
+func (a appLogicImpl) GetUserById(ctx context.Context, userId int) (*domain.User, error) {
 	user, err := a.queries.GetUser(ctx, int32(userId))
 	if err != nil {
-		return domain.User{}, err
+		return nil, err
 	}
 
 	// map repo model to domain model
@@ -44,7 +44,7 @@ func (a appLogicImpl) GetUserById(ctx context.Context, userId int) (domain.User,
 		Username: user.Username.String,
 		Email:    user.Email.String,
 	}
-	return domainUser, nil
+	return &domainUser, nil
 }
 
 // GetUserByUsername returns the user with the given username
@@ -113,5 +113,30 @@ func (a appLogicImpl) DeleteUserById(ctx context.Context, userId int) error {
 
 	// log what user was deleted
 	a.log.Info("deleted user", zap.String("username", repoUser.Username.String))
+	return nil
+}
+
+// UpdateUser updates the user with the given id
+func (a appLogicImpl) UpdateUser(ctx context.Context, userId int, updateUserParams domain.CreateUserParams) error {
+	// hash password using bcrypt
+	salt := "saltySalt-" + updateUserParams.Username
+	hashedPassword, err := HashPassword(updateUserParams.Password, salt)
+	if err != nil {
+		return err
+	}
+
+	_, err = a.queries.UpdateUser(ctx, repo.UpdateUserParams{
+		ID:           int32(userId),
+		Username:     pgtype.Text{String: updateUserParams.Username, Valid: true},
+		Email:        pgtype.Text{String: updateUserParams.Email, Valid: true},
+		Salt:         pgtype.Text{String: salt, Valid: true},
+		PasswordHash: pgtype.Text{String: hashedPassword, Valid: true},
+	})
+	if err != nil {
+		return err
+	}
+
+	// log what user was updated
+	a.log.Info("updated user", zap.String("username", updateUserParams.Username))
 	return nil
 }
