@@ -43,7 +43,7 @@ type AppLogic interface {
 	AddUser(ctx context.Context, createUserParams domain.CreateUserParams) (*domain.User, error)
 	DeleteUserById(ctx context.Context, userId int) error
 	GetAllUsers(ctx context.Context) (*[]domain.User, error)
-	UpdateUser(ctx context.Context, userId int, updateUserParams domain.CreateUserParams) error
+	UpdateUser(ctx context.Context, userId int, updateUserParams domain.CreateUserParams) (*domain.User, error)
 
 	// Inventory Item
 	AddItemInInventory(ctx context.Context, inventoryId int, item domain.Item, quantity int, durability int) error

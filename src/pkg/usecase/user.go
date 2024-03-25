@@ -132,15 +132,15 @@ func (a appLogicImpl) DeleteUserById(ctx context.Context, userId int) error {
 }
 
 // UpdateUser updates the user with the given id
-func (a appLogicImpl) UpdateUser(ctx context.Context, userId int, updateUserParams domain.CreateUserParams) error {
+func (a appLogicImpl) UpdateUser(ctx context.Context, userId int, updateUserParams domain.CreateUserParams) (*domain.User, error) {
 	// hash password using bcrypt
 	salt := "saltySalt-" + updateUserParams.Username
 	hashedPassword, err := HashPassword(updateUserParams.Password, salt)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	_, err = a.queries.UpdateUser(ctx, repo.UpdateUserParams{
+	updatedUser, err := a.queries.UpdateUser(ctx, repo.UpdateUserParams{
 		ID:           int32(userId),
 		Username:     pgtype.Text{String: updateUserParams.Username, Valid: true},
 		Email:        pgtype.Text{String: updateUserParams.Email, Valid: true},
@@ -148,10 +148,17 @@ func (a appLogicImpl) UpdateUser(ctx context.Context, userId int, updateUserPara
 		PasswordHash: pgtype.Text{String: hashedPassword, Valid: true},
 	})
 	if err != nil {
-		return err
+		return nil, err
+	}
+
+	// map user to domain model
+	updatedUserDomain := &domain.User{
+		ID:       int(updatedUser.ID),
+		Username: updatedUser.Username.String,
+		Email:    updatedUser.Email.String,
 	}
 
 	// log what user was updated
 	a.log.Info("updated user", zap.String("username", updateUserParams.Username))
-	return nil
+	return updatedUserDomain, nil
 }

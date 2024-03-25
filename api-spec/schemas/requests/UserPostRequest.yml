@@ -3,7 +3,7 @@ type: object
 properties:
   id:
     type: string
-  name:
+  username:
     type: string
   email:
     type: string
@@ -11,6 +11,6 @@ properties:
     type: string
 
 required:
-  - name
+  - username
   - email
   - password
