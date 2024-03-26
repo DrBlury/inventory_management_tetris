@@ -34,7 +34,6 @@ func genExampleItemWithMatrix(matrix [][]int) *Item {
 			Shape: Shape{
 				Width:    len(matrix[0]),
 				Height:   len(matrix),
-				Matrix:   matrix,
 				RawShape: rawShape,
 			},
 			Weight:   10,
@@ -113,12 +112,9 @@ func Test_inventoryItemAdd(t *testing.T) {
 
 	// add another box shaped item
 	exampleItem.ItemMeta.Shape = Shape{
-		Width:  2,
-		Height: 2,
-		Matrix: [][]int{
-			{1, 1},
-			{1, 1},
-		},
+		Width:    2,
+		Height:   2,
+		RawShape: "####",
 	}
 	_, error := exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 6, Y: 2, Rotation: 0}, 1, 100)
 	if error != nil {

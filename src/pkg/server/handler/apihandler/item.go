@@ -56,13 +56,23 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO map dto to domain model for createItemParams
-	var createItemParams = domain.CreateItemParams{}
+	var createItemParams = domain.CreateItemParams{
+		Name:        dtoItem.Name,
+		Description: dtoItem.Description,
+		Variant:     dtoItem.Variant,
+		Type:        domain.ItemType(dtoItem.Type),
+		BuyValue:    dtoItem.BuyValue,
+		SellValue:   dtoItem.SellValue,
+		MaxStack:    dtoItem.MaxStack,
+		Weight:      dtoItem.Weight,
+		Durability:  dtoItem.Durability,
+		Shape: domain.Shape{
+			Width:    dtoItem.Shape.Width,
+			Height:   dtoItem.Shape.Height,
+			RawShape: dtoItem.Shape.Rawshape,
+		},
+	}
 
-	// call domain layer
-	/* //TODO maybe add function to add multiple items at
-	 * //TODO once (...) and return list of items that could not be added
-	 */
 	err = a.AppLogic.AddItem(r.Context(), createItemParams)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)

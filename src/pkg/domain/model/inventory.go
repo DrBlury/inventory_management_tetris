@@ -36,11 +36,6 @@ func (i *Inventory) AddItem(item Item, quantity int, durability int) bool {
 		return false // item was not added because it did not fit
 	}
 
-	// rotate the item if necessary
-	for rotation := 0; rotation < positionSuggestion.Rotation; rotation++ {
-		item.ItemMeta.Shape = rotateCW(item.ItemMeta.Shape)
-	}
-
 	// add the item to the inventory
 	i.Items = append(i.Items, InventoryItem{
 		Item:           item,
@@ -74,8 +69,7 @@ func (i *Inventory) GetFitPosition(item Item) (*Position, error) {
 			// check item placement for every rotation
 			for rotation := 0; rotation < POSSIBLE_ROTATIONS; rotation++ {
 				if rotation > 0 {
-					// TODO Maybe there's a bug here?
-					tempShape = rotateCW(tempShape)
+					tempShape.applyRotations(1)
 				}
 
 				// Overwrite the maybePosition with the new values
@@ -104,7 +98,7 @@ func (i *Inventory) getItemsInMatrix() [][]int {
 	for itemIdx, inventoryItem := range i.Items {
 		// place the item into the temporary inventory matrix
 
-		for y, row := range inventoryItem.Item.ItemMeta.Shape.Matrix {
+		for y, row := range inventoryItem.Item.ItemMeta.Shape.getMatrix() {
 			for x, cell := range row {
 				// only add the item and not the empty cells
 				if cell == 1 {
@@ -123,14 +117,13 @@ func (i *Inventory) CheckItemPlacement(item *Item, position *Position) bool {
 	}
 
 	tempInventoryMatrix := i.getItemsInMatrix()
-	var rotatedShape Shape
+
 	// temporarily apply the rotation to the item shape
-	for rotation := 0; rotation < position.Rotation; rotation++ {
-		rotatedShape = rotateCW(item.ItemMeta.Shape)
-	}
+	tempItemShape := item.ItemMeta.Shape
+	tempItemShape.applyRotations(position.Rotation)
 
 	// check if the item can be placed into the inventory
-	for y, row := range rotatedShape.Matrix {
+	for y, row := range tempItemShape.getMatrix() {
 		for x, cell := range row {
 			cellIsUsed := cell != 0
 			inventoryCellIsUsed := tempInventoryMatrix[position.Y+y][position.X+x] != 0

@@ -45,7 +45,11 @@ func (a appLogicImpl) GetAllItems(ctx context.Context) (*[]domain.Item, error) {
 
 // AddItem adds a new item to the database
 func (a appLogicImpl) AddItem(ctx context.Context, createItemParams domain.CreateItemParams) error {
+	a.log.Info("creating item", zap.String("name", createItemParams.Name))
+	a.log.Info("item type", zap.Any("type", createItemParams.Type))
+
 	repoItemType := repo.ItemType(createItemParams.Type)
+	a.log.Info("item type", zap.Any("repo type", repoItemType))
 	createdItem, err := a.queries.CreateItem(ctx, repo.CreateItemParams{
 		Name:        pgtype.Text{String: createItemParams.Name, Valid: true},
 		Description: pgtype.Text{String: createItemParams.Description, Valid: true},

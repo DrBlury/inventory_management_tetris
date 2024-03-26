@@ -1,25 +1,26 @@
 package domain
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Shape struct {
 	RawShape string
 	Width    int
 	Height   int
-	Matrix   [][]int
 }
 
-func (s *Shape) parseShape(rawShape string, width int, height int) {
+func (s *Shape) getMatrix() [][]int {
 	// Initialize the shape matrix
-	matrix := make([][]int, height)
+	matrix := make([][]int, s.Height)
 	for i := range matrix {
-		matrix[i] = make([]int, width)
+		matrix[i] = make([]int, s.Width)
 	}
 
 	// cut the raw shape into rows
 	rows := []string{}
-	for i := 0; i < len(rawShape); i += width {
-		rows = append(rows, rawShape[i:i+width])
+	for i := 0; i < len(s.RawShape); i += s.Width {
+		rows = append(rows, s.RawShape[i:i+s.Width])
 	}
 
 	// fill the shape matrix
@@ -31,15 +32,11 @@ func (s *Shape) parseShape(rawShape string, width int, height int) {
 		}
 	}
 
-	s = &Shape{
-		Width:  width,
-		Height: height,
-		Matrix: matrix,
-	}
+	return matrix
 }
 
 func (s *Shape) printShape() {
-	for _, row := range s.Matrix {
+	for _, row := range s.getMatrix() {
 		for _, cell := range row {
 			if cell == 1 {
 				fmt.Print("#") // Occupied spaces are represented by "#"
@@ -51,32 +48,52 @@ func (s *Shape) printShape() {
 	}
 }
 
-func (s *Shape) printShapeWithRotation(rotation int) {
-	// Rotate the shape matrix
-	var newShape Shape
-	for i := 0; i < rotation; i++ {
-		newShape = rotateCW(*s)
+func (s *Shape) applyRotations(rotations int) {
+	rotatedMatrix := s.getRotatedMatrixCW(rotations)
+	height := len(rotatedMatrix)
+	width := len(rotatedMatrix[0])
+	// generate new raw shape
+	rawShape := ""
+	for i := 0; i < height; i++ {
+		for j := 0; j < width; j++ {
+			if rotatedMatrix[i][j] == 1 {
+				rawShape += "#"
+			} else {
+				rawShape += "."
+			}
+		}
 	}
-	newShape.printShape()
+	s.Height = height
+	s.Width = width
+	s.RawShape = rawShape
 }
 
 // TODO maybe add amount of rotations to apply
-func rotateCW(s Shape) Shape {
+func (s *Shape) getRotatedMatrixCW(rotations int) [][]int {
+	// get matrix of shape
+	itemMatrix := s.getMatrix()
+	for i := 0; i < rotations; i++ {
+		itemMatrix = rotateMatrixCW(itemMatrix)
+	}
+	return itemMatrix
+}
+
+func rotateMatrixCW(oldMatrix [][]int) [][]int {
 	// Create a new matrix with the same dimensions as the original shape but with the width and height swapped
-	newMatrix := make([][]int, s.Width)
+	width := len(oldMatrix[0])
+	height := len(oldMatrix)
+
+	newMatrix := make([][]int, width)
 	for i := range newMatrix {
-		newMatrix[i] = make([]int, s.Height)
+		newMatrix[i] = make([]int, height)
 	}
 
 	// Fill the new matrix with the rotated values (clockwise)
-	for i := 0; i < s.Height; i++ {
-		for j := 0; j < s.Width; j++ {
-			newMatrix[j][s.Height-i-1] = s.Matrix[i][j]
+	for i := 0; i < height; i++ {
+		for j := 0; j < width; j++ {
+			newMatrix[j][height-i-1] = oldMatrix[i][j]
 		}
 	}
 
-	// Update the item's shape with the new shape
-	s.Matrix = newMatrix
-	s.Width, s.Height = s.Height, s.Width // Swap width and height
-	return s
+	return newMatrix
 }

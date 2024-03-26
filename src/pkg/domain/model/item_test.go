@@ -10,8 +10,12 @@ func Test_parseShape(t *testing.T) {
 	rawShape := "#####..##..#####"
 	width := 4
 	height := 4
-	shape := &Shape{}
-	shape.parseShape(rawShape, width, height)
+	shape := &Shape{
+		RawShape: rawShape,
+		Width:    width,
+		Height:   height,
+	}
+	matrix := shape.getMatrix()
 
 	expectedShapeMatrix := [][]int{
 		{1, 1, 1, 1},
@@ -20,7 +24,7 @@ func Test_parseShape(t *testing.T) {
 		{1, 1, 1, 1},
 	}
 
-	for i, row := range shape.Matrix {
+	for i, row := range matrix {
 		for j, cell := range row {
 			if cell != expectedShapeMatrix[i][j] {
 				t.Errorf("expected %d, got %d", expectedShapeMatrix[i][j], cell)
@@ -32,14 +36,9 @@ func Test_parseShape(t *testing.T) {
 // Test_printShape tests the printShape function.
 func Test_printShape(t *testing.T) {
 	shape := Shape{
-		Matrix: [][]int{
-			{1, 1, 1, 1},
-			{1, 0, 0, 1},
-			{1, 0, 0, 1},
-			{1, 1, 1, 1},
-		},
-		Width:  4,
-		Height: 4,
+		RawShape: "#####..##..#####",
+		Width:    4,
+		Height:   4,
 	}
 
 	shape.printShape()
@@ -68,6 +67,7 @@ func Test_rotateShape(t *testing.T) {
 
 	// get the rotated shape
 	rotatedShape := inventoryItem.CurrentShape()
+	rotatedShape.printShape()
 
 	expectedShape := [][]int{
 		{0, 0, 0, 1},
@@ -75,7 +75,7 @@ func Test_rotateShape(t *testing.T) {
 		{0, 0, 0, 1},
 	}
 
-	if !reflect.DeepEqual(rotatedShape.Matrix, expectedShape) {
-		t.Errorf("Rotation failed.\nExpected:\n%v\nGot:\n%v", expectedShape, rotatedShape.Matrix)
+	if !reflect.DeepEqual(rotatedShape.getMatrix(), expectedShape) {
+		t.Errorf("Rotation failed.\nExpected:\n%v\nGot:\n%v", expectedShape, rotatedShape.getMatrix())
 	}
 }
