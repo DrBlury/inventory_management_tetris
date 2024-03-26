@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"context"
-	"encoding/json"
 	"linuxcode/inventory_manager/pkg/domain"
 	repo "linuxcode/inventory_manager/pkg/repo/generated"
 	"strconv"
@@ -15,38 +14,27 @@ import (
 // GetAllInventories returns metadata of all inventories
 // TODO add pagination
 func (a appLogicImpl) GetAllInventories(ctx context.Context) (*[]domain.InventoryMeta, error) {
-	// Try to hit cache
-	allInventories, err := a.cache.GetString(ctx, "allInventories")
-	if err == nil {
-		// We got a cache hit! Wonderful!
-		var domainInventories []domain.InventoryMeta
-		err = json.Unmarshal([]byte(allInventories), &domainInventories)
-		if err == nil {
-			return &domainInventories, err
-		} else {
-			a.log.Error("error unmarshalling all inventories from json", zap.Error(err))
-		}
+	allInventories, err := a.getInventoriesFromCache(context.Background())
+	if err == nil && allInventories != nil {
+		return allInventories, nil
 	}
+
+	a.log.Info("getting all inventories from database instead of cache")
+
 	repoInventories, err := a.queries.ListInventories(ctx)
 	if err != nil {
 		return nil, err
 	}
 	// map repo model to domain model
 	var inventoryMetas = make([]domain.InventoryMeta, 0, len(repoInventories))
-	for i, rInv := range repoInventories {
-		inventoryMetas[i] = *domain.MapRepoInventoryToDomainInventoryMeta(&rInv)
+	for _, rInv := range repoInventories {
+		inventoryMetas = append(inventoryMetas, *domain.MapRepoInventoryToDomainInventoryMeta(&rInv))
 	}
 
 	// store all inventories in cache
-
-	// marshal to json
-	inventoryMetasJSON, err := json.Marshal(inventoryMetas)
+	err = a.setInventoriesInCache(ctx, &inventoryMetas)
 	if err != nil {
-		return &inventoryMetas, err
-	}
-	err = a.cache.SetString(ctx, "allInventories", string(inventoryMetasJSON))
-	if err != nil {
-		return &inventoryMetas, err
+		a.log.Error("error setting all inventories in cache", zap.Error(err))
 	}
 
 	return &inventoryMetas, nil
@@ -93,7 +81,7 @@ func (a appLogicImpl) DeleteInventoryById(ctx context.Context, inventoryId int) 
 func (a appLogicImpl) GetInventoryById(ctx context.Context, inventoryId int) (*domain.Inventory, error) {
 	// Get inventory from cache
 	domainInventory, err := a.getInventoryFromCache(ctx, inventoryId)
-	if err == nil {
+	if err == nil && domainInventory != nil {
 		// We got a cache hit! Wonderful!
 		return domainInventory, nil
 	}

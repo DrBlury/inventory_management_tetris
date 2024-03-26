@@ -19,6 +19,7 @@ func NewAppLogic(queries *repo.Queries, logger *zap.SugaredLogger, cache *cache.
 	return appLogicImpl{
 		queries: queries,
 		log:     logger,
+		cache:   cache,
 	}
 }
 

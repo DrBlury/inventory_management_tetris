@@ -2,34 +2,57 @@ package cache
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/redis/go-redis/v9"
+	"go.uber.org/zap"
 )
 
 type Cache struct {
 	Config *Config
 	Client *redis.Client
+	log    *zap.SugaredLogger
 }
 
 // NewCache creates a new cache
-func NewCache(config *Config) *Cache {
-
+func NewCache(config *Config, log *zap.SugaredLogger) *Cache {
 	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     config.Host + ":" + strconv.Itoa(config.Port),
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
 
+	result, err := client.Ping(context.Background()).Result()
+	if err != nil {
+		log.Error("error connecting to cache", zap.Error(err), zap.String("result", result))
+		return nil
+	}
+
+	log.Info("connected to cache", zap.String("result", result))
+
 	return &Cache{
 		Config: config,
 		Client: client,
+		log:    log,
 	}
 }
 
 func (c *Cache) GetString(ctx context.Context, key string) (string, error) {
-	val, err := c.Client.Get(ctx, "foo").Result()
+	if c.Client == nil {
+		c.log.Error("cache client is nil")
+	}
+	if key == "" {
+		c.log.Error("key is empty")
+	}
+	val, err := c.Client.Get(ctx, key).Result()
 	if err != nil {
-		return "", err
+		switch err {
+		case redis.Nil:
+			return "", nil
+		default:
+			c.log.Error("error getting string from cache", zap.Error(err))
+			return "", err
+		}
 	}
 	return val, nil
 }

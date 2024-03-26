@@ -1,0 +1,28 @@
+FROM golang:alpine AS builder
+LABEL AUTHOR="Julian Bensch (Linuxcode)"
+
+# install curl for healthcheck
+RUN apk --no-cache add curl
+
+# install Delve for debugging
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
+# expose debug port
+EXPOSE 2345
+
+WORKDIR /build
+
+# Copy and download dependency using go mod
+ADD ./src/go.* /build/
+RUN go mod download
+
+# Copy sources to build container
+ADD ./src /build/
+
+# Build the app
+WORKDIR /build
+
+# Build the application with debug flags
+RUN go build -gcflags=all="-N -l" -o main .
+
+# Run delve debug with source code we want to debug
+CMD ["dlv", "--headless", "--listen=:2345", "--api-version=2", "--accept-multiclient", "exec", "./main"]

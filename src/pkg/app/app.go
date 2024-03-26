@@ -50,7 +50,7 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 	logger.Info("database connection established")
 
 	// ===== Cache =====
-	cache := cache.NewCache(cfg.CacheConfig)
+	cache := cache.NewCache(cfg.CacheConfig, logger)
 
 	// ===== App Logic =====
 	appLogic := usecase.NewAppLogic(db, logger, cache)

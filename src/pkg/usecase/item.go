@@ -14,17 +14,10 @@ import (
 
 // GetAllItems returns all items that exist
 func (a appLogicImpl) GetAllItems(ctx context.Context) (*[]domain.Item, error) {
-	// check for cache hit
-	allItems, err := a.cache.GetString(ctx, "allItems")
-	if err == nil {
-		// We got a cache hit! Wonderful!
-		var domainItems []domain.Item
-		err = json.Unmarshal([]byte(allItems), &domainItems)
-		if err != nil {
-			a.log.Error("error unmarshalling all items from json", zap.Error(err))
-			return &domainItems, err
-		}
-		return &domainItems, nil
+	// check for cache hits
+	allItems, err := a.getAllItems(ctx)
+	if err == nil && allItems != nil {
+		return allItems, nil
 	}
 
 	repoItems, err := a.queries.ListItems(ctx)

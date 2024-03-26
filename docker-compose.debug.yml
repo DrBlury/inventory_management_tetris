@@ -4,9 +4,10 @@ services:
     inventory_manager:
         build:
             context: .
-            dockerfile: ./build/dockerfiles/Dockerfile.app
+            dockerfile: ./build/dockerfiles/Dockerfile.debug
         ports:
-            - '8080:8080'
+            - '8080:8080' # Application
+            - '2345:2345' # Delve debugger
         env_file:
             - .env
         depends_on:
@@ -17,6 +18,10 @@ services:
             interval: 30s
             timeout: 10s
             retries: 5
+        security_opt:
+            - apparmor=unconfined
+        cap_add:
+            - SYS_PTRACE
 
     db:
         container_name: app-postgres
