@@ -40,14 +40,15 @@ func MapRepoInventoryItemsToDomainInventoryItems(rItems *[]repo.InventoryItem) *
 
 func MapRepoItemsToDomainItems(rItems ...repo.Item) *[]Item {
 	var domainItems = make([]Item, 0, len(rItems))
-	for i, rItem := range rItems {
+	for _, rItem := range rItems {
 		itemType := ItemType(rItem.Type.ItemType)
-		domainItems[i] = Item{
+		domainItems = append(domainItems, Item{
 			ItemMeta: ItemMeta{
 				ID: int(rItem.ID),
 				Shape: Shape{
-					Width:  int(rItem.Width.Int32),
-					Height: int(rItem.Height.Int32),
+					Width:    int(rItem.Width.Int32),
+					Height:   int(rItem.Height.Int32),
+					RawShape: rItem.Rawshape.String,
 				},
 				Weight:   int(rItem.Weight.Int32),
 				MaxStack: int(rItem.MaxStack.Int32),
@@ -59,7 +60,7 @@ func MapRepoItemsToDomainItems(rItems ...repo.Item) *[]Item {
 			BuyValue:    int(rItem.BuyValue.Int32),
 			SellValue:   int(rItem.SellValue.Int32),
 			Variant:     rItem.Variant.String,
-		}
+		})
 	}
 	return &domainItems
 }

@@ -33,7 +33,7 @@ type AppLogic interface {
 
 	// Items
 	GetAllItems(ctx context.Context) (*[]domain.Item, error)
-	AddItem(ctx context.Context, createItemParams domain.CreateItemParams) error
+	AddItem(ctx context.Context, createItemParams domain.CreateItemParams) (*domain.Item, error)
 	DeleteItemById(ctx context.Context, itemId int) error
 	GetItemById(ctx context.Context, itemId int) (*domain.Item, error)
 	UpdateItem(ctx context.Context, itemId int, updateItemParams domain.UpdateItemParams) error

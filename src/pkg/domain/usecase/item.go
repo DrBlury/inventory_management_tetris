@@ -44,7 +44,7 @@ func (a appLogicImpl) GetAllItems(ctx context.Context) (*[]domain.Item, error) {
 }
 
 // AddItem adds a new item to the database
-func (a appLogicImpl) AddItem(ctx context.Context, createItemParams domain.CreateItemParams) error {
+func (a appLogicImpl) AddItem(ctx context.Context, createItemParams domain.CreateItemParams) (*domain.Item, error) {
 	a.log.Info("creating item", zap.String("name", createItemParams.Name))
 	a.log.Info("item type", zap.Any("type", createItemParams.Type))
 
@@ -66,7 +66,7 @@ func (a appLogicImpl) AddItem(ctx context.Context, createItemParams domain.Creat
 		CreatedAt:   pgtype.Timestamp{Time: time.Now(), Valid: true},
 	})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// log what item was created
@@ -82,7 +82,14 @@ func (a appLogicImpl) AddItem(ctx context.Context, createItemParams domain.Creat
 		a.log.Error("error invalidating item in cache", zap.Error(err))
 	}
 
-	return nil
+	// map repo model to domain model
+	var domainItem *domain.Item
+	domainItems := domain.MapRepoItemsToDomainItems(createdItem)
+	if len(*domainItems) > 0 {
+		domainItem = &(*domainItems)[0]
+	}
+
+	return domainItem, nil
 }
 
 // DeleteItemById deletes the item with the given id

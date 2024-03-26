@@ -73,15 +73,15 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	err = a.AppLogic.AddItem(r.Context(), createItemParams)
+	addedItem, err := a.AppLogic.AddItem(r.Context(), createItemParams)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
 	}
 
 	// return response
-	w.WriteHeader(http.StatusCreated)
-	render.JSON(w, r, struct{ Message string }{"Item added"})
+	render.Status(r, http.StatusCreated)
+	render.JSON(w, r, addedItem)
 }
 
 // Delete item by ID
