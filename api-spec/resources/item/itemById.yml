@@ -46,7 +46,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/_index.yml#/item'
+          $ref: '../../schemas/_index.yml#/item_post_request'
   responses:
     '200':
       description: Update done

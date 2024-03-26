@@ -132,7 +132,7 @@ func (a appLogicImpl) DeleteUserById(ctx context.Context, userId int) error {
 }
 
 // UpdateUser updates the user with the given id
-func (a appLogicImpl) UpdateUser(ctx context.Context, userId int, updateUserParams domain.CreateUserParams) (*domain.User, error) {
+func (a appLogicImpl) UpdateUser(ctx context.Context, userId int, updateUserParams domain.UpdateUserParams) (*domain.User, error) {
 	// hash password using bcrypt
 	salt := "saltySalt-" + updateUserParams.Username
 	hashedPassword, err := HashPassword(updateUserParams.Password, salt)

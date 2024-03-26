@@ -133,14 +133,13 @@ func (a APIHandler) UpdateUserById(w http.ResponseWriter, r *http.Request, userI
 		return
 	}
 
-	updateUserParams := domain.CreateUserParams{
+	updateUserParams := domain.UpdateUserParams{
 		Username: dtoUser.Username,
 		Email:    dtoUser.Email,
 		Password: dtoUser.Password,
 	}
 
 	// call domain layer
-	// TODO use custom object, do not reuse CreateUserParams
 	updatedUser, err := a.AppLogic.UpdateUser(r.Context(), int(userId), updateUserParams)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)

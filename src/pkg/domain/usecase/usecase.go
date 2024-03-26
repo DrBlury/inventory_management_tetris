@@ -29,14 +29,14 @@ type AppLogic interface {
 	AddInventory(ctx context.Context, createInventoryParams domain.CreateInventoryParams) (*domain.InventoryMeta, error)
 	DeleteInventoryById(ctx context.Context, inventoryId int) error
 	GetInventoryById(ctx context.Context, inventoryId int) (*domain.Inventory, error)
-	UpdateInventory(ctx context.Context, inventoryId int, updateInventoryParams domain.CreateInventoryParams) error
+	UpdateInventory(ctx context.Context, inventoryId int, updateInventoryParams domain.UpdateInventoryParams) (*domain.InventoryMeta, error)
 
 	// Items
 	GetAllItems(ctx context.Context) (*[]domain.Item, error)
 	AddItem(ctx context.Context, createItemParams domain.CreateItemParams) error
 	DeleteItemById(ctx context.Context, itemId int) error
 	GetItemById(ctx context.Context, itemId int) (*domain.Item, error)
-	UpdateItem(ctx context.Context, itemId int, updateItemParams domain.CreateItemParams) error
+	UpdateItem(ctx context.Context, itemId int, updateItemParams domain.UpdateItemParams) error
 
 	// Users
 	GetUserById(ctx context.Context, userId int) (*domain.User, error)
@@ -44,7 +44,7 @@ type AppLogic interface {
 	AddUser(ctx context.Context, createUserParams domain.CreateUserParams) (*domain.User, error)
 	DeleteUserById(ctx context.Context, userId int) error
 	GetAllUsers(ctx context.Context) (*[]domain.User, error)
-	UpdateUser(ctx context.Context, userId int, updateUserParams domain.CreateUserParams) (*domain.User, error)
+	UpdateUser(ctx context.Context, userId int, updateUserParams domain.UpdateUserParams) (*domain.User, error)
 
 	// Inventory Item
 	AddItemInInventory(ctx context.Context, inventoryId int, item domain.Item, quantity int, durability int) error

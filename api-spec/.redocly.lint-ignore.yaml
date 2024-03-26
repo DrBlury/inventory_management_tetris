@@ -15,3 +15,6 @@ resources/info/status.yml:
     - '#/get/responses'
   security-defined:
     - '#/get'
+resources/inventory/inventoryById.yml:
+  security-defined:
+    - '#/put'

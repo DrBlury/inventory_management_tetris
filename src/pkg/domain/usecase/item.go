@@ -133,7 +133,7 @@ func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (*domain.Item
 	return domainItem, nil
 }
 
-func (a appLogicImpl) UpdateItem(ctx context.Context, itemId int, updateItemParams domain.CreateItemParams) error {
+func (a appLogicImpl) UpdateItem(ctx context.Context, itemId int, updateItemParams domain.UpdateItemParams) error {
 	repoItemType := repo.ItemType(updateItemParams.Type)
 	_, err := a.queries.UpdateItem(ctx, repo.UpdateItemParams{
 		ID:          int32(itemId),

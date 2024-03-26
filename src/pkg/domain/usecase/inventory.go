@@ -136,8 +136,8 @@ func (a appLogicImpl) GetInventoryById(ctx context.Context, inventoryId int) (*d
 }
 
 // UpdateInventory updates the inventory with the given id
-func (a appLogicImpl) UpdateInventory(ctx context.Context, inventoryId int, updateInventoryParams domain.CreateInventoryParams) error {
-	_, err := a.queries.UpdateInventory(ctx, repo.UpdateInventoryParams{
+func (a appLogicImpl) UpdateInventory(ctx context.Context, inventoryId int, updateInventoryParams domain.UpdateInventoryParams) (*domain.InventoryMeta, error) {
+	updatedInventory, err := a.queries.UpdateInventory(ctx, repo.UpdateInventoryParams{
 		UserID:    pgtype.Int4{Int32: int32(updateInventoryParams.UserID), Valid: true},
 		Invname:   pgtype.Text{String: updateInventoryParams.Name, Valid: true},
 		Width:     pgtype.Int4{Int32: int32(updateInventoryParams.Width), Valid: true},
@@ -145,7 +145,7 @@ func (a appLogicImpl) UpdateInventory(ctx context.Context, inventoryId int, upda
 		MaxWeight: pgtype.Int4{Int32: int32(updateInventoryParams.MaxWeight), Valid: true},
 	})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// invalidate cache
@@ -160,5 +160,8 @@ func (a appLogicImpl) UpdateInventory(ctx context.Context, inventoryId int, upda
 		a.log.Error("error invalidating all inventories in cache", zap.String("key", key), zap.Error(err))
 	}
 
-	return nil
+	// map repo model to domain model
+	invMeta := domain.MapRepoInventoryToDomainInventoryMeta(&updatedInventory)
+
+	return invMeta, nil
 }

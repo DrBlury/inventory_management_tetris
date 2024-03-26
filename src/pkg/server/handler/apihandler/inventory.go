@@ -116,6 +116,47 @@ func (a APIHandler) GetInventoryById(w http.ResponseWriter, r *http.Request, inv
 	render.JSON(w, r, inventory)
 }
 
+// Update inventory by ID
+// (PUT /api/inventories/{inventoryId})
+func (a APIHandler) UpdateInventoryById(w http.ResponseWriter, r *http.Request, inventoryId int64) {
+	// read dto inventory from request using unmarshal
+	var dtoInventory server.InventoryPostRequest
+
+	// read request body into bytes
+	bodyBytes := make([]byte, r.ContentLength)
+	_, err := r.Body.Read(bodyBytes)
+	if err != nil {
+		handler.HandleInternalServerError(w, r, err)
+		return
+	}
+
+	// unmarshal bytes into dto
+	err = json.Unmarshal(bodyBytes, &dtoInventory)
+	if err != nil {
+		handler.HandleInternalServerError(w, r, err)
+		return
+	}
+
+	updateInventoryParams := domain.UpdateInventoryParams{
+		UserID:    dtoInventory.UserId,
+		Name:      dtoInventory.Name,
+		MaxWeight: dtoInventory.MaxWeight,
+		Width:     dtoInventory.Volume.Width,
+		Height:    dtoInventory.Volume.Height,
+	}
+
+	// call domain layer
+	updatedInventory, err := a.AppLogic.UpdateInventory(r.Context(), int(inventoryId), updateInventoryParams)
+	if err != nil {
+		handler.HandleInternalServerError(w, r, err)
+		return
+	}
+
+	// return response
+	render.Status(r, http.StatusOK)
+	render.JSON(w, r, updatedInventory)
+}
+
 // Add a new item to the inventory at the first possible position
 // (POST /api/inventories/{inventoryId}/add)
 func (a APIHandler) AddItemInInventory(w http.ResponseWriter, r *http.Request, inventoryId int64) {

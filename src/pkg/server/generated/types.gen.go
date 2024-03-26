@@ -93,11 +93,10 @@ type InventoryMeta struct {
 
 // InventoryPostRequest defines model for InventoryPostRequest.
 type InventoryPostRequest struct {
-	Id        *string `json:"id,omitempty"`
-	MaxWeight int     `json:"max_weight"`
-	Name      string  `json:"name"`
-	UserId    int     `json:"user_id"`
-	Volume    Volume  `json:"volume"`
+	MaxWeight int    `json:"max_weight"`
+	Name      string `json:"name"`
+	UserId    int    `json:"user_id"`
+	Volume    Volume `json:"volume"`
 }
 
 // Item defines model for Item.
@@ -186,10 +185,9 @@ type UserListResponse struct {
 
 // UserPostRequest defines model for UserPostRequest.
 type UserPostRequest struct {
-	Email    string  `json:"email"`
-	Id       *string `json:"id,omitempty"`
-	Password string  `json:"password"`
-	Username string  `json:"username"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Username string `json:"username"`
 }
 
 // Version defines model for Version.
@@ -219,6 +217,9 @@ type Volume struct {
 // AddInventoryJSONRequestBody defines body for AddInventory for application/json ContentType.
 type AddInventoryJSONRequestBody = InventoryPostRequest
 
+// UpdateInventoryByIdJSONRequestBody defines body for UpdateInventoryById for application/json ContentType.
+type UpdateInventoryByIdJSONRequestBody = InventoryPostRequest
+
 // AddItemInInventoryJSONRequestBody defines body for AddItemInInventory for application/json ContentType.
 type AddItemInInventoryJSONRequestBody = AddItemToInventoryRequest
 
@@ -229,10 +230,10 @@ type MoveItemInInventoryJSONRequestBody = MoveItemRequest
 type AddItemJSONRequestBody = ItemPostRequest
 
 // UpdateItemByIdJSONRequestBody defines body for UpdateItemById for application/json ContentType.
-type UpdateItemByIdJSONRequestBody = Item
+type UpdateItemByIdJSONRequestBody = ItemPostRequest
 
 // AddUserJSONRequestBody defines body for AddUser for application/json ContentType.
 type AddUserJSONRequestBody = UserPostRequest
 
 // UpdateUserByIdJSONRequestBody defines body for UpdateUserById for application/json ContentType.
-type UpdateUserByIdJSONRequestBody = User
+type UpdateUserByIdJSONRequestBody = UserPostRequest
