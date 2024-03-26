@@ -2,7 +2,7 @@ package apihandler
 
 import (
 	"encoding/json"
-	"linuxcode/inventory_manager/pkg/domain"
+	domain "linuxcode/inventory_manager/pkg/domain/model"
 	server "linuxcode/inventory_manager/pkg/server/generated"
 	handler "linuxcode/inventory_manager/pkg/server/handler"
 	"net/http"
@@ -57,7 +57,7 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	createUserParams := domain.CreateUserParams{
-		Username: dtoUser.Name,
+		Username: dtoUser.Username,
 		Email:    dtoUser.Email,
 		Password: dtoUser.Password,
 	}
@@ -66,7 +66,6 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	addedUser, err := a.AppLogic.AddUser(r.Context(), createUserParams)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
-		// log error
 		zap.L().Error("error adding user", zap.Error(err))
 		return
 	}
@@ -74,7 +73,7 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	// TODO map to dto
 
 	// return response
-	w.WriteHeader(http.StatusCreated)
+	render.Status(r, http.StatusCreated)
 	render.JSON(w, r, addedUser)
 }
 
@@ -135,7 +134,7 @@ func (a APIHandler) UpdateUserById(w http.ResponseWriter, r *http.Request, userI
 	}
 
 	updateUserParams := domain.CreateUserParams{
-		Username: dtoUser.Name,
+		Username: dtoUser.Username,
 		Email:    dtoUser.Email,
 		Password: dtoUser.Password,
 	}

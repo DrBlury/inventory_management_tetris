@@ -1,18 +1,18 @@
 ---
 get:
-    tags:
-        - info
-    summary: Get metrics
-    description: Get metrics
-    operationId: getMetrics
-    responses:
-        '200':
-            description: OK
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            metrics:
-                                type: object
-                                description: Metrics for prometheus
+  tags:
+    - info
+  summary: Get metrics
+  description: Get metrics
+  operationId: getMetrics
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              metrics:
+                type: object
+                description: Metrics for prometheus

@@ -1,31 +1,31 @@
 ---
 type: object
 properties:
-    errorId:
-        type: string
-        description: The unique identifier for the error
-        example: 123e4567-e89b-12d3-a456-426614174000
-    error:
-        type: string
-        description: The error message
-        example: The item does not exist
-    errorType:
-        $ref: './ErrorType.yml'
-        description: The error type
-        example: Bad Request
-    code:
-        type: integer
-        description: The error code
-        example: 404
-    timestamp:
-        type: string
-        format: date-time
-        description: The time the error occurred
-        example: 2020-01-01T00:00:00Z
+  errorId:
+    type: string
+    description: The unique identifier for the error
+    example: 123e4567-e89b-12d3-a456-426614174000
+  error:
+    type: string
+    description: The error message
+    example: The item does not exist
+  errorType:
+    $ref: './ErrorType.yml'
+    description: The error type
+    example: Bad Request
+  code:
+    type: integer
+    description: The error code
+    example: 404
+  timestamp:
+    type: string
+    format: date-time
+    description: The time the error occurred
+    example: 2020-01-01T00:00:00Z
 
 required:
-    - errorId
-    - error
-    - errorType
-    - code
-    - timestamp
+  - errorId
+  - error
+  - errorType
+  - code
+  - timestamp

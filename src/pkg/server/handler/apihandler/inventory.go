@@ -2,7 +2,7 @@ package apihandler
 
 import (
 	"encoding/json"
-	"linuxcode/inventory_manager/pkg/domain"
+	domain "linuxcode/inventory_manager/pkg/domain/model"
 	server "linuxcode/inventory_manager/pkg/server/generated"
 	handler "linuxcode/inventory_manager/pkg/server/handler"
 	"net/http"

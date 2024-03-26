@@ -1,14 +1,14 @@
 ---
 type: object
 properties:
-    rawshape:
-        type: string
-    height:
-        type: integer
-    width:
-        type: integer
+  rawshape:
+    type: string
+  height:
+    type: integer
+  width:
+    type: integer
 
 required:
-    - rawshape
-    - height
-    - width
+  - rawshape
+  - height
+  - width

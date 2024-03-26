@@ -1,14 +1,14 @@
 ---
 type: object
 properties:
-    original_position:
-        $ref: '../types/Position.yml'
-    new_position:
-        $ref: '../types/Position.yml'
-    quantity:
-        type: integer
+  original_position:
+    $ref: '../types/Position.yml'
+  new_position:
+    $ref: '../types/Position.yml'
+  quantity:
+    type: integer
 
 required:
-    - original_position
-    - new_position
-    - quantity
+  - original_position
+  - new_position
+  - quantity

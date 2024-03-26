@@ -1,48 +1,48 @@
 version: '3.8'
 
 services:
-    inventory_manager:
-        build:
-            context: .
-            dockerfile: ./build/dockerfiles/Dockerfile.app
-        ports:
-            - '8080:8080'
-        env_file:
-            - .env
-        depends_on:
-            - db
-        restart: on-failure
-        healthcheck:
-            test: curl --fail -s localhost:8080/info/status || exit 1
-            interval: 30s
-            timeout: 10s
-            retries: 5
+  inventory_manager:
+    build:
+      context: .
+      dockerfile: ./build/dockerfiles/Dockerfile.app
+    ports:
+      - '8080:8080'
+    env_file:
+      - .env
+    depends_on:
+      - db
+    restart: on-failure
+    healthcheck:
+      test: curl --fail -s localhost:8080/info/status || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-    db:
-        container_name: app-postgres
-        image: postgres
-        restart: on-failure
-        environment:
-            POSTGRES_DB: ${APP_DATABASE_NAME}
-            POSTGRES_USER: ${APP_DATABASE_USER}
-            POSTGRES_PASSWORD: ${APP_DATABASE_PASSWORD}
-        ports:
-            - '5432:5432'
+  db:
+    container_name: app-postgres
+    image: postgres
+    restart: on-failure
+    environment:
+      POSTGRES_DB: ${APP_DATABASE_NAME}
+      POSTGRES_USER: ${APP_DATABASE_USER}
+      POSTGRES_PASSWORD: ${APP_DATABASE_PASSWORD}
+    ports:
+      - '5432:5432'
 
-    cache:
-        container_name: app-redis
-        image: redis
-        restart: on-failure
-        ports:
-            - '6379:6379'
+  cache:
+    container_name: app-redis
+    image: redis
+    restart: on-failure
+    ports:
+      - '6379:6379'
 
-    dbmigration:
-        container_name: app-postgres-migration
-        build:
-            context: .
-            dockerfile: ./build/dockerfiles/Dockerfile.migrate
-        restart: on-failure
-        env_file:
-            - .env
-        depends_on:
-            - db
+  dbmigration:
+    container_name: app-postgres-migration
+    build:
+      context: .
+      dockerfile: ./build/dockerfiles/Dockerfile.migrate
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - db

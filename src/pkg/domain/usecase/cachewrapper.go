@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"linuxcode/inventory_manager/pkg/domain"
+	domain "linuxcode/inventory_manager/pkg/domain/model"
 	"strconv"
 
 	"go.uber.org/zap"

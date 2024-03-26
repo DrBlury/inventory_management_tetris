@@ -1,14 +1,14 @@
 ---
 type: object
 properties:
-    x:
-        type: integer
-    y:
-        type: integer
-    rotation:
-        type: integer
+  x:
+    type: integer
+  y:
+    type: integer
+  rotation:
+    type: integer
 
 required:
-    - x
-    - y
-    - rotation
+  - x
+  - y
+  - rotation

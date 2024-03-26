@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	"linuxcode/inventory_manager/pkg/domain/usecase"
 	"linuxcode/inventory_manager/pkg/logging"
 	"linuxcode/inventory_manager/pkg/repo"
 	"linuxcode/inventory_manager/pkg/server"
@@ -10,7 +11,6 @@ import (
 	"linuxcode/inventory_manager/pkg/server/router"
 	"linuxcode/inventory_manager/pkg/service/cache"
 	"linuxcode/inventory_manager/pkg/telemetry"
-	"linuxcode/inventory_manager/pkg/usecase"
 	"os"
 	"os/signal"
 

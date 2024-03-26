@@ -3,7 +3,7 @@ package usecase
 import (
 	"context"
 	"fmt"
-	"linuxcode/inventory_manager/pkg/domain"
+	domain "linuxcode/inventory_manager/pkg/domain/model"
 
 	"go.uber.org/zap"
 )

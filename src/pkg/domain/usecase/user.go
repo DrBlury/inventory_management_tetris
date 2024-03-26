@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"linuxcode/inventory_manager/pkg/domain"
+	domain "linuxcode/inventory_manager/pkg/domain/model"
 	repo "linuxcode/inventory_manager/pkg/repo/generated"
 	"time"
 

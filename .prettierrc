@@ -1,6 +1,5 @@
 {
   "plugins": ["prettier-plugin-sql", "prettier-plugin-go-template"],
-  "tabWidth": 4,
   "useTabs": false,
   "printWidth": 80,
   "singleQuote": true,

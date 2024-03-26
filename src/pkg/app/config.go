@@ -1,7 +1,7 @@
 package app
 
 import (
-	"linuxcode/inventory_manager/pkg/domain"
+	domain "linuxcode/inventory_manager/pkg/domain/model"
 	"linuxcode/inventory_manager/pkg/repo"
 	"linuxcode/inventory_manager/pkg/server"
 	"linuxcode/inventory_manager/pkg/server/router"

@@ -1,8 +1,8 @@
 package apihandler
 
 import (
-	"linuxcode/inventory_manager/pkg/domain"
-	usecase "linuxcode/inventory_manager/pkg/usecase"
+	domain "linuxcode/inventory_manager/pkg/domain/model"
+	"linuxcode/inventory_manager/pkg/domain/usecase"
 
 	"go.uber.org/zap"
 )

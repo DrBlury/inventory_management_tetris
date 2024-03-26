@@ -1,62 +1,62 @@
 ---
 get:
-    summary: Get inventory by ID
-    operationId: getInventoryById
-    tags:
-        - inventory
-    parameters:
-        - name: inventoryId
-          in: path
-          description: ID of inventory
-          required: true
+  summary: Get inventory by ID
+  operationId: getInventoryById
+  tags:
+    - inventory
+  parameters:
+    - name: inventoryId
+      in: path
+      description: ID of inventory
+      required: true
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: successful operation
+      content:
+        application/json:
           schema:
-              type: integer
-              format: int64
-    responses:
-        '200':
-            description: successful operation
-            content:
-                application/json:
-                    schema:
-                        items:
-                            $ref: '../../schemas/_index.yml#/inventory'
-        '400':
-            description: Invalid ID supplied
-            content:
-                application/json:
-                    schema:
-                        $ref: '../../schemas/_index.yml#/error'
+            items:
+              $ref: '../../schemas/_index.yml#/inventory'
+    '400':
+      description: Invalid ID supplied
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/_index.yml#/error'
 
-        '404':
-            description: Can not find inventory (inventory ID)
-            content:
-                application/json:
-                    schema:
-                        $ref: '../../schemas/_index.yml#/error'
+    '404':
+      description: Can not find inventory (inventory ID)
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/_index.yml#/error'
 
-    # This API has no security
-    security: []
+  # This API has no security
+  security: []
 
 delete:
-    summary: Delete inventory by ID
-    operationId: deleteInventoryById
-    tags:
-        - inventory
-    parameters:
-        - name: inventoryId
-          in: path
-          description: ID of inventory to delete
-          required: true
-          schema:
-              type: integer
-              format: int64
-    responses:
-        '200':
-            description: Deleted inventory (inventory ID)
-        '400':
-            description: Invalid ID supplied
-        '404':
-            description: Can not find inventory (inventory ID)
+  summary: Delete inventory by ID
+  operationId: deleteInventoryById
+  tags:
+    - inventory
+  parameters:
+    - name: inventoryId
+      in: path
+      description: ID of inventory to delete
+      required: true
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: Deleted inventory (inventory ID)
+    '400':
+      description: Invalid ID supplied
+    '404':
+      description: Can not find inventory (inventory ID)
 
-    # This API has no security
-    security: []
+  # This API has no security
+  security: []

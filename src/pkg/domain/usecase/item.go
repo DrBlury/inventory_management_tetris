@@ -3,7 +3,7 @@ package usecase
 import (
 	"context"
 	"encoding/json"
-	"linuxcode/inventory_manager/pkg/domain"
+	domain "linuxcode/inventory_manager/pkg/domain/model"
 	repo "linuxcode/inventory_manager/pkg/repo/generated"
 	"strconv"
 	"time"

@@ -1,884 +1,884 @@
 openapi: 3.0.3
 info:
-    title: Inventory Manager
-    version: 1.0.0
-    license:
-        name: unlicensed
-        url: www.linuxcode.net
+  title: Inventory Manager
+  version: 1.0.0
+  license:
+    name: unlicensed
+    url: www.linuxcode.net
 servers:
-    - url: inventory.linuxcode.net
-      description: Inventory server for example
+  - url: inventory.linuxcode.net
+    description: Inventory server for example
 paths:
-    /api/items:
-        get:
-            summary: Get all items
-            operationId: getAllItems
-            tags:
-                - item
-            responses:
-                '200':
-                    description: successful operation
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/ItemListResponse'
-                '404':
-                    description: No items found
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-            security: []
-        post:
-            summary: Add new item
-            operationId: addItem
-            tags:
-                - item
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/ItemPostRequest'
-            responses:
-                '201':
-                    description: Added item
-                '400':
-                    description: Bad request
-            security: []
-    /api/items/{itemId}:
-        get:
-            summary: Get item by ID
-            operationId: getItemById
-            tags:
-                - item
-            parameters:
-                - name: itemId
-                  in: path
-                  description: ID of item
-                  required: true
-                  schema:
-                      type: integer
-                      format: int64
-            responses:
-                '200':
-                    description: successful operation
-                    content:
-                        application/json:
-                            schema:
-                                items:
-                                    $ref: '#/components/schemas/Item'
-                '400':
-                    description: Invalid ID supplied
-                '404':
-                    description: Can not find item (item ID)
-            security: []
-        put:
-            summary: Update an item
-            operationId: updateItemById
-            tags:
-                - item
-            parameters:
-                - name: itemId
-                  in: path
-                  description: ID of item that needs to be updated
-                  required: true
-                  schema:
-                      type: integer
-                      format: int64
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/Item'
-            responses:
-                '200':
-                    description: Update done
-                '400':
-                    description: Invalid ID supplied
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                '404':
-                    description: Can not find item (item ID)
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-            security: []
-        delete:
-            summary: Delete item by ID
-            operationId: deleteItemById
-            tags:
-                - item
-            parameters:
-                - name: itemId
-                  in: path
-                  description: ID of item to delete
-                  required: true
-                  schema:
-                      type: integer
-                      format: int64
-            responses:
-                '200':
-                    description: Deleted item (item ID)
-                '400':
-                    description: Invalid ID supplied
-                '404':
-                    description: Can not find item (item ID)
-            security: []
-    /api/users:
-        get:
-            summary: Get all users
-            operationId: getAllUsers
-            tags:
-                - user
-            responses:
-                '200':
-                    description: successful operation
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/UserListResponse'
-                '404':
-                    description: No items found
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-            security: []
-        post:
-            summary: Add new user
-            operationId: addUser
-            tags:
-                - user
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/UserPostRequest'
-            responses:
-                '201':
-                    description: Added user
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/User'
-                '400':
-                    description: Bad request
-            security: []
-    /api/users/{userId}:
-        get:
-            summary: Get user by ID
-            operationId: getUserById
-            tags:
-                - user
-            parameters:
-                - name: userId
-                  in: path
-                  description: ID of user
-                  required: true
-                  schema:
-                      type: integer
-                      format: int64
-            responses:
-                '200':
-                    description: successful operation
-                    content:
-                        application/json:
-                            schema:
-                                items:
-                                    $ref: '#/components/schemas/User'
-                '400':
-                    description: Invalid ID supplied
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                '404':
-                    description: Can not find user (user ID)
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-            security: []
-        put:
-            summary: Update an user
-            operationId: updateUserById
-            tags:
-                - user
-            parameters:
-                - name: userId
-                  in: path
-                  description: ID of user that needs to be updated
-                  required: true
-                  schema:
-                      type: integer
-                      format: int64
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/User'
-            responses:
-                '200':
-                    description: Update done
-                '400':
-                    description: Invalid ID supplied
-                '404':
-                    description: Can not find user (user ID)
-            security: []
-        delete:
-            summary: Delete user by ID
-            operationId: deleteUserById
-            tags:
-                - user
-            parameters:
-                - name: userId
-                  in: path
-                  description: ID of user to delete
-                  required: true
-                  schema:
-                      type: integer
-                      format: int64
-            responses:
-                '200':
-                    description: Deleted user (user ID)
-                '400':
-                    description: Invalid ID supplied
-                '404':
-                    description: Can not find user (user ID)
-            security: []
-    /api/inventories:
-        get:
-            summary: Get all inventories
-            operationId: getAllInventories
-            tags:
-                - inventory
-            responses:
-                '200':
-                    description: successful operation
-                    content:
-                        application/json:
-                            schema:
-                                type: array
-                                items:
-                                    $ref: '#/components/schemas/InventoryListResponse'
-                '404':
-                    description: No inventories found
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-            security: []
-        post:
-            summary: Add new inventory
-            operationId: addInventory
-            tags:
-                - inventory
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/InventoryPostRequest'
-            responses:
-                '201':
-                    description: Added inventory
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Inventory'
-                '400':
-                    description: Bad request
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-            security: []
-    /api/inventories/{inventoryId}:
-        get:
-            summary: Get inventory by ID
-            operationId: getInventoryById
-            tags:
-                - inventory
-            parameters:
-                - name: inventoryId
-                  in: path
-                  description: ID of inventory
-                  required: true
-                  schema:
-                      type: integer
-                      format: int64
-            responses:
-                '200':
-                    description: successful operation
-                    content:
-                        application/json:
-                            schema:
-                                items:
-                                    $ref: '#/components/schemas/Inventory'
-                '400':
-                    description: Invalid ID supplied
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                '404':
-                    description: Can not find inventory (inventory ID)
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-            security: []
-        delete:
-            summary: Delete inventory by ID
-            operationId: deleteInventoryById
-            tags:
-                - inventory
-            parameters:
-                - name: inventoryId
-                  in: path
-                  description: ID of inventory to delete
-                  required: true
-                  schema:
-                      type: integer
-                      format: int64
-            responses:
-                '200':
-                    description: Deleted inventory (inventory ID)
-                '400':
-                    description: Invalid ID supplied
-                '404':
-                    description: Can not find inventory (inventory ID)
-            security: []
-    /api/inventories/{inventoryId}/move:
-        post:
-            summary: Move an item already in the inventory
-            operationId: moveItemInInventory
-            tags:
-                - inventory
-            parameters:
-                - name: inventoryId
-                  in: path
-                  description: ID of inventory
-                  required: true
-                  schema:
-                      type: integer
-                      format: int64
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/MoveItemRequest'
-            responses:
-                '200':
-                    description: Moved item in inventory
-                '400':
-                    description: Bad request
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-            security: []
-    /api/inventories/{inventoryId}/add:
-        post:
-            summary: Add a new item to the inventory at the first possible position
-            operationId: addItemInInventory
-            tags:
-                - inventory
-            parameters:
-                - name: inventoryId
-                  in: path
-                  description: ID of inventory
-                  required: true
-                  schema:
-                      type: integer
-                      format: int64
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/AddItemToInventoryRequest'
-            responses:
-                '200':
-                    description: Added item to inventory
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/InventoryItem'
-                '400':
-                    description: Bad request
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-            security: []
-    /info/metrics:
-        get:
-            tags:
-                - info
-            summary: Get metrics
-            description: Get metrics
-            operationId: getMetrics
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    metrics:
-                                        type: object
-                                        description: Metrics for prometheus
-    /info/version:
-        get:
-            tags:
-                - info
-            summary: Get version
-            description: Get version
-            operationId: getVersion
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Version'
-    /info/status:
-        get:
-            tags:
-                - info
-            summary: Get status
-            description: Get status
-            operationId: getStatus
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
+  /api/items:
+    get:
+      summary: Get all items
+      operationId: getAllItems
+      tags:
+        - item
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemListResponse'
+        '404':
+          description: No items found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
+    post:
+      summary: Add new item
+      operationId: addItem
+      tags:
+        - item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemPostRequest'
+      responses:
+        '201':
+          description: Added item
+        '400':
+          description: Bad request
+      security: []
+  /api/items/{itemId}:
+    get:
+      summary: Get item by ID
+      operationId: getItemById
+      tags:
+        - item
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of item
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Item'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Can not find item (item ID)
+      security: []
+    put:
+      summary: Update an item
+      operationId: updateItemById
+      tags:
+        - item
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of item that needs to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '200':
+          description: Update done
+        '400':
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Can not find item (item ID)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
+    delete:
+      summary: Delete item by ID
+      operationId: deleteItemById
+      tags:
+        - item
+      parameters:
+        - name: itemId
+          in: path
+          description: ID of item to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Deleted item (item ID)
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Can not find item (item ID)
+      security: []
+  /api/users:
+    get:
+      summary: Get all users
+      operationId: getAllUsers
+      tags:
+        - user
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserListResponse'
+        '404':
+          description: No items found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
+    post:
+      summary: Add new user
+      operationId: addUser
+      tags:
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPostRequest'
+      responses:
+        '201':
+          description: Added user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+      security: []
+  /api/users/{userId}:
+    get:
+      summary: Get user by ID
+      operationId: getUserById
+      tags:
+        - user
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Can not find user (user ID)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
+    put:
+      summary: Update an user
+      operationId: updateUserById
+      tags:
+        - user
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user that needs to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Update done
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Can not find user (user ID)
+      security: []
+    delete:
+      summary: Delete user by ID
+      operationId: deleteUserById
+      tags:
+        - user
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Deleted user (user ID)
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Can not find user (user ID)
+      security: []
+  /api/inventories:
+    get:
+      summary: Get all inventories
+      operationId: getAllInventories
+      tags:
+        - inventory
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryListResponse'
+        '404':
+          description: No inventories found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
+    post:
+      summary: Add new inventory
+      operationId: addInventory
+      tags:
+        - inventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryPostRequest'
+      responses:
+        '201':
+          description: Added inventory
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
+  /api/inventories/{inventoryId}:
+    get:
+      summary: Get inventory by ID
+      operationId: getInventoryById
+      tags:
+        - inventory
+      parameters:
+        - name: inventoryId
+          in: path
+          description: ID of inventory
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Inventory'
+        '400':
+          description: Invalid ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Can not find inventory (inventory ID)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
+    delete:
+      summary: Delete inventory by ID
+      operationId: deleteInventoryById
+      tags:
+        - inventory
+      parameters:
+        - name: inventoryId
+          in: path
+          description: ID of inventory to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Deleted inventory (inventory ID)
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Can not find inventory (inventory ID)
+      security: []
+  /api/inventories/{inventoryId}/move:
+    post:
+      summary: Move an item already in the inventory
+      operationId: moveItemInInventory
+      tags:
+        - inventory
+      parameters:
+        - name: inventoryId
+          in: path
+          description: ID of inventory
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MoveItemRequest'
+      responses:
+        '200':
+          description: Moved item in inventory
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
+  /api/inventories/{inventoryId}/add:
+    post:
+      summary: Add a new item to the inventory at the first possible position
+      operationId: addItemInInventory
+      tags:
+        - inventory
+      parameters:
+        - name: inventoryId
+          in: path
+          description: ID of inventory
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddItemToInventoryRequest'
+      responses:
+        '200':
+          description: Added item to inventory
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryItem'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
+  /info/metrics:
+    get:
+      tags:
+        - info
+      summary: Get metrics
+      description: Get metrics
+      operationId: getMetrics
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metrics:
+                    type: object
+                    description: Metrics for prometheus
+  /info/version:
+    get:
+      tags:
+        - info
+      summary: Get version
+      description: Get version
+      operationId: getVersion
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Version'
+  /info/status:
+    get:
+      tags:
+        - info
+      summary: Get status
+      description: Get status
+      operationId: getStatus
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
 components:
-    schemas:
-        ItemShape:
-            type: object
-            properties:
-                rawshape:
-                    type: string
-                height:
-                    type: integer
-                width:
-                    type: integer
-            required:
-                - rawshape
-                - height
-                - width
-        ItemType:
-            type: string
-            enum:
-                - consumable
-                - armor
-                - rangedWeapon
-                - meleeWeapon
-                - consumableWeapon
-                - quest
-                - resource
-        Item:
-            type: object
-            properties:
-                id:
-                    type: integer
-                variant:
-                    type: string
-                name:
-                    type: string
-                description:
-                    type: string
-                buy_value:
-                    type: integer
-                sell_value:
-                    type: integer
-                weight:
-                    type: integer
-                durability:
-                    type: integer
-                max_stack:
-                    type: integer
-                shape:
-                    $ref: '#/components/schemas/ItemShape'
-                type:
-                    $ref: '#/components/schemas/ItemType'
-            required:
-                - id
-                - variant
-                - name
-                - description
-                - buy_value
-                - sell_value
-                - weight
-                - durability
-                - max_stack
-                - shape
-                - type
-        Pagination:
-            type: object
-            properties:
-                page:
-                    type: integer
-                pages:
-                    type: integer
-                limit:
-                    type: integer
-                total:
-                    type: integer
-                offset:
-                    type: integer
-            required:
-                - page
-                - pages
-                - limit
-                - total
-                - offset
-        ItemListResponse:
-            type: object
-            properties:
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Item'
-                pagination:
-                    $ref: '#/components/schemas/Pagination'
-            required:
-                - items
-                - pagination
-        ErrorType:
-            type: string
-            example: Bad Request
-            description: The error type
-            enum:
-                - Bad Request
-                - Not Found
-                - Not Implemented
-                - Internal Server Error
-        Error:
-            type: object
-            properties:
-                errorId:
-                    type: string
-                    description: The unique identifier for the error
-                    example: 123e4567-e89b-12d3-a456-426614174000
-                error:
-                    type: string
-                    description: The error message
-                    example: The item does not exist
-                errorType:
-                    $ref: '#/components/schemas/ErrorType'
-                    description: The error type
-                    example: Bad Request
-                code:
-                    type: integer
-                    description: The error code
-                    example: 404
-                timestamp:
-                    type: string
-                    format: date-time
-                    description: The time the error occurred
-                    example: '2020-01-01T00:00:00Z'
-            required:
-                - errorId
-                - error
-                - errorType
-                - code
-                - timestamp
-        ItemPostRequest:
-            type: object
-            properties:
-                name:
-                    type: string
-                variant:
-                    type: string
-                description:
-                    type: string
-                buy_value:
-                    type: integer
-                sell_value:
-                    type: integer
-                weight:
-                    type: integer
-                durability:
-                    type: integer
-                max_stack:
-                    type: integer
-                type:
-                    $ref: '#/components/schemas/ItemType'
-                shape:
-                    $ref: '#/components/schemas/ItemShape'
-            required:
-                - name
-                - variant
-                - description
-                - buy_value
-                - sell_value
-                - weight
-                - durability
-                - max_stack
-                - type
-                - shape
-        Volume:
-            type: object
-            properties:
-                height:
-                    type: integer
-                width:
-                    type: integer
-            required:
-                - height
-                - width
-        InventoryMeta:
-            type: object
-            properties:
-                id:
-                    type: integer
-                name:
-                    type: string
-                userId:
-                    type: integer
-                max_weight:
-                    type: integer
-                volume:
-                    $ref: '#/components/schemas/Volume'
-            required:
-                - id
-                - name
-                - userId
-                - max_weight
-                - volume
-        User:
-            type: object
-            properties:
-                id:
-                    type: integer
-                username:
-                    type: string
-                inventories:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/InventoryMeta'
-            required:
-                - id
-                - username
-                - inventories
-        UserListResponse:
-            type: object
-            properties:
-                users:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/User'
-                pagination:
-                    $ref: '#/components/schemas/Pagination'
-            required:
-                - users
-                - pagination
-        UserPostRequest:
-            type: object
-            properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                email:
-                    type: string
-                password:
-                    type: string
-            required:
-                - name
-                - email
-                - password
-        Position:
-            type: object
-            properties:
-                x:
-                    type: integer
-                'y':
-                    type: integer
-                rotation:
-                    type: integer
-            required:
-                - x
-                - 'y'
-                - rotation
-        InventoryItem:
-            type: object
-            properties:
-                item:
-                    $ref: '#/components/schemas/Item'
-                position:
-                    $ref: '#/components/schemas/Position'
-                quantity:
-                    type: integer
-                durability_left:
-                    type: integer
-            required:
-                - item
-                - position
-                - quantity
-                - durability_left
-        Inventory:
-            type: object
-            properties:
-                inventoryMeta:
-                    $ref: '#/components/schemas/InventoryMeta'
-                items:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/InventoryItem'
-            required:
-                - inventoryMeta
-                - items
-        InventoryListResponse:
-            type: object
-            properties:
-                inventories:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/Inventory'
-                pagination:
-                    $ref: '#/components/schemas/Pagination'
-            required:
-                - inventories
-                - pagination
-        InventoryPostRequest:
-            type: object
-            properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                user_id:
-                    type: integer
-                max_weight:
-                    type: integer
-                volume:
-                    $ref: '#/components/schemas/Volume'
-            required:
-                - name
-                - user_id
-                - max_weight
-                - volume
-        MoveItemRequest:
-            type: object
-            properties:
-                original_position:
-                    $ref: '#/components/schemas/Position'
-                new_position:
-                    $ref: '#/components/schemas/Position'
-                quantity:
-                    type: integer
-            required:
-                - original_position
-                - new_position
-                - quantity
-        AddItemToInventoryRequest:
-            type: object
-            properties:
-                item:
-                    $ref: '#/components/schemas/Item'
-                quantity:
-                    type: integer
-                durability_left:
-                    type: integer
-                position:
-                    $ref: '#/components/schemas/Position'
-            required:
-                - item
-                - quantity
-                - durability_left
-        Version:
-            type: object
-            properties:
-                version:
-                    type: string
-                    description: The version of the API
-                    example: 1.0.0
-                buildDate:
-                    type: string
-                    description: The date the code was built
-                    example: '2020-01-01'
-                description:
-                    type: string
-                    description: A description of the API
-                    example: This is the API for the inventory management system
-                commitHash:
-                    type: string
-                    description: The hash of the commit
-                    example: 1234567890
-                commitDate:
-                    type: string
-                    description: The date of the commit
-                    example: '2020-01-01T00:00:00Z'
-            required:
-                - version
-                - buildDate
-                - description
-                - commitHash
-                - commitDate
-        Status:
-            type: string
-            enum:
-                - HEALTHY
-                - UNHEALTHY
-                - UNKNOWN
-            description: The status of the API
-        item_type:
-            $ref: '#/components/schemas/ItemType'
-        status:
-            $ref: '#/components/schemas/Status'
-        item:
+  schemas:
+    ItemShape:
+      type: object
+      properties:
+        rawshape:
+          type: string
+        height:
+          type: integer
+        width:
+          type: integer
+      required:
+        - rawshape
+        - height
+        - width
+    ItemType:
+      type: string
+      enum:
+        - consumable
+        - armor
+        - rangedWeapon
+        - meleeWeapon
+        - consumableWeapon
+        - quest
+        - resource
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+        variant:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        buy_value:
+          type: integer
+        sell_value:
+          type: integer
+        weight:
+          type: integer
+        durability:
+          type: integer
+        max_stack:
+          type: integer
+        shape:
+          $ref: '#/components/schemas/ItemShape'
+        type:
+          $ref: '#/components/schemas/ItemType'
+      required:
+        - id
+        - variant
+        - name
+        - description
+        - buy_value
+        - sell_value
+        - weight
+        - durability
+        - max_stack
+        - shape
+        - type
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        pages:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        offset:
+          type: integer
+      required:
+        - page
+        - pages
+        - limit
+        - total
+        - offset
+    ItemListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
             $ref: '#/components/schemas/Item'
-        inventory_item:
-            $ref: '#/components/schemas/InventoryItem'
-        position:
-            $ref: '#/components/schemas/Position'
-        item_shape:
-            $ref: '#/components/schemas/ItemShape'
-        inventory:
-            $ref: '#/components/schemas/Inventory'
-        inventory_meta:
-            $ref: '#/components/schemas/InventoryMeta'
-        user:
-            $ref: '#/components/schemas/User'
-        version:
-            $ref: '#/components/schemas/Version'
-        inventory_post_request:
-            $ref: '#/components/schemas/InventoryPostRequest'
-        add_item_request:
-            $ref: '#/components/schemas/AddItemToInventoryRequest'
-        move_item_request:
-            $ref: '#/components/schemas/MoveItemRequest'
-        item_post_request:
-            $ref: '#/components/schemas/ItemPostRequest'
-        user_post_request:
-            $ref: '#/components/schemas/UserPostRequest'
-        item_list_response:
-            $ref: '#/components/schemas/ItemListResponse'
-        inventory_list_response:
-            $ref: '#/components/schemas/InventoryListResponse'
-        user_list_response:
-            $ref: '#/components/schemas/UserListResponse'
-        errorType:
-            $ref: '#/components/schemas/ErrorType'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      required:
+        - items
+        - pagination
+    ErrorType:
+      type: string
+      example: Bad Request
+      description: The error type
+      enum:
+        - Bad Request
+        - Not Found
+        - Not Implemented
+        - Internal Server Error
+    Error:
+      type: object
+      properties:
+        errorId:
+          type: string
+          description: The unique identifier for the error
+          example: 123e4567-e89b-12d3-a456-426614174000
         error:
-            $ref: '#/components/schemas/Error'
+          type: string
+          description: The error message
+          example: The item does not exist
+        errorType:
+          $ref: '#/components/schemas/ErrorType'
+          description: The error type
+          example: Bad Request
+        code:
+          type: integer
+          description: The error code
+          example: 404
+        timestamp:
+          type: string
+          format: date-time
+          description: The time the error occurred
+          example: '2020-01-01T00:00:00Z'
+      required:
+        - errorId
+        - error
+        - errorType
+        - code
+        - timestamp
+    ItemPostRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        variant:
+          type: string
+        description:
+          type: string
+        buy_value:
+          type: integer
+        sell_value:
+          type: integer
+        weight:
+          type: integer
+        durability:
+          type: integer
+        max_stack:
+          type: integer
+        type:
+          $ref: '#/components/schemas/ItemType'
+        shape:
+          $ref: '#/components/schemas/ItemShape'
+      required:
+        - name
+        - variant
+        - description
+        - buy_value
+        - sell_value
+        - weight
+        - durability
+        - max_stack
+        - type
+        - shape
+    Volume:
+      type: object
+      properties:
+        height:
+          type: integer
+        width:
+          type: integer
+      required:
+        - height
+        - width
+    InventoryMeta:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        userId:
+          type: integer
+        max_weight:
+          type: integer
+        volume:
+          $ref: '#/components/schemas/Volume'
+      required:
+        - id
+        - name
+        - userId
+        - max_weight
+        - volume
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        inventories:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryMeta'
+      required:
+        - id
+        - username
+        - inventories
+    UserListResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      required:
+        - users
+        - pagination
+    UserPostRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - email
+        - password
+    Position:
+      type: object
+      properties:
+        x:
+          type: integer
+        'y':
+          type: integer
+        rotation:
+          type: integer
+      required:
+        - x
+        - 'y'
+        - rotation
+    InventoryItem:
+      type: object
+      properties:
+        item:
+          $ref: '#/components/schemas/Item'
+        position:
+          $ref: '#/components/schemas/Position'
+        quantity:
+          type: integer
+        durability_left:
+          type: integer
+      required:
+        - item
+        - position
+        - quantity
+        - durability_left
+    Inventory:
+      type: object
+      properties:
+        inventoryMeta:
+          $ref: '#/components/schemas/InventoryMeta'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryItem'
+      required:
+        - inventoryMeta
+        - items
+    InventoryListResponse:
+      type: object
+      properties:
+        inventories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Inventory'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+      required:
+        - inventories
+        - pagination
+    InventoryPostRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        user_id:
+          type: integer
+        max_weight:
+          type: integer
+        volume:
+          $ref: '#/components/schemas/Volume'
+      required:
+        - name
+        - user_id
+        - max_weight
+        - volume
+    MoveItemRequest:
+      type: object
+      properties:
+        original_position:
+          $ref: '#/components/schemas/Position'
+        new_position:
+          $ref: '#/components/schemas/Position'
+        quantity:
+          type: integer
+      required:
+        - original_position
+        - new_position
+        - quantity
+    AddItemToInventoryRequest:
+      type: object
+      properties:
+        item:
+          $ref: '#/components/schemas/Item'
+        quantity:
+          type: integer
+        durability_left:
+          type: integer
+        position:
+          $ref: '#/components/schemas/Position'
+      required:
+        - item
+        - quantity
+        - durability_left
+    Version:
+      type: object
+      properties:
+        version:
+          type: string
+          description: The version of the API
+          example: 1.0.0
+        buildDate:
+          type: string
+          description: The date the code was built
+          example: '2020-01-01'
+        description:
+          type: string
+          description: A description of the API
+          example: This is the API for the inventory management system
+        commitHash:
+          type: string
+          description: The hash of the commit
+          example: 1234567890
+        commitDate:
+          type: string
+          description: The date of the commit
+          example: '2020-01-01T00:00:00Z'
+      required:
+        - version
+        - buildDate
+        - description
+        - commitHash
+        - commitDate
+    Status:
+      type: string
+      enum:
+        - HEALTHY
+        - UNHEALTHY
+        - UNKNOWN
+      description: The status of the API
+    item_type:
+      $ref: '#/components/schemas/ItemType'
+    status:
+      $ref: '#/components/schemas/Status'
+    item:
+      $ref: '#/components/schemas/Item'
+    inventory_item:
+      $ref: '#/components/schemas/InventoryItem'
+    position:
+      $ref: '#/components/schemas/Position'
+    item_shape:
+      $ref: '#/components/schemas/ItemShape'
+    inventory:
+      $ref: '#/components/schemas/Inventory'
+    inventory_meta:
+      $ref: '#/components/schemas/InventoryMeta'
+    user:
+      $ref: '#/components/schemas/User'
+    version:
+      $ref: '#/components/schemas/Version'
+    inventory_post_request:
+      $ref: '#/components/schemas/InventoryPostRequest'
+    add_item_request:
+      $ref: '#/components/schemas/AddItemToInventoryRequest'
+    move_item_request:
+      $ref: '#/components/schemas/MoveItemRequest'
+    item_post_request:
+      $ref: '#/components/schemas/ItemPostRequest'
+    user_post_request:
+      $ref: '#/components/schemas/UserPostRequest'
+    item_list_response:
+      $ref: '#/components/schemas/ItemListResponse'
+    inventory_list_response:
+      $ref: '#/components/schemas/InventoryListResponse'
+    user_list_response:
+      $ref: '#/components/schemas/UserListResponse'
+    errorType:
+      $ref: '#/components/schemas/ErrorType'
+    error:
+      $ref: '#/components/schemas/Error'
