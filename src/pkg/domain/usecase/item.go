@@ -121,7 +121,7 @@ func (a appLogicImpl) DeleteItemById(ctx context.Context, itemId int) error {
 // GetItemById returns the item with the given id
 func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (*domain.Item, error) {
 	result, err := a.getItemFromCache(ctx, itemId)
-	if err == nil {
+	if err == nil && result != nil {
 		// We got a cache hit! Wonderful!
 		return result, nil
 	}
@@ -132,8 +132,8 @@ func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (*domain.Item
 	}
 
 	// map repo model to domain model
-	domainItems := *domain.MapRepoItemsToDomainItems(repoItem)
-	domainItem := &domainItems[0]
+	domainItems := domain.MapRepoItemsToDomainItems(repoItem)
+	domainItem := &(*domainItems)[0]
 
 	// Store the item in the cache, ignore error for now
 	err = a.setItemInCache(ctx, itemId, domainItem)

@@ -56,6 +56,12 @@ func (a appLogicImpl) AddInventory(ctx context.Context, createInventoryParams do
 		return nil, err
 	}
 
+	// invalidate cache
+	err = a.cache.Invalidate(ctx, "allInventoriesMeta")
+	if err != nil {
+		a.log.Error("error invalidating all inventories in cache", zap.Error(err))
+	}
+
 	// Map repo model to domain model
 	invMeta := domain.MapRepoInventoryToDomainInventoryMeta(&createdInventory)
 

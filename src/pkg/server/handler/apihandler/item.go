@@ -28,7 +28,7 @@ func (a APIHandler) GetAllItems(w http.ResponseWriter, r *http.Request) {
 	// }
 
 	// return response
-	w.WriteHeader(http.StatusOK)
+	render.Status(r, http.StatusOK)
 	render.JSON(w, r, items)
 }
 
@@ -113,7 +113,7 @@ func (a APIHandler) GetItemById(w http.ResponseWriter, r *http.Request, itemId i
 	// itemDTO := transform.ItemDTOFromDomain(item)
 
 	// return response
-	w.WriteHeader(http.StatusOK)
+	render.Status(r, http.StatusOK)
 	render.JSON(w, r, item)
 }
 

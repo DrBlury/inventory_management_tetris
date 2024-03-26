@@ -28,7 +28,7 @@ func (a APIHandler) GetAllInventories(w http.ResponseWriter, r *http.Request) {
 	// }
 
 	// return response
-	w.WriteHeader(http.StatusOK)
+	render.Status(r, http.StatusOK)
 	render.JSON(w, r, inventories)
 }
 
@@ -40,9 +40,6 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 	var dtoInventory server.InventoryPostRequest
 	// read request body into bytes
 	bodyBytes := make([]byte, r.ContentLength)
-
-	// log request body
-	a.log.Error("request body", zap.String("body", string(bodyBytes)))
 
 	_, err := r.Body.Read(bodyBytes)
 	if err != nil {
@@ -80,7 +77,7 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 	// TODO map to dto
 
 	// return response
-	w.WriteHeader(http.StatusCreated)
+	render.Status(r, http.StatusCreated)
 	render.JSON(w, r, addedInventory)
 }
 
@@ -112,7 +109,7 @@ func (a APIHandler) GetInventoryById(w http.ResponseWriter, r *http.Request, inv
 	// map domain model to dto
 
 	// return response
-	w.WriteHeader(http.StatusOK)
+	render.Status(r, http.StatusOK)
 	render.JSON(w, r, inventory)
 }
 
