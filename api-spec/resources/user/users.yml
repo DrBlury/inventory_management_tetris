@@ -1,48 +1,48 @@
 ---
 get:
-  summary: Get all users
-  operationId: getAllUsers
-  tags:
-    - user
-  responses:
-    '200':
-      description: successful operation
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '../../schemas/_index.yml#/user_list_response'
-    '404':
-      description: No items found
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/error'
+    summary: Get all users
+    operationId: getAllUsers
+    tags:
+        - user
+    responses:
+        '200':
+            description: successful operation
+            content:
+                application/json:
+                    schema:
+                        type: array
+                        items:
+                            $ref: '../../schemas/_index.yml#/user_list_response'
+        '404':
+            description: No items found
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/error'
 
-  # This API has no security
-  security: []
+    # This API has no security
+    security: []
 
 post:
-  summary: Add new user
-  operationId: addUser
-  tags:
-    - user
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          $ref: '../../schemas/_index.yml#/user_post_request'
-  responses:
-    '201':
-      description: Added user
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/user'
-    '400':
-      description: Bad request
+    summary: Add new user
+    operationId: addUser
+    tags:
+        - user
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    $ref: '../../schemas/_index.yml#/user_post_request'
+    responses:
+        '201':
+            description: Added user
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/user'
+        '400':
+            description: Bad request
 
-  # This API has no security
-  security: []
+    # This API has no security
+    security: []

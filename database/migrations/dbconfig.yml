@@ -1,5 +1,5 @@
 development:
-  dialect: postgres
-  datasource: host=${APP_DATABASE_HOST} port=${APP_DATABASE_PORT} dbname=${APP_DATABASE_NAME} user=${APP_DATABASE_USER} password=${APP_DATABASE_PASSWORD} sslmode=disable
-  dir: .
-  table: migrations
+    dialect: postgres
+    datasource: host=${APP_DATABASE_HOST} port=${APP_DATABASE_PORT} dbname=${APP_DATABASE_NAME} user=${APP_DATABASE_USER} password=${APP_DATABASE_PASSWORD} sslmode=disable
+    dir: .
+    table: migrations

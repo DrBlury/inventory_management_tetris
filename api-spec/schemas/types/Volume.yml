@@ -1,11 +1,11 @@
 ---
 type: object
 properties:
-  height:
-    type: integer
-  width:
-    type: integer
+    height:
+        type: integer
+    width:
+        type: integer
 
 required:
-  - height
-  - width
+    - height
+    - width

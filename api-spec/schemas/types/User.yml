@@ -1,16 +1,16 @@
 ---
 type: object
 properties:
-  id:
-    type: integer
-  username:
-    type: string
-  inventories:
-    type: array
-    items:
-      $ref: './InventoryMeta.yml'
+    id:
+        type: integer
+    username:
+        type: string
+    inventories:
+        type: array
+        items:
+            $ref: './InventoryMeta.yml'
 
 required:
-  - id
-  - username
-  - inventories
+    - id
+    - username
+    - inventories

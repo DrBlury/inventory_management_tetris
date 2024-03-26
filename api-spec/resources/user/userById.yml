@@ -1,91 +1,91 @@
 ---
 get:
-  summary: Get user by ID
-  operationId: getUserById
-  tags:
-    - user
-  parameters:
-    - name: userId
-      in: path
-      description: ID of user
-      required: true
-      schema:
-        type: integer
-        format: int64
-  responses:
-    '200':
-      description: successful operation
-      content:
-        application/json:
+    summary: Get user by ID
+    operationId: getUserById
+    tags:
+        - user
+    parameters:
+        - name: userId
+          in: path
+          description: ID of user
+          required: true
           schema:
-            items:
-              $ref: '../../schemas/_index.yml#/user'
-    '400':
-      description: Invalid ID supplied
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/error'
-    '404':
-      description: Can not find user (user ID)
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/error'
+              type: integer
+              format: int64
+    responses:
+        '200':
+            description: successful operation
+            content:
+                application/json:
+                    schema:
+                        items:
+                            $ref: '../../schemas/_index.yml#/user'
+        '400':
+            description: Invalid ID supplied
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/error'
+        '404':
+            description: Can not find user (user ID)
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/error'
 
-  # This API has no security
-  security: []
+    # This API has no security
+    security: []
 
 put:
-  summary: Update an user
-  operationId: updateUserById
-  tags:
-    - user
-  parameters:
-    - name: userId
-      in: path
-      description: ID of user that needs to be updated
-      required: true
-      schema:
-        type: integer
-        format: int64
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          $ref: '../../schemas/_index.yml#/user'
-  responses:
-    '200':
-      description: Update done
-    '404':
-      description: Can not find user (user ID)
-    '400':
-      description: Invalid ID supplied
+    summary: Update an user
+    operationId: updateUserById
+    tags:
+        - user
+    parameters:
+        - name: userId
+          in: path
+          description: ID of user that needs to be updated
+          required: true
+          schema:
+              type: integer
+              format: int64
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    $ref: '../../schemas/_index.yml#/user'
+    responses:
+        '200':
+            description: Update done
+        '404':
+            description: Can not find user (user ID)
+        '400':
+            description: Invalid ID supplied
 
-  # This API has no security
-  security: []
+    # This API has no security
+    security: []
 
 delete:
-  summary: Delete user by ID
-  operationId: deleteUserById
-  tags:
-    - user
-  parameters:
-    - name: userId
-      in: path
-      description: ID of user to delete
-      required: true
-      schema:
-        type: integer
-        format: int64
-  responses:
-    '200':
-      description: Deleted user (user ID)
-    '400':
-      description: Invalid ID supplied
-    '404':
-      description: Can not find user (user ID)
+    summary: Delete user by ID
+    operationId: deleteUserById
+    tags:
+        - user
+    parameters:
+        - name: userId
+          in: path
+          description: ID of user to delete
+          required: true
+          schema:
+              type: integer
+              format: int64
+    responses:
+        '200':
+            description: Deleted user (user ID)
+        '400':
+            description: Invalid ID supplied
+        '404':
+            description: Can not find user (user ID)
 
-  # This API has no security
-  security: []
+    # This API has no security
+    security: []

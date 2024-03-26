@@ -1,14 +1,14 @@
 ---
 get:
-  tags:
-    - info
-  summary: Get version
-  description: Get version
-  operationId: getVersion
-  responses:
-    '200':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/version'
+    tags:
+        - info
+    summary: Get version
+    description: Get version
+    operationId: getVersion
+    responses:
+        '200':
+            description: OK
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/version'

@@ -1,36 +1,36 @@
 ---
 post:
-  summary: Add a new item to the inventory at the first possible position
-  operationId: addItemInInventory
-  tags:
-    - inventory
-  parameters:
-    - name: inventoryId
-      in: path
-      description: ID of inventory
-      required: true
-      schema:
-        type: integer
-        format: int64
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          $ref: '../../schemas/_index.yml#/add_item_request'
-  responses:
-    '200':
-      description: Added item to inventory
-      content:
-        application/json:
+    summary: Add a new item to the inventory at the first possible position
+    operationId: addItemInInventory
+    tags:
+        - inventory
+    parameters:
+        - name: inventoryId
+          in: path
+          description: ID of inventory
+          required: true
           schema:
-            $ref: '../../schemas/_index.yml#/inventory_item'
-    '400':
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/error'
+              type: integer
+              format: int64
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    $ref: '../../schemas/_index.yml#/add_item_request'
+    responses:
+        '200':
+            description: Added item to inventory
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/inventory_item'
+        '400':
+            description: Bad request
+            content:
+                application/json:
+                    schema:
+                        $ref: '../../schemas/_index.yml#/error'
 
-  # This API has no security
-  security: []
+    # This API has no security
+    security: []

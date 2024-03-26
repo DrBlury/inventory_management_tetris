@@ -1,13 +1,13 @@
 ---
 type: object
 properties:
-  inventoryMeta:
-    $ref: './InventoryMeta.yml'
-  items:
-    type: array
+    inventoryMeta:
+        $ref: './InventoryMeta.yml'
     items:
-      $ref: './InventoryItem.yml'
+        type: array
+        items:
+            $ref: './InventoryItem.yml'
 
 required:
-  - inventoryMeta
-  - items
+    - inventoryMeta
+    - items

@@ -6,15 +6,15 @@ This is a simple inventory management system API. It is built using golang and u
 
 ### Running the application
 
-- [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- [Taskfile](https://taskfile.dev/#/installation) (optional, you can run the commands manually)
+-   [Docker](https://docs.docker.com/get-docker/)
+-   [Docker Compose](https://docs.docker.com/compose/install/)
+-   [Taskfile](https://taskfile.dev/#/installation) (optional, you can run the commands manually)
 
 ### Development
 
-- [Golang](https://golang.org/dl/) (or only run it inside a container)
-- [oapi-codegen](https://github.com/deepmap/oapi-codegen) (to generate the API Types and server code from the openapi specification)
-- [Node.js](https://nodejs.org/en/download/) & [NPM](https://www.npmjs.com/get-npm) (to install the formatter/plugins)
+-   [Golang](https://golang.org/dl/) (or only run it inside a container)
+-   [oapi-codegen](https://github.com/deepmap/oapi-codegen) (to generate the API Types and server code from the openapi specification)
+-   [Node.js](https://nodejs.org/en/download/) & [NPM](https://www.npmjs.com/get-npm) (to install the formatter/plugins)
 
 Alternative: Use `task format-in-docker`
 
@@ -28,7 +28,7 @@ Alternative: Use `task format-in-docker`
 
 Useful commands:
 
-- Run `task --list-all` to see all available task commands
+-   Run `task --list-all` to see all available task commands
 
 ## Changing the database schema
 

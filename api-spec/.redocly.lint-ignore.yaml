@@ -1,17 +1,17 @@
 # This file instructs Redocly's linter to ignore the rules contained for specific parts of your API.
 # See https://redoc.ly/docs/cli/ for more information.
 resources/info/metrics.yml:
-  operation-4xx-response:
-    - '#/get/responses'
-  security-defined:
-    - '#/get'
+    operation-4xx-response:
+        - '#/get/responses'
+    security-defined:
+        - '#/get'
 resources/info/version.yml:
-  operation-4xx-response:
-    - '#/get/responses'
-  security-defined:
-    - '#/get'
+    operation-4xx-response:
+        - '#/get/responses'
+    security-defined:
+        - '#/get'
 resources/info/status.yml:
-  operation-4xx-response:
-    - '#/get/responses'
-  security-defined:
-    - '#/get'
+    operation-4xx-response:
+        - '#/get/responses'
+    security-defined:
+        - '#/get'

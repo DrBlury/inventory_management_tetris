@@ -1,16 +1,16 @@
 ---
 openapi: 3.0.3
 info:
-  title: Inventory Manager
-  version: 1.0.0
-  license:
-    name: unlicensed
-    url: 'www.linuxcode.net'
+    title: Inventory Manager
+    version: 1.0.0
+    license:
+        name: unlicensed
+        url: 'www.linuxcode.net'
 servers:
-  - url: inventory.linuxcode.net
-    description: Inventory server for example
+    - url: inventory.linuxcode.net
+      description: Inventory server for example
 paths:
-  $ref: './resources/_index.yml'
+    $ref: './resources/_index.yml'
 components:
-  schemas:
-    $ref: './schemas/_index.yml'
+    schemas:
+        $ref: './schemas/_index.yml'
