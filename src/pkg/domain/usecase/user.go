@@ -121,10 +121,14 @@ func (a appLogicImpl) AddUser(ctx context.Context, createUserParams domain.Creat
 
 // DeleteUserById deletes the user with the given id
 func (a appLogicImpl) DeleteUserById(ctx context.Context, userId int) error {
+	// TODO implement cache
 	repoUser, err := a.queries.DeleteUser(ctx, int32(userId))
 	if err != nil {
 		return err
 	}
+
+	// invalidate cache
+	a.cache.Invalidate(context.Background(), "allUsers")
 
 	// log what user was deleted
 	a.log.Info("deleted user", zap.String("username", repoUser.Username.String))
