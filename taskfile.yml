@@ -128,41 +128,8 @@ tasks:
     desc: Format all project files
     cmds:
       - echo "Formatting all files"
-      - task format-md
-      - task format-sql
-      - task format-yml
-      - task format-json
+      - prettier --write "**/*.{yml,yaml,json,sql,md,tmpl}"
       # - task format-go-templ # Removed as no go.tmpl files are present
-    silent: true
-
-  format-go-templ:
-    desc: Format all go template files
-    cmds:
-      - prettier --write "**/*.tmpl"
-    silent: true
-
-  format-md:
-    desc: Format all markdown files
-    cmds:
-      - prettier --write "**/*.md"
-    silent: true
-
-  format-sql:
-    desc: Format all sql files
-    cmds:
-      - prettier --write "**/*.sql"
-    silent: true
-
-  format-yml:
-    desc: Format all yml files
-    cmds:
-      - prettier --write "**/*.{yml,yaml}"
-    silent: true
-
-  format-json:
-    desc: Format all json files
-    cmds:
-      - prettier --write "**/*.json"
     silent: true
 
   scc:
@@ -171,7 +138,6 @@ tasks:
       - echo "Running scc to show stats"
       - docker run --rm -it -v "$PWD:/pwd"  ghcr.io/lhoupert/scc:master scc /pwd
     silent: true
-
 
   format-in-docker:
     desc: Format using dockered prettier with plugins
