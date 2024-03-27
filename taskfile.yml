@@ -165,6 +165,14 @@ tasks:
       - prettier --write "**/*.json"
     silent: true
 
+  scc:
+    desc: 'Run scc to show stats'
+    cmds:
+      - echo "Running scc to show stats"
+      - docker run --rm -it -v "$PWD:/pwd"  ghcr.io/lhoupert/scc:master scc /pwd
+    silent: true
+
+
   format-in-docker:
     desc: Format using dockered prettier with plugins
     cmds:
