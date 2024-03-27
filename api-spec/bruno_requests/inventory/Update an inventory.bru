@@ -1,0 +1,11 @@
+meta {
+  name: Update an inventory
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://inventory.linuxcode.net/api/inventories/{inventoryId}
+  body: json
+  auth: none
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Add new user
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/api/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "some_user",
+    "email": "some_email@gmail.com",
+    "password": "12345"
+  }
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Add new inventory
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/api/inventories
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "inv_001",
+    "user_id": 1,
+    "max_weight": 10,
+    "volume": {
+      "height": 10,
+      "width": 10
+    }
+  }
+}

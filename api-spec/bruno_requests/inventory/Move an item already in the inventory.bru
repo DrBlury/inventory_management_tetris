@@ -1,0 +1,19 @@
+meta {
+  name: Move an item already in the inventory
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://inventory.linuxcode.net/api/inventories/{inventoryId}/move
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "original_position": "",
+    "new_position": "",
+    "quantity": ""
+  }
+}

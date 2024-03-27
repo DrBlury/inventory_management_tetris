@@ -1,0 +1,20 @@
+meta {
+  name: Add a new item to the inventory at the first possible position
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://inventory.linuxcode.net/api/inventories/{inventoryId}/add
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "item": "",
+    "quantity": "",
+    "durability_left": "",
+    "position": ""
+  }
+}

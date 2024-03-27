@@ -1,0 +1,30 @@
+meta {
+  name: Add new item
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/api/items
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Toast",
+    "variant": "normal",
+    "description": "A piece of bread",
+    "buy_value": 3,
+    "sell_value": 2,
+    "weight": 3,
+    "durability": 5,
+    "max_stack": 100,
+    "type": "consumable",
+    "shape": {
+      "rawshape": "##",
+      "height": 1,
+      "width": 2
+    }
+  }
+}
