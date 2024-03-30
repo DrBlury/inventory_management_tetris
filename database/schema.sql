@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2024-03-22T15:57:17.649Z
+-- Generated at: 2024-03-27T14:34:40.532Z
 CREATE TYPE "item_type" AS ENUM(
   'consumable',
   'armor',

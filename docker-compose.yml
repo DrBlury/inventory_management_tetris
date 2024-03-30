@@ -38,7 +38,7 @@ services:
           '-d',
           '${APP_DATABASE_NAME}',
         ]
-      interval: 30s
+      interval: 10s
       timeout: 5s
       retries: 5
 

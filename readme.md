@@ -2,6 +2,23 @@
 
 This is a simple inventory management system API. It is built using golang and uses PostgreSQL as the database.
 
+## Features (Work in progress) 🚧
+
+-   [x] API documentation using openapi
+-   [x] CRUD operations for items and inventories
+-   [x] Move items between inventories (e.g. from a player inventory to a chest and vice versa)
+-   Currency system (add/remove currency from inventories/players)
+-   Add custom attributes to inventories/items (e.g. weight, capacity, etc.)
+-   Add custom actions to items/inventories using scripting (golang/js)
+-   Add custom checks for inventory placement using scripting (e.g. check if item can only be obtained once and if already obtained, do not allow to be placed in inventory)
+-   Create loot tables and temporary inventories (e.g. for looting/lootboxes)
+-   Feature toggles for different types of inventories/items (e.g. disable trading for certain items) or disable features completely like trading, mail system or shaped inventories/items
+-   Sort items in inventory by category and custom sorting algorithms
+-   Access control for items and inventories
+-   Trading system (trade items between inventories and players)
+-   Mail system (send items asynchronously between inventories and players)
+-   Websocket support for real-time updates
+
 ## Required Dependencies
 
 ### Running the application
