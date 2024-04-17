@@ -1,6 +1,7 @@
 ---
 type: string
 description: The status of the API
+example: HEALTHY
 enum:
   - HEALTHY
   - UNHEALTHY

@@ -4,6 +4,7 @@ description: This object holds the inventory list response data. It includes the
 properties:
   inventories:
     type: array
+    description: The list of inventories.
     items:
       $ref: '../types/Inventory.yml'
   pagination:

@@ -6,13 +6,11 @@ get:
     - inventory
   responses:
     '200':
-      description: successful operation
+      description: successful operation - returns a list of inventories
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '../../schemas/_index.yml#/inventory_list_response'
+            $ref: '../../schemas/_index.yml#/inventory_list_response'
     '404':
       description: No inventories found
       content:
@@ -36,13 +34,13 @@ post:
           $ref: '../../schemas/_index.yml#/inventory_post_request'
   responses:
     '201':
-      description: Added inventory
+      description: Added inventory - returns the newly created inventory
       content:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/inventory'
     '400':
-      description: Bad request
+      description: Bad request - e.g. invalid inventory
       content:
         application/json:
           schema:

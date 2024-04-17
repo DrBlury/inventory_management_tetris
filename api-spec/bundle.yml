@@ -10,13 +10,13 @@ servers:
   - url: inventory.linuxcode.net
     description: Inventory server for example
 tags:
-  - name: inventory
+  inventory:
     description: Inventory operations
-  - name: info
+  info:
     description: Information operations
-  - name: item
+  item:
     description: Item operations
-  - name: user
+  user:
     description: User operations
 paths:
   /api/items:
@@ -27,13 +27,11 @@ paths:
         - item
       responses:
         '200':
-          description: successful operation
+          description: successful operation - returns a list of items
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ItemListResponse'
+                $ref: '#/components/schemas/ItemListResponse'
         '404':
           description: No items found
           content:
@@ -54,9 +52,13 @@ paths:
               $ref: '#/components/schemas/ItemPostRequest'
       responses:
         '201':
-          description: Added item
+          description: Added item - returns the newly created item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
         '400':
-          description: Bad request
+          description: Bad request - e.g. invalid item
       security: []
   /api/items/{itemId}:
     get:
@@ -74,14 +76,14 @@ paths:
             format: int64
       responses:
         '200':
-          description: successful operation
+          description: successful operation - returns item
           content:
             application/json:
               schema:
                 items:
                   $ref: '#/components/schemas/Item'
         '400':
-          description: Invalid ID supplied
+          description: Invalid ID supplied (e.g. not an integer)
         '404':
           description: Can not find item (item ID)
       security: []
@@ -149,15 +151,13 @@ paths:
         - user
       responses:
         '200':
-          description: successful operation
+          description: successful operation - returns a list of users
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserListResponse'
+                $ref: '#/components/schemas/UserListResponse'
         '404':
-          description: No items found
+          description: No users found - no users in the system
           content:
             application/json:
               schema:
@@ -176,13 +176,13 @@ paths:
               $ref: '#/components/schemas/UserPostRequest'
       responses:
         '201':
-          description: Added user
+          description: Added user - returns the newly created user
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
         '400':
-          description: Bad request
+          description: Bad request - e.g. invalid user
       security: []
   /api/users/{userId}:
     get:
@@ -240,7 +240,11 @@ paths:
               $ref: '#/components/schemas/UserPostRequest'
       responses:
         '200':
-          description: Update done
+          description: Update done - returns updated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
         '400':
           description: Invalid ID supplied
         '404':
@@ -275,13 +279,11 @@ paths:
         - inventory
       responses:
         '200':
-          description: successful operation
+          description: successful operation - returns a list of inventories
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InventoryListResponse'
+                $ref: '#/components/schemas/InventoryListResponse'
         '404':
           description: No inventories found
           content:
@@ -302,13 +304,13 @@ paths:
               $ref: '#/components/schemas/InventoryPostRequest'
       responses:
         '201':
-          description: Added inventory
+          description: Added inventory - returns the newly created inventory
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Inventory'
         '400':
-          description: Bad request
+          description: Bad request - e.g. invalid inventory
           content:
             application/json:
               schema:
@@ -330,14 +332,14 @@ paths:
             format: int64
       responses:
         '200':
-          description: successful operation
+          description: successful operation - returns inventory
           content:
             application/json:
               schema:
                 items:
                   $ref: '#/components/schemas/Inventory'
         '400':
-          description: Invalid ID supplied
+          description: Invalid ID supplied (e.g. not an integer)
           content:
             application/json:
               schema:
@@ -370,9 +372,13 @@ paths:
               $ref: '#/components/schemas/InventoryPostRequest'
       responses:
         '200':
-          description: Update done
+          description: Update done - returns updated inventory
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inventory'
         '400':
-          description: Invalid ID supplied
+          description: Invalid ID supplied (e.g. not an integer)
           content:
             application/json:
               schema:
@@ -400,7 +406,7 @@ paths:
         '200':
           description: Deleted inventory (inventory ID)
         '400':
-          description: Invalid ID supplied
+          description: Invalid ID supplied (e.g. not an integer)
         '404':
           description: Can not find inventory (inventory ID)
       security: []
@@ -428,7 +434,7 @@ paths:
         '200':
           description: Moved item in inventory
         '400':
-          description: Bad request
+          description: Bad request (e.g. invalid item)
           content:
             application/json:
               schema:
@@ -462,7 +468,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/InventoryItem'
         '400':
-          description: Bad request
+          description: Bad request (e.g. invalid item)
           content:
             application/json:
               schema:
@@ -482,6 +488,7 @@ paths:
             application/json:
               schema:
                 type: object
+                description: Metrics for prometheus
                 properties:
                   metrics:
                     type: object
@@ -495,7 +502,7 @@ paths:
       operationId: getVersion
       responses:
         '200':
-          description: OK
+          description: The version of the service
           content:
             application/json:
               schema:
@@ -509,7 +516,7 @@ paths:
       operationId: getStatus
       responses:
         '200':
-          description: OK
+          description: The status of the service
           content:
             application/json:
               schema:
@@ -523,7 +530,7 @@ paths:
       operationId: getOpenAPIJSON
       responses:
         '200':
-          description: OK
+          description: The OpenAPI spec as JSON
           content:
             application/json:
               schema:
@@ -545,7 +552,7 @@ paths:
       operationId: getOpenAPIHTML
       responses:
         '200':
-          description: OK
+          description: The rendered HTML for the OpenAPI spec
           content:
             text/html:
               schema:
@@ -559,10 +566,13 @@ components:
       properties:
         rawshape:
           type: string
+          example: '#####..#####'
         height:
           type: integer
+          example: 3
         width:
           type: integer
+          example: 4
       required:
         - rawshape
         - height
@@ -570,6 +580,7 @@ components:
     ItemType:
       type: string
       description: The type of the item.
+      example: meleeWeapon
       enum:
         - consumable
         - armor
@@ -584,22 +595,31 @@ components:
       properties:
         id:
           type: integer
+          example: 1
         variant:
           type: string
+          example: rare
         name:
           type: string
+          example: Sword
         description:
           type: string
+          example: A sword that can be used to fight enemies.
         buy_value:
           type: integer
+          example: 100
         sell_value:
           type: integer
+          example: 50
         weight:
           type: integer
+          weight: 10
         durability:
           type: integer
+          durability: 100
         max_stack:
           type: integer
+          example: 1
         shape:
           $ref: '#/components/schemas/ItemShape'
         type:
@@ -622,14 +642,19 @@ components:
       properties:
         page:
           type: integer
+          example: 1
         pages:
           type: integer
+          example: 10
         limit:
           type: integer
+          example: 10
         total:
           type: integer
+          example: 100
         offset:
           type: integer
+          example: 0
       required:
         - page
         - pages
@@ -642,6 +667,7 @@ components:
       properties:
         items:
           type: array
+          description: The list of items.
           items:
             $ref: '#/components/schemas/Item'
         pagination:
@@ -693,20 +719,28 @@ components:
       properties:
         name:
           type: string
+          example: Sword
         variant:
           type: string
+          example: Iron
         description:
           type: string
+          example: A sword made of iron.
         buy_value:
           type: integer
+          example: 100
         sell_value:
           type: integer
+          example: 50
         weight:
           type: integer
+          example: 10
         durability:
           type: integer
+          example: 200
         max_stack:
           type: integer
+          example: 1
         type:
           $ref: '#/components/schemas/ItemType'
         shape:
@@ -728,8 +762,10 @@ components:
       properties:
         height:
           type: integer
+          example: 10
         width:
           type: integer
+          example: 10
       required:
         - height
         - width
@@ -739,12 +775,16 @@ components:
       properties:
         id:
           type: integer
+          example: 1
         name:
           type: string
+          example: Backpack
         userId:
           type: integer
+          example: 1
         max_weight:
           type: integer
+          example: 850
         volume:
           $ref: '#/components/schemas/Volume'
       required:
@@ -759,8 +799,10 @@ components:
       properties:
         id:
           type: integer
+          example: 1
         username:
           type: string
+          example: JohnDoe
         inventories:
           type: array
           items:
@@ -775,6 +817,7 @@ components:
       properties:
         users:
           type: array
+          description: The list of users.
           items:
             $ref: '#/components/schemas/User'
         pagination:
@@ -788,10 +831,13 @@ components:
       properties:
         username:
           type: string
+          example: john_doe
         email:
           type: string
+          example: john_doe@test.com
         password:
           type: string
+          example: password
       required:
         - username
         - email
@@ -802,10 +848,13 @@ components:
       properties:
         x:
           type: integer
+          example: 3
         'y':
           type: integer
+          example: 4
         rotation:
           type: integer
+          example: 2
       required:
         - x
         - 'y'
@@ -820,8 +869,10 @@ components:
           $ref: '#/components/schemas/Position'
         quantity:
           type: integer
+          example: 1
         durability_left:
           type: integer
+          example: 100
       required:
         - item
         - position
@@ -835,6 +886,7 @@ components:
           $ref: '#/components/schemas/InventoryMeta'
         items:
           type: array
+          description: An array of InventoryItem objects.
           items:
             $ref: '#/components/schemas/InventoryItem'
       required:
@@ -846,6 +898,7 @@ components:
       properties:
         inventories:
           type: array
+          description: The list of inventories.
           items:
             $ref: '#/components/schemas/Inventory'
         pagination:
@@ -859,10 +912,13 @@ components:
       properties:
         name:
           type: string
+          example: Backpack
         user_id:
           type: integer
+          example: 1
         max_weight:
           type: integer
+          example: 850
         volume:
           $ref: '#/components/schemas/Volume'
       required:
@@ -880,6 +936,7 @@ components:
           $ref: '#/components/schemas/Position'
         quantity:
           type: integer
+          example: 1
       required:
         - original_position
         - new_position
@@ -892,8 +949,10 @@ components:
           $ref: '#/components/schemas/Item'
         quantity:
           type: integer
+          example: 1
         durability_left:
           type: integer
+          example: 100
         position:
           $ref: '#/components/schemas/Position'
       required:
@@ -933,6 +992,7 @@ components:
     Status:
       type: string
       description: The status of the API
+      example: HEALTHY
       enum:
         - HEALTHY
         - UNHEALTHY

@@ -4,6 +4,7 @@ description: This object holds the item list response data. It includes the list
 properties:
   items:
     type: array
+    description: The list of items.
     items:
       $ref: '../types/Item.yml'
   pagination:

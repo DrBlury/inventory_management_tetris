@@ -6,8 +6,10 @@ properties:
     $ref: '../types/Item.yml'
   quantity:
     type: integer
+    example: 1
   durability_left:
     type: integer
+    example: 100
   position:
     $ref: '../types/Position.yml'
 

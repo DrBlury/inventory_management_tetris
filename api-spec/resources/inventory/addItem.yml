@@ -26,7 +26,7 @@ post:
           schema:
             $ref: '../../schemas/_index.yml#/inventory_item'
     '400':
-      description: Bad request
+      description: Bad request (e.g. invalid item)
       content:
         application/json:
           schema:

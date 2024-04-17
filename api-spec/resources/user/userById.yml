@@ -57,7 +57,11 @@ put:
           $ref: '../../schemas/_index.yml#/user_post_request'
   responses:
     '200':
-      description: Update done
+      description: Update done - returns updated user
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/_index.yml#/user'
     '404':
       description: Can not find user (user ID)
     '400':

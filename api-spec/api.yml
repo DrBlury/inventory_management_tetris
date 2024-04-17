@@ -8,13 +8,13 @@ info:
     name: unlicensed
     url: 'www.linuxcode.net'
 tags:
-  - name: inventory
+  inventory:
     description: Inventory operations
-  - name: info
+  info:
     description: Information operations
-  - name: item
+  item:
     description: Item operations
-  - name: user
+  user:
     description: User operations
 servers:
   - url: inventory.linuxcode.net

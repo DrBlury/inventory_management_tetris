@@ -22,7 +22,7 @@ post:
     '200':
       description: Moved item in inventory
     '400':
-      description: Bad request
+      description: Bad request (e.g. invalid item)
       content:
         application/json:
           schema:

@@ -4,10 +4,13 @@ description: This object holds the item shape data.
 properties:
   rawshape:
     type: string
+    example: '#####..#####'
   height:
     type: integer
+    example: 3
   width:
     type: integer
+    example: 4
 
 required:
   - rawshape

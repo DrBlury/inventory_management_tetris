@@ -4,8 +4,10 @@ description: This object holds the user data.
 properties:
   id:
     type: integer
+    example: 1
   username:
     type: string
+    example: 'JohnDoe'
   inventories:
     type: array
     items:

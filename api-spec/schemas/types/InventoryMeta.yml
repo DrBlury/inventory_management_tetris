@@ -3,12 +3,16 @@ description: This object holds the inventory meta data (restrictions, owner, etc
 properties:
   id:
     type: integer
+    example: 1
   name:
     type: string
+    example: 'Backpack'
   userId:
     type: integer
+    example: 1
   max_weight:
     type: integer
+    example: 850
   volume:
     $ref: './Volume.yml'
 

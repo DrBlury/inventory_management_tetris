@@ -14,14 +14,14 @@ get:
         format: int64
   responses:
     '200':
-      description: successful operation
+      description: successful operation - returns inventory
       content:
         application/json:
           schema:
             items:
               $ref: '../../schemas/_index.yml#/inventory'
     '400':
-      description: Invalid ID supplied
+      description: Invalid ID supplied (e.g. not an integer)
       content:
         application/json:
           schema:
@@ -58,7 +58,11 @@ put:
           $ref: '../../schemas/_index.yml#/inventory_post_request'
   responses:
     '200':
-      description: Update done
+      description: Update done - returns updated inventory
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/_index.yml#/inventory'
     '404':
       description: Can not find inventory (inventory ID)
       content:
@@ -66,7 +70,7 @@ put:
           schema:
             $ref: '../../schemas/_index.yml#/error'
     '400':
-      description: Invalid ID supplied
+      description: Invalid ID supplied (e.g. not an integer)
       content:
         application/json:
           schema:
@@ -89,7 +93,7 @@ delete:
     '200':
       description: Deleted inventory (inventory ID)
     '400':
-      description: Invalid ID supplied
+      description: Invalid ID supplied (e.g. not an integer)
     '404':
       description: Can not find inventory (inventory ID)
 

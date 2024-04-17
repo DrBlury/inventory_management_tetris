@@ -7,7 +7,7 @@ get:
   operationId: getStatus
   responses:
     '200':
-      description: OK
+      description: The status of the service
       content:
         application/json:
           schema:

@@ -6,6 +6,7 @@ properties:
     $ref: './InventoryMeta.yml'
   items:
     type: array
+    description: An array of InventoryItem objects.
     items:
       $ref: './InventoryItem.yml'
 

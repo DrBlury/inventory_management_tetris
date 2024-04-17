@@ -12,6 +12,7 @@ get:
         application/json:
           schema:
             type: object
+            description: Metrics for prometheus
             properties:
               metrics:
                 type: object

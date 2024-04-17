@@ -7,7 +7,7 @@ get:
   operationId: getOpenAPIJSON
   responses:
     '200':
-      description: OK
+      description: The OpenAPI spec as JSON
       content:
         application/json:
           schema:

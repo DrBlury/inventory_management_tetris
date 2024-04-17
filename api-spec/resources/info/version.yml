@@ -7,7 +7,7 @@ get:
   operationId: getVersion
   responses:
     '200':
-      description: OK
+      description: The version of the service
       content:
         application/json:
           schema:

@@ -4,8 +4,10 @@ description: This object holds the volume data.
 properties:
   height:
     type: integer
+    example: 10
   width:
     type: integer
+    example: 10
 
 required:
   - height

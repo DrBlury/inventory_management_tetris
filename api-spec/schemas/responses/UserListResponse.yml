@@ -4,6 +4,7 @@ description: This object holds the user list response data. It includes the list
 properties:
   users:
     type: array
+    description: The list of users.
     items:
       $ref: '../types/User.yml'
   pagination:

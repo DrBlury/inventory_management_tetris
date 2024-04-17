@@ -4,20 +4,28 @@ description: This object holds the request data for creating a new item.
 properties:
   name:
     type: string
+    example: 'Sword'
   variant:
     type: string
+    example: 'Iron'
   description:
     type: string
+    example: 'A sword made of iron.'
   buy_value:
     type: integer
+    example: 100
   sell_value:
     type: integer
+    example: 50
   weight:
     type: integer
+    example: 10
   durability:
     type: integer
+    example: 200
   max_stack:
     type: integer
+    example: 1
   type:
     $ref: '../enum/ItemType.yml'
   shape:

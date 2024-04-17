@@ -4,10 +4,13 @@ description: This object holds the request data for creating a new user.
 properties:
   username:
     type: string
+    example: 'john_doe'
   email:
     type: string
+    example: 'john_doe@test.com'
   password:
     type: string
+    example: 'password'
 
 required:
   - username

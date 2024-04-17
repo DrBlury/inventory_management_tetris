@@ -4,10 +4,13 @@ description: This object holds the request data for creating an inventory.
 properties:
   name:
     type: string
+    example: 'Backpack'
   user_id:
     type: integer
+    example: 1
   max_weight:
     type: integer
+    example: 850
   volume:
     $ref: '../types/Volume.yml'
 

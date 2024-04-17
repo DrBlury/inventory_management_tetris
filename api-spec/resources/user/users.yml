@@ -6,15 +6,13 @@ get:
     - user
   responses:
     '200':
-      description: successful operation
+      description: successful operation - returns a list of users
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '../../schemas/_index.yml#/user_list_response'
+            $ref: '../../schemas/_index.yml#/user_list_response'
     '404':
-      description: No items found
+      description: No users found - no users in the system
       content:
         application/json:
           schema:
@@ -36,13 +34,13 @@ post:
           $ref: '../../schemas/_index.yml#/user_post_request'
   responses:
     '201':
-      description: Added user
+      description: Added user - returns the newly created user
       content:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/user'
     '400':
-      description: Bad request
+      description: Bad request - e.g. invalid user
 
   # This API has no security
   security: []

@@ -15,7 +15,7 @@ get:
   operationId: getOpenAPIHTML
   responses:
     '200':
-      description: OK
+      description: The rendered HTML for the OpenAPI spec
       content:
         text/html:
           schema:
