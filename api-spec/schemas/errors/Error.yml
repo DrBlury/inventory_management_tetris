@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the error response data.
 properties:
   errorId:
     type: string
@@ -11,8 +12,6 @@ properties:
     example: The item does not exist
   errorType:
     $ref: './ErrorType.yml'
-    description: The error type
-    example: Bad Request
   code:
     type: integer
     description: The error code

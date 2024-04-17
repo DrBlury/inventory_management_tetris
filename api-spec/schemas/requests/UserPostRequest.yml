@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the request data for creating a new user.
 properties:
   username:
     type: string

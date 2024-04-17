@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the pagination data.
 properties:
   page:
     type: integer

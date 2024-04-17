@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the inventory item data.
 properties:
   item:
     $ref: './Item.yml'

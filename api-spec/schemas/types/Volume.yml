@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the volume data.
 properties:
   height:
     type: integer

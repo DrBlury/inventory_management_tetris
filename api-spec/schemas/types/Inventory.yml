@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the inventory meta data and the items in the inventory as an array of InventoryItem objects.
 properties:
   inventoryMeta:
     $ref: './InventoryMeta.yml'

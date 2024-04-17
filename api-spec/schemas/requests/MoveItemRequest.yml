@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the request data for moving an item within the inventory.
 properties:
   original_position:
     $ref: '../types/Position.yml'

@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the item list response data. It includes the list of items and pagination data.
 properties:
   items:
     type: array

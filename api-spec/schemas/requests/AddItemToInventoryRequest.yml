@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the request data for adding an item to the inventory.
 properties:
   item:
     $ref: '../types/Item.yml'

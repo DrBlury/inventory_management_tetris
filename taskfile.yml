@@ -80,6 +80,13 @@ tasks:
       - docker run --rm -v ./api-spec/:/spec redocly/cli lint --generate-ignore-file api.yml
     silent: true
 
+  lint-api-2:
+    desc: 'Lint the api-spec using vacuum'
+    cmds:
+      - echo "Linting the api-spec"
+      - docker run --rm -v ./api-spec/:/work:ro dshanley/vacuum lint api.yml -d -p /work
+    silent: true
+
   bundle-api:
     desc: 'Bundle the api-spec using redocly'
     cmds:

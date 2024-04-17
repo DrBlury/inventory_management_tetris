@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the position data.
 properties:
   x:
     type: integer

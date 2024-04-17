@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the user list response data. It includes the list of users and pagination data.
 properties:
   users:
     type: array

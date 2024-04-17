@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the inventory list response data. It includes the list of inventories and pagination data.
 properties:
   inventories:
     type: array

@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the API version data.
 properties:
   version:
     type: string

@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the item data.
 properties:
   id:
     type: integer

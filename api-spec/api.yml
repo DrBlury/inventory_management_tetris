@@ -7,6 +7,15 @@ info:
   license:
     name: unlicensed
     url: 'www.linuxcode.net'
+tags:
+  - name: inventory
+    description: Inventory operations
+  - name: info
+    description: Information operations
+  - name: item
+    description: Item operations
+  - name: user
+    description: User operations
 servers:
   - url: inventory.linuxcode.net
     description: Inventory server for example
@@ -14,12 +23,3 @@ paths:
   $ref: './resources/_index.yml'
 components:
   $ref: './schemas/_index.yml'
-tags:
-  info:
-    description: General information about the API
-  item:
-    description: Operations about items
-  user:
-    description: Operations about users
-  inventory:
-    description: Operations about inventories

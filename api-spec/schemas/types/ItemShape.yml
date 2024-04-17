@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the item shape data.
 properties:
   rawshape:
     type: string

@@ -1,5 +1,6 @@
 ---
 type: object
+description: This object holds the request data for creating an inventory.
 properties:
   name:
     type: string

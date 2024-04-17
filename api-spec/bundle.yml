@@ -10,14 +10,14 @@ servers:
   - url: inventory.linuxcode.net
     description: Inventory server for example
 tags:
-  info:
-    description: General information about the API
-  item:
-    description: Operations about items
-  user:
-    description: Operations about users
-  inventory:
-    description: Operations about inventories
+  - name: inventory
+    description: Inventory operations
+  - name: info
+    description: Information operations
+  - name: item
+    description: Item operations
+  - name: user
+    description: User operations
 paths:
   /api/items:
     get:
@@ -555,6 +555,7 @@ components:
   schemas:
     ItemShape:
       type: object
+      description: This object holds the item shape data.
       properties:
         rawshape:
           type: string
@@ -568,6 +569,7 @@ components:
         - width
     ItemType:
       type: string
+      description: The type of the item.
       enum:
         - consumable
         - armor
@@ -578,6 +580,7 @@ components:
         - resource
     Item:
       type: object
+      description: This object holds the item data.
       properties:
         id:
           type: integer
@@ -615,6 +618,7 @@ components:
         - type
     Pagination:
       type: object
+      description: This object holds the pagination data.
       properties:
         page:
           type: integer
@@ -634,6 +638,7 @@ components:
         - offset
     ItemListResponse:
       type: object
+      description: This object holds the item list response data. It includes the list of items and pagination data.
       properties:
         items:
           type: array
@@ -655,6 +660,7 @@ components:
         - Internal Server Error
     Error:
       type: object
+      description: This object holds the error response data.
       properties:
         errorId:
           type: string
@@ -666,8 +672,6 @@ components:
           example: The item does not exist
         errorType:
           $ref: '#/components/schemas/ErrorType'
-          description: The error type
-          example: Bad Request
         code:
           type: integer
           description: The error code
@@ -685,6 +689,7 @@ components:
         - timestamp
     ItemPostRequest:
       type: object
+      description: This object holds the request data for creating a new item.
       properties:
         name:
           type: string
@@ -719,6 +724,7 @@ components:
         - shape
     Volume:
       type: object
+      description: This object holds the volume data.
       properties:
         height:
           type: integer
@@ -729,6 +735,7 @@ components:
         - width
     InventoryMeta:
       type: object
+      description: This object holds the inventory meta data (restrictions, owner, etc.)
       properties:
         id:
           type: integer
@@ -748,6 +755,7 @@ components:
         - volume
     User:
       type: object
+      description: This object holds the user data.
       properties:
         id:
           type: integer
@@ -763,6 +771,7 @@ components:
         - inventories
     UserListResponse:
       type: object
+      description: This object holds the user list response data. It includes the list of users and pagination data.
       properties:
         users:
           type: array
@@ -775,6 +784,7 @@ components:
         - pagination
     UserPostRequest:
       type: object
+      description: This object holds the request data for creating a new user.
       properties:
         username:
           type: string
@@ -788,6 +798,7 @@ components:
         - password
     Position:
       type: object
+      description: This object holds the position data.
       properties:
         x:
           type: integer
@@ -801,6 +812,7 @@ components:
         - rotation
     InventoryItem:
       type: object
+      description: This object holds the inventory item data.
       properties:
         item:
           $ref: '#/components/schemas/Item'
@@ -817,6 +829,7 @@ components:
         - durability_left
     Inventory:
       type: object
+      description: This object holds the inventory meta data and the items in the inventory as an array of InventoryItem objects.
       properties:
         inventoryMeta:
           $ref: '#/components/schemas/InventoryMeta'
@@ -829,6 +842,7 @@ components:
         - items
     InventoryListResponse:
       type: object
+      description: This object holds the inventory list response data. It includes the list of inventories and pagination data.
       properties:
         inventories:
           type: array
@@ -841,6 +855,7 @@ components:
         - pagination
     InventoryPostRequest:
       type: object
+      description: This object holds the request data for creating an inventory.
       properties:
         name:
           type: string
@@ -857,6 +872,7 @@ components:
         - volume
     MoveItemRequest:
       type: object
+      description: This object holds the request data for moving an item within the inventory.
       properties:
         original_position:
           $ref: '#/components/schemas/Position'
@@ -870,6 +886,7 @@ components:
         - quantity
     AddItemToInventoryRequest:
       type: object
+      description: This object holds the request data for adding an item to the inventory.
       properties:
         item:
           $ref: '#/components/schemas/Item'
@@ -885,6 +902,7 @@ components:
         - durability_left
     Version:
       type: object
+      description: This object holds the API version data.
       properties:
         version:
           type: string
@@ -914,11 +932,11 @@ components:
         - commitDate
     Status:
       type: string
+      description: The status of the API
       enum:
         - HEALTHY
         - UNHEALTHY
         - UNKNOWN
-      description: The status of the API
   item_type:
     $ref: ./enum/ItemType.yml
   status:
