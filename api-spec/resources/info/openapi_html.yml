@@ -2,6 +2,14 @@
 get:
   tags:
     - info
+  parameters:
+    - name: render
+      in: query
+      description: OpenAPI html renderer
+      required: false
+      schema:
+        type: string
+      example: scalar or spotlight
   summary: Get describing html of openapi spec
   description: Get describing html of openapi spec
   operationId: getOpenAPIHTML

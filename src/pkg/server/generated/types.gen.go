@@ -214,6 +214,12 @@ type Volume struct {
 	Width  int `json:"width"`
 }
 
+// GetOpenAPIHTMLParams defines parameters for GetOpenAPIHTML.
+type GetOpenAPIHTMLParams struct {
+	// Render OpenAPI html renderer
+	Render *string `form:"render,omitempty" json:"render,omitempty"`
+}
+
 // AddInventoryJSONRequestBody defines body for AddInventory for application/json ContentType.
 type AddInventoryJSONRequestBody = InventoryPostRequest
 

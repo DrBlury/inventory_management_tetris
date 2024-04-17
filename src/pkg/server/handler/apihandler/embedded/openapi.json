@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.3",
+  "openapi": "3.1.0",
   "info": {
     "title": "Inventory Manager",
     "version": "1.0.0",
@@ -815,6 +815,18 @@
       "get": {
         "tags": [
           "info"
+        ],
+        "parameters": [
+          {
+            "name": "render",
+            "in": "query",
+            "description": "OpenAPI html renderer",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "scalar or spotlight"
+          }
         ],
         "summary": "Get describing html of openapi spec",
         "description": "Get describing html of openapi spec",
