@@ -2,6 +2,7 @@
 openapi: "3.1.0"
 info:
   title: Inventory Manager
+  description: Inventory Manager API
   version: 1.0.0
   license:
     name: unlicensed
@@ -12,5 +13,13 @@ servers:
 paths:
   $ref: './resources/_index.yml'
 components:
-  schemas:
-    $ref: './schemas/_index.yml'
+  $ref: './schemas/_index.yml'
+tags:
+  info:
+    description: General information about the API
+  item:
+    description: Operations about items
+  user:
+    description: Operations about users
+  inventory:
+    description: Operations about inventories

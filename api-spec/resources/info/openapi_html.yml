@@ -3,7 +3,7 @@ get:
   tags:
     - info
   parameters:
-    - name: render
+    render:
       in: query
       description: OpenAPI html renderer
       required: false

@@ -5,7 +5,7 @@ post:
   tags:
     - inventory
   parameters:
-    - name: inventoryId
+    inventoryId:
       in: path
       description: ID of inventory
       required: true
