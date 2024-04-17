@@ -68,6 +68,7 @@ func LoadConfig(
 
 	serverConfig := &server.Config{
 		Address: "0.0.0.0:" + viper.GetString("APP_SERVER_PORT"),
+		BaseURL: viper.GetString("APP_SERVER_BASE_URL"),
 	}
 
 	otelConfig := &telemetry.Config{

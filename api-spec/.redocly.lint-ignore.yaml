@@ -15,6 +15,16 @@ resources/info/status.yml:
     - '#/get/responses'
   security-defined:
     - '#/get'
+resources/info/openapi_json.yml:
+  operation-4xx-response:
+    - '#/get/responses'
+  security-defined:
+    - '#/get'
+resources/info/openapi_html.yml:
+  operation-4xx-response:
+    - '#/get/responses'
+  security-defined:
+    - '#/get'
 resources/inventory/inventoryById.yml:
   security-defined:
     - '#/put'

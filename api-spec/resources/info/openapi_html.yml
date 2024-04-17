@@ -1,0 +1,15 @@
+---
+get:
+  tags:
+    - info
+  summary: Get describing html of openapi spec
+  description: Get describing html of openapi spec
+  operationId: getOpenAPIHTML
+  responses:
+    '200':
+      description: OK
+      content:
+        text/html:
+          schema:
+            type: string
+            example: "<html>...</html>"

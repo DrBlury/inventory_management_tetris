@@ -31,3 +31,9 @@
 
 /info/status:
   $ref: './info/status.yml'
+
+/info/openapi.json:
+  $ref: './info/openapi_json.yml'
+
+/info/openapi.html:
+  $ref: './info/openapi_html.yml'

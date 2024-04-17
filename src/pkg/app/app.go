@@ -56,7 +56,7 @@ func Run(cfg *Config, shutdownChannel chan os.Signal) error {
 	appLogic := usecase.NewAppLogic(db, logger, cache)
 
 	// ===== Handlers =====
-	apiHandler := apihandler.NewAPIHandler(appLogic, cfg.Info, logger)
+	apiHandler := apihandler.NewAPIHandler(appLogic, cfg.Info, logger, cfg.Server.BaseURL)
 
 	// ===== Router =====
 	r := router.New(apiHandler, cfg.Router)

@@ -5,6 +5,7 @@ This is a simple inventory management system API. It is built using golang and u
 ## Features (Work in progress) 🚧
 
 -   [x] API documentation using openapi
+-   [x] API test page (Swagger UI alternative)
 -   [x] CRUD operations for items and inventories
 -   [x] Move items between inventories (e.g. from a player inventory to a chest and vice versa)
 -   Currency system (add/remove currency from inventories/players)

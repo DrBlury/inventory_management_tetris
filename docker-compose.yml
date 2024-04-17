@@ -10,7 +10,10 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
     restart: on-failure
     healthcheck:
       test: curl --fail -s localhost:8080/info/status || exit 1
@@ -38,7 +41,7 @@ services:
           '-d',
           '${APP_DATABASE_NAME}',
         ]
-      interval: 10s
+      interval: 3s
       timeout: 5s
       retries: 5
 
@@ -50,7 +53,7 @@ services:
       - '6379:6379'
     healthcheck:
       test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
-      interval: 30s
+      interval: 3s
       timeout: 5s
 
   dbmigration:

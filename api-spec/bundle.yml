@@ -504,6 +504,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
+  /info/openapi.json:
+    get:
+      tags:
+        - info
+      summary: Get openapi spec as json
+      description: Get openapi spec as json
+      operationId: getOpenAPIJSON
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /info/openapi.html:
+    get:
+      tags:
+        - info
+      summary: Get describing html of openapi spec
+      description: Get describing html of openapi spec
+      operationId: getOpenAPIHTML
+      responses:
+        '200':
+          description: OK
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <html>...</html>
 components:
   schemas:
     ItemShape:
