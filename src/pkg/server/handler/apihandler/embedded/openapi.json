@@ -1,7 +1,8 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.0",
   "info": {
     "title": "Inventory Manager",
+    "description": "Inventory Manager API",
     "version": "1.0.0",
     "license": {
       "name": "unlicensed",
@@ -14,6 +15,24 @@
       "description": "Inventory server for example"
     }
   ],
+  "tags": [
+    {
+      "name": "inventory",
+      "description": "Inventory operations"
+    },
+    {
+      "name": "info",
+      "description": "Information operations"
+    },
+    {
+      "name": "item",
+      "description": "Item operations"
+    },
+    {
+      "name": "user",
+      "description": "User operations"
+    }
+  ],
   "paths": {
     "/api/items": {
       "get": {
@@ -24,14 +43,11 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "successful operation - returns a list of items",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ItemListResponse"
-                  }
+                  "$ref": "#/components/schemas/ItemListResponse"
                 }
               }
             }
@@ -67,10 +83,17 @@
         },
         "responses": {
           "201": {
-            "description": "Added item"
+            "description": "Added item - returns the newly created item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Item"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad request"
+            "description": "Bad request - e.g. invalid item"
           }
         },
         "security": []
@@ -97,7 +120,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "successful operation - returns item",
             "content": {
               "application/json": {
                 "schema": {
@@ -109,7 +132,7 @@
             }
           },
           "400": {
-            "description": "Invalid ID supplied"
+            "description": "Invalid ID supplied (e.g. not an integer)"
           },
           "404": {
             "description": "Can not find item (item ID)"
@@ -195,7 +218,7 @@
             "description": "Deleted item (item ID)"
           },
           "400": {
-            "description": "Invalid ID supplied"
+            "description": "Invalid ID supplied (e.g. not an integer)"
           },
           "404": {
             "description": "Can not find item (item ID)"
@@ -213,20 +236,17 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "successful operation - returns a list of users",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserListResponse"
-                  }
+                  "$ref": "#/components/schemas/UserListResponse"
                 }
               }
             }
           },
           "404": {
-            "description": "No items found",
+            "description": "No users found - no users in the system",
             "content": {
               "application/json": {
                 "schema": {
@@ -256,7 +276,7 @@
         },
         "responses": {
           "201": {
-            "description": "Added user",
+            "description": "Added user - returns the newly created user",
             "content": {
               "application/json": {
                 "schema": {
@@ -266,7 +286,7 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "description": "Bad request - e.g. invalid user"
           }
         },
         "security": []
@@ -357,7 +377,14 @@
         },
         "responses": {
           "200": {
-            "description": "Update done"
+            "description": "Update done - returns updated user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
           },
           "400": {
             "description": "Invalid ID supplied"
@@ -409,14 +436,11 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "successful operation - returns a list of inventories",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/InventoryListResponse"
-                  }
+                  "$ref": "#/components/schemas/InventoryListResponse"
                 }
               }
             }
@@ -452,7 +476,7 @@
         },
         "responses": {
           "201": {
-            "description": "Added inventory",
+            "description": "Added inventory - returns the newly created inventory",
             "content": {
               "application/json": {
                 "schema": {
@@ -462,7 +486,7 @@
             }
           },
           "400": {
-            "description": "Bad request",
+            "description": "Bad request - e.g. invalid inventory",
             "content": {
               "application/json": {
                 "schema": {
@@ -496,7 +520,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "successful operation - returns inventory",
             "content": {
               "application/json": {
                 "schema": {
@@ -508,7 +532,7 @@
             }
           },
           "400": {
-            "description": "Invalid ID supplied",
+            "description": "Invalid ID supplied (e.g. not an integer)",
             "content": {
               "application/json": {
                 "schema": {
@@ -560,10 +584,17 @@
         },
         "responses": {
           "200": {
-            "description": "Update done"
+            "description": "Update done - returns updated inventory",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Inventory"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Invalid ID supplied",
+            "description": "Invalid ID supplied (e.g. not an integer)",
             "content": {
               "application/json": {
                 "schema": {
@@ -607,7 +638,7 @@
             "description": "Deleted inventory (inventory ID)"
           },
           "400": {
-            "description": "Invalid ID supplied"
+            "description": "Invalid ID supplied (e.g. not an integer)"
           },
           "404": {
             "description": "Can not find inventory (inventory ID)"
@@ -650,7 +681,7 @@
             "description": "Moved item in inventory"
           },
           "400": {
-            "description": "Bad request",
+            "description": "Bad request (e.g. invalid item)",
             "content": {
               "application/json": {
                 "schema": {
@@ -704,7 +735,7 @@
             }
           },
           "400": {
-            "description": "Bad request",
+            "description": "Bad request (e.g. invalid item)",
             "content": {
               "application/json": {
                 "schema": {
@@ -732,6 +763,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "description": "Metrics for prometheus",
                   "properties": {
                     "metrics": {
                       "type": "object",
@@ -755,7 +787,7 @@
         "operationId": "getVersion",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "The version of the service",
             "content": {
               "application/json": {
                 "schema": {
@@ -777,7 +809,7 @@
         "operationId": "getStatus",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "The status of the service",
             "content": {
               "application/json": {
                 "schema": {
@@ -799,7 +831,7 @@
         "operationId": "getOpenAPIJSON",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "The OpenAPI spec as JSON",
             "content": {
               "application/json": {
                 "schema": {
@@ -823,9 +855,10 @@
             "description": "OpenAPI html renderer",
             "required": false,
             "schema": {
-              "type": "string"
-            },
-            "example": "scalar or spotlight"
+              "type": "string",
+              "description": "OpenAPI html renderer name (scalar or spotlight)",
+              "example": "scalar"
+            }
           }
         ],
         "summary": "Get describing html of openapi spec",
@@ -833,7 +866,7 @@
         "operationId": "getOpenAPIHTML",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "The rendered HTML for the OpenAPI spec",
             "content": {
               "text/html": {
                 "schema": {
@@ -851,15 +884,19 @@
     "schemas": {
       "ItemShape": {
         "type": "object",
+        "description": "This object holds the item shape data.",
         "properties": {
           "rawshape": {
-            "type": "string"
+            "type": "string",
+            "example": "#####..#####"
           },
           "height": {
-            "type": "integer"
+            "type": "integer",
+            "example": 3
           },
           "width": {
-            "type": "integer"
+            "type": "integer",
+            "example": 4
           }
         },
         "required": [
@@ -870,6 +907,8 @@
       },
       "ItemType": {
         "type": "string",
+        "description": "The type of the item.",
+        "example": "meleeWeapon",
         "enum": [
           "consumable",
           "armor",
@@ -882,33 +921,43 @@
       },
       "Item": {
         "type": "object",
+        "description": "This object holds the item data.",
         "properties": {
           "id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "variant": {
-            "type": "string"
+            "type": "string",
+            "example": "rare"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Sword"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "example": "A sword that can be used to fight enemies."
           },
           "buy_value": {
-            "type": "integer"
+            "type": "integer",
+            "example": 100
           },
           "sell_value": {
-            "type": "integer"
+            "type": "integer",
+            "example": 50
           },
           "weight": {
-            "type": "integer"
+            "type": "integer",
+            "example": 10
           },
           "durability": {
-            "type": "integer"
+            "type": "integer",
+            "example": 100
           },
           "max_stack": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "shape": {
             "$ref": "#/components/schemas/ItemShape"
@@ -933,21 +982,27 @@
       },
       "Pagination": {
         "type": "object",
+        "description": "This object holds the pagination data.",
         "properties": {
           "page": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "pages": {
-            "type": "integer"
+            "type": "integer",
+            "example": 10
           },
           "limit": {
-            "type": "integer"
+            "type": "integer",
+            "example": 10
           },
           "total": {
-            "type": "integer"
+            "type": "integer",
+            "example": 100
           },
           "offset": {
-            "type": "integer"
+            "type": "integer",
+            "example": 0
           }
         },
         "required": [
@@ -960,9 +1015,11 @@
       },
       "ItemListResponse": {
         "type": "object",
+        "description": "This object holds the item list response data. It includes the list of items and pagination data.",
         "properties": {
           "items": {
             "type": "array",
+            "description": "The list of items.",
             "items": {
               "$ref": "#/components/schemas/Item"
             }
@@ -989,6 +1046,7 @@
       },
       "Error": {
         "type": "object",
+        "description": "This object holds the error response data.",
         "properties": {
           "errorId": {
             "type": "string",
@@ -1000,10 +1058,8 @@
             "description": "The error message",
             "example": "The item does not exist"
           },
-          "errorType": {
-            "$ref": "#/components/schemas/ErrorType",
-            "description": "The error type",
-            "example": "Bad Request"
+          "ErrorType": {
+            "$ref": "#/components/schemas/ErrorType"
           },
           "code": {
             "type": "integer",
@@ -1020,37 +1076,46 @@
         "required": [
           "errorId",
           "error",
-          "errorType",
+          "ErrorType",
           "code",
           "timestamp"
         ]
       },
       "ItemPostRequest": {
         "type": "object",
+        "description": "This object holds the request data for creating a new item.",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Sword"
           },
           "variant": {
-            "type": "string"
+            "type": "string",
+            "example": "Iron"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "example": "A sword made of iron."
           },
           "buy_value": {
-            "type": "integer"
+            "type": "integer",
+            "example": 100
           },
           "sell_value": {
-            "type": "integer"
+            "type": "integer",
+            "example": 50
           },
           "weight": {
-            "type": "integer"
+            "type": "integer",
+            "example": 10
           },
           "durability": {
-            "type": "integer"
+            "type": "integer",
+            "example": 200
           },
           "max_stack": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "type": {
             "$ref": "#/components/schemas/ItemType"
@@ -1074,12 +1139,15 @@
       },
       "Volume": {
         "type": "object",
+        "description": "This object holds the volume data.",
         "properties": {
           "height": {
-            "type": "integer"
+            "type": "integer",
+            "example": 10
           },
           "width": {
-            "type": "integer"
+            "type": "integer",
+            "example": 10
           }
         },
         "required": [
@@ -1089,18 +1157,23 @@
       },
       "InventoryMeta": {
         "type": "object",
+        "description": "This object holds the inventory meta data (restrictions, owner, etc.)",
         "properties": {
           "id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Backpack"
           },
           "userId": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "max_weight": {
-            "type": "integer"
+            "type": "integer",
+            "example": 850
           },
           "volume": {
             "$ref": "#/components/schemas/Volume"
@@ -1116,12 +1189,15 @@
       },
       "User": {
         "type": "object",
+        "description": "This object holds the user data.",
         "properties": {
           "id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "username": {
-            "type": "string"
+            "type": "string",
+            "example": "JohnDoe"
           },
           "inventories": {
             "type": "array",
@@ -1138,9 +1214,11 @@
       },
       "UserListResponse": {
         "type": "object",
+        "description": "This object holds the user list response data. It includes the list of users and pagination data.",
         "properties": {
           "users": {
             "type": "array",
+            "description": "The list of users.",
             "items": {
               "$ref": "#/components/schemas/User"
             }
@@ -1156,15 +1234,19 @@
       },
       "UserPostRequest": {
         "type": "object",
+        "description": "This object holds the request data for creating a new user.",
         "properties": {
           "username": {
-            "type": "string"
+            "type": "string",
+            "example": "john_doe"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "example": "john_doe@test.com"
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "example": "password"
           }
         },
         "required": [
@@ -1175,15 +1257,19 @@
       },
       "Position": {
         "type": "object",
+        "description": "This object holds the position data.",
         "properties": {
           "x": {
-            "type": "integer"
+            "type": "integer",
+            "example": 3
           },
           "y": {
-            "type": "integer"
+            "type": "integer",
+            "example": 4
           },
           "rotation": {
-            "type": "integer"
+            "type": "integer",
+            "example": 2
           }
         },
         "required": [
@@ -1194,6 +1280,7 @@
       },
       "InventoryItem": {
         "type": "object",
+        "description": "This object holds the inventory item data.",
         "properties": {
           "item": {
             "$ref": "#/components/schemas/Item"
@@ -1202,10 +1289,12 @@
             "$ref": "#/components/schemas/Position"
           },
           "quantity": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "durability_left": {
-            "type": "integer"
+            "type": "integer",
+            "example": 100
           }
         },
         "required": [
@@ -1217,12 +1306,14 @@
       },
       "Inventory": {
         "type": "object",
+        "description": "This object holds the inventory meta data and the items in the inventory as an array of InventoryItem objects.",
         "properties": {
           "inventoryMeta": {
             "$ref": "#/components/schemas/InventoryMeta"
           },
           "items": {
             "type": "array",
+            "description": "An array of InventoryItem objects.",
             "items": {
               "$ref": "#/components/schemas/InventoryItem"
             }
@@ -1235,9 +1326,11 @@
       },
       "InventoryListResponse": {
         "type": "object",
+        "description": "This object holds the inventory list response data. It includes the list of inventories and pagination data.",
         "properties": {
           "inventories": {
             "type": "array",
+            "description": "The list of inventories.",
             "items": {
               "$ref": "#/components/schemas/Inventory"
             }
@@ -1253,15 +1346,19 @@
       },
       "InventoryPostRequest": {
         "type": "object",
+        "description": "This object holds the request data for creating an inventory.",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Backpack"
           },
           "user_id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "max_weight": {
-            "type": "integer"
+            "type": "integer",
+            "example": 850
           },
           "volume": {
             "$ref": "#/components/schemas/Volume"
@@ -1276,6 +1373,7 @@
       },
       "MoveItemRequest": {
         "type": "object",
+        "description": "This object holds the request data for moving an item within the inventory.",
         "properties": {
           "original_position": {
             "$ref": "#/components/schemas/Position"
@@ -1284,7 +1382,8 @@
             "$ref": "#/components/schemas/Position"
           },
           "quantity": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           }
         },
         "required": [
@@ -1295,15 +1394,18 @@
       },
       "AddItemToInventoryRequest": {
         "type": "object",
+        "description": "This object holds the request data for adding an item to the inventory.",
         "properties": {
           "item": {
             "$ref": "#/components/schemas/Item"
           },
           "quantity": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "durability_left": {
-            "type": "integer"
+            "type": "integer",
+            "example": 100
           },
           "position": {
             "$ref": "#/components/schemas/Position"
@@ -1317,6 +1419,7 @@
       },
       "Version": {
         "type": "object",
+        "description": "This object holds the API version data.",
         "properties": {
           "version": {
             "type": "string",
@@ -1354,72 +1457,13 @@
       },
       "Status": {
         "type": "string",
+        "description": "The status of the API",
+        "example": "HEALTHY",
         "enum": [
           "HEALTHY",
           "UNHEALTHY",
           "UNKNOWN"
-        ],
-        "description": "The status of the API"
-      },
-      "item_type": {
-        "$ref": "#/components/schemas/ItemType"
-      },
-      "status": {
-        "$ref": "#/components/schemas/Status"
-      },
-      "item": {
-        "$ref": "#/components/schemas/Item"
-      },
-      "inventory_item": {
-        "$ref": "#/components/schemas/InventoryItem"
-      },
-      "position": {
-        "$ref": "#/components/schemas/Position"
-      },
-      "item_shape": {
-        "$ref": "#/components/schemas/ItemShape"
-      },
-      "inventory": {
-        "$ref": "#/components/schemas/Inventory"
-      },
-      "inventory_meta": {
-        "$ref": "#/components/schemas/InventoryMeta"
-      },
-      "user": {
-        "$ref": "#/components/schemas/User"
-      },
-      "version": {
-        "$ref": "#/components/schemas/Version"
-      },
-      "inventory_post_request": {
-        "$ref": "#/components/schemas/InventoryPostRequest"
-      },
-      "add_item_request": {
-        "$ref": "#/components/schemas/AddItemToInventoryRequest"
-      },
-      "move_item_request": {
-        "$ref": "#/components/schemas/MoveItemRequest"
-      },
-      "item_post_request": {
-        "$ref": "#/components/schemas/ItemPostRequest"
-      },
-      "user_post_request": {
-        "$ref": "#/components/schemas/UserPostRequest"
-      },
-      "item_list_response": {
-        "$ref": "#/components/schemas/ItemListResponse"
-      },
-      "inventory_list_response": {
-        "$ref": "#/components/schemas/InventoryListResponse"
-      },
-      "user_list_response": {
-        "$ref": "#/components/schemas/UserListResponse"
-      },
-      "errorType": {
-        "$ref": "#/components/schemas/ErrorType"
-      },
-      "error": {
-        "$ref": "#/components/schemas/Error"
+        ]
       }
     }
   }

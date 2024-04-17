@@ -22,10 +22,10 @@ properties:
     example: 50
   weight:
     type: integer
-    weight: 10
+    example: 10
   durability:
     type: integer
-    durability: 100
+    example: 100
   max_stack:
     type: integer
     example: 1

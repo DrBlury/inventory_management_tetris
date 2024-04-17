@@ -5,7 +5,7 @@ get:
   tags:
     - user
   parameters:
-    userId:
+    - name: userId
       in: path
       description: ID of user
       required: true
@@ -19,19 +19,19 @@ get:
         application/json:
           schema:
             items:
-              $ref: '../../schemas/_index.yml#/user'
+              $ref: '../../schemas/_index.yml#/User'
     '400':
       description: Invalid ID supplied
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/error'
+            $ref: '../../schemas/_index.yml#/Error'
     '404':
       description: Can not find user (user ID)
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/error'
+            $ref: '../../schemas/_index.yml#/Error'
 
   # This API has no security
   security: []
@@ -42,7 +42,7 @@ put:
   tags:
     - user
   parameters:
-    userId:
+    - name: userId
       in: path
       description: ID of user that needs to be updated
       required: true
@@ -54,14 +54,14 @@ put:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/_index.yml#/user_post_request'
+          $ref: '../../schemas/_index.yml#/UserPostRequest'
   responses:
     '200':
       description: Update done - returns updated user
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/user'
+            $ref: '../../schemas/_index.yml#/User'
     '404':
       description: Can not find user (user ID)
     '400':
@@ -76,7 +76,7 @@ delete:
   tags:
     - user
   parameters:
-    userId:
+    - name: userId
       in: path
       description: ID of user to delete
       required: true

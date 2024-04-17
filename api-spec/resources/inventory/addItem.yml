@@ -5,7 +5,7 @@ post:
   tags:
     - inventory
   parameters:
-    inventoryId:
+    - name: inventoryId
       in: path
       description: ID of inventory
       required: true
@@ -17,20 +17,20 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/_index.yml#/add_item_request'
+          $ref: '../../schemas/_index.yml#/AddItemToInventoryRequest'
   responses:
     '200':
       description: Added item to inventory
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/inventory_item'
+            $ref: '../../schemas/_index.yml#/InventoryItem'
     '400':
       description: Bad request (e.g. invalid item)
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/error'
+            $ref: '../../schemas/_index.yml#/Error'
 
   # This API has no security
   security: []

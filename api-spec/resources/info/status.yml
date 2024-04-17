@@ -11,4 +11,4 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/status'
+            $ref: '../../schemas/_index.yml#/Status'

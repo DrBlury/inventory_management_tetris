@@ -5,7 +5,7 @@ get:
   tags:
     - item
   parameters:
-    itemId:
+    - name: itemId
       in: path
       description: ID of item
       required: true
@@ -19,7 +19,7 @@ get:
         application/json:
           schema:
             items:
-              $ref: '../../schemas/_index.yml#/item'
+              $ref: '../../schemas/_index.yml#/Item'
     '400':
       description: Invalid ID supplied (e.g. not an integer)
     '404':
@@ -34,7 +34,7 @@ put:
   tags:
     - item
   parameters:
-    itemId:
+    - name: itemId
       in: path
       description: ID of item that needs to be updated
       required: true
@@ -46,7 +46,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/_index.yml#/item_post_request'
+          $ref: '../../schemas/_index.yml#/ItemPostRequest'
   responses:
     '200':
       description: Update done
@@ -55,13 +55,13 @@ put:
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/error'
+            $ref: '../../schemas/_index.yml#/Error'
     '400':
       description: Invalid ID supplied
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/error'
+            $ref: '../../schemas/_index.yml#/Error'
 
   # This API has no security
   security: []
@@ -72,7 +72,7 @@ delete:
   tags:
     - item
   parameters:
-    itemId:
+    - name: itemId
       in: path
       description: ID of item to delete
       required: true
@@ -83,7 +83,7 @@ delete:
     '200':
       description: Deleted item (item ID)
     '400':
-      description: Invalid ID supplied
+      description: Invalid ID supplied (e.g. not an integer)
     '404':
       description: Can not find item (item ID)
 

@@ -3,13 +3,14 @@ get:
   tags:
     - info
   parameters:
-    render:
+    - name: render
       in: query
       description: OpenAPI html renderer
       required: false
       schema:
         type: string
-      example: scalar or spotlight
+        description: OpenAPI html renderer name (scalar or spotlight)
+        example: scalar
   summary: Get describing html of openapi spec
   description: Get describing html of openapi spec
   operationId: getOpenAPIHTML

@@ -10,13 +10,13 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/item_list_response'
+            $ref: '../../schemas/_index.yml#/ItemListResponse'
     '404':
       description: No items found
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/error'
+            $ref: '../../schemas/_index.yml#/Error'
 
   # This API has no security
   security: []
@@ -31,14 +31,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/_index.yml#/item_post_request'
+          $ref: '../../schemas/_index.yml#/ItemPostRequest'
   responses:
     '201':
       description: Added item - returns the newly created item
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/item'
+            $ref: '../../schemas/_index.yml#/Item'
     '400':
       description: Bad request - e.g. invalid item
 

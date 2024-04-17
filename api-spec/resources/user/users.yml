@@ -10,13 +10,13 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/user_list_response'
+            $ref: '../../schemas/_index.yml#/UserListResponse'
     '404':
       description: No users found - no users in the system
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/error'
+            $ref: '../../schemas/_index.yml#/Error'
 
   # This API has no security
   security: []
@@ -31,14 +31,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/_index.yml#/user_post_request'
+          $ref: '../../schemas/_index.yml#/UserPostRequest'
   responses:
     '201':
       description: Added user - returns the newly created user
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/user'
+            $ref: '../../schemas/_index.yml#/User'
     '400':
       description: Bad request - e.g. invalid user
 

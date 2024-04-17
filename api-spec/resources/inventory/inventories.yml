@@ -10,13 +10,13 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/inventory_list_response'
+            $ref: '../../schemas/_index.yml#/InventoryListResponse'
     '404':
       description: No inventories found
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/error'
+            $ref: '../../schemas/_index.yml#/Error'
 
   # This API has no security
   security: []
@@ -31,20 +31,20 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/_index.yml#/inventory_post_request'
+          $ref: '../../schemas/_index.yml#/InventoryPostRequest'
   responses:
     '201':
       description: Added inventory - returns the newly created inventory
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/inventory'
+            $ref: '../../schemas/_index.yml#/Inventory'
     '400':
       description: Bad request - e.g. invalid inventory
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/error'
+            $ref: '../../schemas/_index.yml#/Error'
 
   # This API has no security
   security: []

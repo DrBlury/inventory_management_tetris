@@ -5,7 +5,7 @@ post:
   tags:
     - inventory
   parameters:
-    inventoryId:
+    - name: inventoryId
       in: path
       description: ID of inventory
       required: true
@@ -17,7 +17,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../../schemas/_index.yml#/move_item_request'
+          $ref: '../../schemas/_index.yml#/MoveItemRequest'
   responses:
     '200':
       description: Moved item in inventory
@@ -26,7 +26,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../../schemas/_index.yml#/error'
+            $ref: '../../schemas/_index.yml#/Error'
 
   # This API has no security
   security: []

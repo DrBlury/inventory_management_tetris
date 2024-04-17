@@ -33,16 +33,23 @@ const (
 	UNKNOWN   Status = "UNKNOWN"
 )
 
-// AddItemToInventoryRequest defines model for AddItemToInventoryRequest.
+// AddItemToInventoryRequest This object holds the request data for adding an item to the inventory.
 type AddItemToInventoryRequest struct {
-	DurabilityLeft int       `json:"durability_left"`
-	Item           Item      `json:"item"`
-	Position       *Position `json:"position,omitempty"`
-	Quantity       int       `json:"quantity"`
+	DurabilityLeft int `json:"durability_left"`
+
+	// Item This object holds the item data.
+	Item Item `json:"item"`
+
+	// Position This object holds the position data.
+	Position *Position `json:"position,omitempty"`
+	Quantity int       `json:"quantity"`
 }
 
-// Error defines model for Error.
+// Error This object holds the error response data.
 type Error struct {
+	// ErrorType The error type
+	ErrorType ErrorType `json:"ErrorType"`
+
 	// Code The error code
 	Code int `json:"code"`
 
@@ -52,9 +59,6 @@ type Error struct {
 	// ErrorId The unique identifier for the error
 	ErrorId string `json:"errorId"`
 
-	// ErrorType The error type
-	ErrorType ErrorType `json:"errorType"`
-
 	// Timestamp The time the error occurred
 	Timestamp time.Time `json:"timestamp"`
 }
@@ -62,96 +66,124 @@ type Error struct {
 // ErrorType The error type
 type ErrorType string
 
-// Inventory defines model for Inventory.
+// Inventory This object holds the inventory meta data and the items in the inventory as an array of InventoryItem objects.
 type Inventory struct {
-	InventoryMeta InventoryMeta   `json:"inventoryMeta"`
-	Items         []InventoryItem `json:"items"`
+	// InventoryMeta This object holds the inventory meta data (restrictions, owner, etc.)
+	InventoryMeta InventoryMeta `json:"inventoryMeta"`
+
+	// Items An array of InventoryItem objects.
+	Items []InventoryItem `json:"items"`
 }
 
-// InventoryItem defines model for InventoryItem.
+// InventoryItem This object holds the inventory item data.
 type InventoryItem struct {
-	DurabilityLeft int      `json:"durability_left"`
-	Item           Item     `json:"item"`
-	Position       Position `json:"position"`
-	Quantity       int      `json:"quantity"`
+	DurabilityLeft int `json:"durability_left"`
+
+	// Item This object holds the item data.
+	Item Item `json:"item"`
+
+	// Position This object holds the position data.
+	Position Position `json:"position"`
+	Quantity int      `json:"quantity"`
 }
 
-// InventoryListResponse defines model for InventoryListResponse.
+// InventoryListResponse This object holds the inventory list response data. It includes the list of inventories and pagination data.
 type InventoryListResponse struct {
+	// Inventories The list of inventories.
 	Inventories []Inventory `json:"inventories"`
-	Pagination  Pagination  `json:"pagination"`
+
+	// Pagination This object holds the pagination data.
+	Pagination Pagination `json:"pagination"`
 }
 
-// InventoryMeta defines model for InventoryMeta.
+// InventoryMeta This object holds the inventory meta data (restrictions, owner, etc.)
 type InventoryMeta struct {
 	Id        int    `json:"id"`
 	MaxWeight int    `json:"max_weight"`
 	Name      string `json:"name"`
 	UserId    int    `json:"userId"`
-	Volume    Volume `json:"volume"`
+
+	// Volume This object holds the volume data.
+	Volume Volume `json:"volume"`
 }
 
-// InventoryPostRequest defines model for InventoryPostRequest.
+// InventoryPostRequest This object holds the request data for creating an inventory.
 type InventoryPostRequest struct {
 	MaxWeight int    `json:"max_weight"`
 	Name      string `json:"name"`
 	UserId    int    `json:"user_id"`
-	Volume    Volume `json:"volume"`
+
+	// Volume This object holds the volume data.
+	Volume Volume `json:"volume"`
 }
 
-// Item defines model for Item.
+// Item This object holds the item data.
 type Item struct {
-	BuyValue    int       `json:"buy_value"`
-	Description string    `json:"description"`
-	Durability  int       `json:"durability"`
-	Id          int       `json:"id"`
-	MaxStack    int       `json:"max_stack"`
-	Name        string    `json:"name"`
-	SellValue   int       `json:"sell_value"`
-	Shape       ItemShape `json:"shape"`
-	Type        ItemType  `json:"type"`
-	Variant     string    `json:"variant"`
-	Weight      int       `json:"weight"`
+	BuyValue    int    `json:"buy_value"`
+	Description string `json:"description"`
+	Durability  int    `json:"durability"`
+	Id          int    `json:"id"`
+	MaxStack    int    `json:"max_stack"`
+	Name        string `json:"name"`
+	SellValue   int    `json:"sell_value"`
+
+	// Shape This object holds the item shape data.
+	Shape ItemShape `json:"shape"`
+
+	// Type The type of the item.
+	Type    ItemType `json:"type"`
+	Variant string   `json:"variant"`
+	Weight  int      `json:"weight"`
 }
 
-// ItemListResponse defines model for ItemListResponse.
+// ItemListResponse This object holds the item list response data. It includes the list of items and pagination data.
 type ItemListResponse struct {
-	Items      []Item     `json:"items"`
+	// Items The list of items.
+	Items []Item `json:"items"`
+
+	// Pagination This object holds the pagination data.
 	Pagination Pagination `json:"pagination"`
 }
 
-// ItemPostRequest defines model for ItemPostRequest.
+// ItemPostRequest This object holds the request data for creating a new item.
 type ItemPostRequest struct {
-	BuyValue    int       `json:"buy_value"`
-	Description string    `json:"description"`
-	Durability  int       `json:"durability"`
-	MaxStack    int       `json:"max_stack"`
-	Name        string    `json:"name"`
-	SellValue   int       `json:"sell_value"`
-	Shape       ItemShape `json:"shape"`
-	Type        ItemType  `json:"type"`
-	Variant     string    `json:"variant"`
-	Weight      int       `json:"weight"`
+	BuyValue    int    `json:"buy_value"`
+	Description string `json:"description"`
+	Durability  int    `json:"durability"`
+	MaxStack    int    `json:"max_stack"`
+	Name        string `json:"name"`
+	SellValue   int    `json:"sell_value"`
+
+	// Shape This object holds the item shape data.
+	Shape ItemShape `json:"shape"`
+
+	// Type The type of the item.
+	Type    ItemType `json:"type"`
+	Variant string   `json:"variant"`
+	Weight  int      `json:"weight"`
 }
 
-// ItemShape defines model for ItemShape.
+// ItemShape This object holds the item shape data.
 type ItemShape struct {
 	Height   int    `json:"height"`
 	Rawshape string `json:"rawshape"`
 	Width    int    `json:"width"`
 }
 
-// ItemType defines model for ItemType.
+// ItemType The type of the item.
 type ItemType string
 
-// MoveItemRequest defines model for MoveItemRequest.
+// MoveItemRequest This object holds the request data for moving an item within the inventory.
 type MoveItemRequest struct {
-	NewPosition      Position `json:"new_position"`
+	// NewPosition This object holds the position data.
+	NewPosition Position `json:"new_position"`
+
+	// OriginalPosition This object holds the position data.
 	OriginalPosition Position `json:"original_position"`
 	Quantity         int      `json:"quantity"`
 }
 
-// Pagination defines model for Pagination.
+// Pagination This object holds the pagination data.
 type Pagination struct {
 	Limit  int `json:"limit"`
 	Offset int `json:"offset"`
@@ -160,7 +192,7 @@ type Pagination struct {
 	Total  int `json:"total"`
 }
 
-// Position defines model for Position.
+// Position This object holds the position data.
 type Position struct {
 	Rotation int `json:"rotation"`
 	X        int `json:"x"`
@@ -170,27 +202,30 @@ type Position struct {
 // Status The status of the API
 type Status string
 
-// User defines model for User.
+// User This object holds the user data.
 type User struct {
 	Id          int             `json:"id"`
 	Inventories []InventoryMeta `json:"inventories"`
 	Username    string          `json:"username"`
 }
 
-// UserListResponse defines model for UserListResponse.
+// UserListResponse This object holds the user list response data. It includes the list of users and pagination data.
 type UserListResponse struct {
+	// Pagination This object holds the pagination data.
 	Pagination Pagination `json:"pagination"`
-	Users      []User     `json:"users"`
+
+	// Users The list of users.
+	Users []User `json:"users"`
 }
 
-// UserPostRequest defines model for UserPostRequest.
+// UserPostRequest This object holds the request data for creating a new user.
 type UserPostRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Username string `json:"username"`
 }
 
-// Version defines model for Version.
+// Version This object holds the API version data.
 type Version struct {
 	// BuildDate The date the code was built
 	BuildDate string `json:"buildDate"`
@@ -208,7 +243,7 @@ type Version struct {
 	Version string `json:"version"`
 }
 
-// Volume defines model for Volume.
+// Volume This object holds the volume data.
 type Volume struct {
 	Height int `json:"height"`
 	Width  int `json:"width"`

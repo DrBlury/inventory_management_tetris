@@ -1,56 +1,56 @@
 ---
 # Enums
-item_type:
+ItemType:
   $ref: './enum/ItemType.yml'
-status:
+Status:
   $ref: './enum/Status.yml'
 
 # Schemas
-item:
+Item:
   $ref: './types/Item.yml'
-inventory_item:
+InventoryItem:
   $ref: './types/InventoryItem.yml'
-position:
+Position:
   $ref: './types/Position.yml'
-item_shape:
+ItemShape:
   $ref: './types/ItemShape.yml'
-inventory:
+Inventory:
   $ref: './types/Inventory.yml'
-inventory_meta:
+InventoryMeta:
   $ref: './types/InventoryMeta.yml'
-user:
+User:
   $ref: './types/User.yml'
-version:
+Version:
   $ref: './types/Version.yml'
 
 # Requests
 # Inventory
-inventory_post_request:
+InventoryPostRequest:
   $ref: './requests/InventoryPostRequest.yml'
-add_item_request:
+AddItemToInventoryRequest:
   $ref: './requests/AddItemToInventoryRequest.yml'
-move_item_request:
+MoveItemRequest:
   $ref: './requests/MoveItemRequest.yml'
 
 # Item
-item_post_request:
+ItemPostRequest:
   $ref: './requests/ItemPostRequest.yml'
 
 # User
-user_post_request:
+UserPostRequest:
   $ref: './requests/UserPostRequest.yml'
 
 # Responses
-item_list_response:
+ItemListResponse:
   $ref: './responses/ItemListResponse.yml'
-inventory_list_response:
+InventoryListResponse:
   $ref: './responses/InventoryListResponse.yml'
-user_list_response:
+UserListResponse:
   $ref: './responses/UserListResponse.yml'
 
 # Errors
-errorType:
+ErrorType:
   $ref: './errors/ErrorType.yml'
 
-error:
+Error:
   $ref: './errors/Error.yml'

@@ -10,7 +10,7 @@ properties:
     type: string
     description: The error message
     example: The item does not exist
-  errorType:
+  ErrorType:
     $ref: './ErrorType.yml'
   code:
     type: integer
@@ -25,6 +25,6 @@ properties:
 required:
   - errorId
   - error
-  - errorType
+  - ErrorType
   - code
   - timestamp

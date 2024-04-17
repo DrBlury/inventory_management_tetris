@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: Inventory Manager
   description: Inventory Manager API
@@ -10,13 +10,13 @@ servers:
   - url: inventory.linuxcode.net
     description: Inventory server for example
 tags:
-  inventory:
+  - name: inventory
     description: Inventory operations
-  info:
+  - name: info
     description: Information operations
-  item:
+  - name: item
     description: Item operations
-  user:
+  - name: user
     description: User operations
 paths:
   /api/items:
@@ -67,7 +67,7 @@ paths:
       tags:
         - item
       parameters:
-        itemId:
+        - name: itemId
           in: path
           description: ID of item
           required: true
@@ -93,7 +93,7 @@ paths:
       tags:
         - item
       parameters:
-        itemId:
+        - name: itemId
           in: path
           description: ID of item that needs to be updated
           required: true
@@ -128,7 +128,7 @@ paths:
       tags:
         - item
       parameters:
-        itemId:
+        - name: itemId
           in: path
           description: ID of item to delete
           required: true
@@ -139,7 +139,7 @@ paths:
         '200':
           description: Deleted item (item ID)
         '400':
-          description: Invalid ID supplied
+          description: Invalid ID supplied (e.g. not an integer)
         '404':
           description: Can not find item (item ID)
       security: []
@@ -191,7 +191,7 @@ paths:
       tags:
         - user
       parameters:
-        userId:
+        - name: userId
           in: path
           description: ID of user
           required: true
@@ -225,7 +225,7 @@ paths:
       tags:
         - user
       parameters:
-        userId:
+        - name: userId
           in: path
           description: ID of user that needs to be updated
           required: true
@@ -256,7 +256,7 @@ paths:
       tags:
         - user
       parameters:
-        userId:
+        - name: userId
           in: path
           description: ID of user to delete
           required: true
@@ -323,7 +323,7 @@ paths:
       tags:
         - inventory
       parameters:
-        inventoryId:
+        - name: inventoryId
           in: path
           description: ID of inventory
           required: true
@@ -417,7 +417,7 @@ paths:
       tags:
         - inventory
       parameters:
-        inventoryId:
+        - name: inventoryId
           in: path
           description: ID of inventory
           required: true
@@ -447,7 +447,7 @@ paths:
       tags:
         - inventory
       parameters:
-        inventoryId:
+        - name: inventoryId
           in: path
           description: ID of inventory
           required: true
@@ -540,13 +540,14 @@ paths:
       tags:
         - info
       parameters:
-        render:
+        - name: render
           in: query
           description: OpenAPI html renderer
           required: false
           schema:
             type: string
-          example: scalar or spotlight
+            description: OpenAPI html renderer name (scalar or spotlight)
+            example: scalar
       summary: Get describing html of openapi spec
       description: Get describing html of openapi spec
       operationId: getOpenAPIHTML
@@ -613,10 +614,10 @@ components:
           example: 50
         weight:
           type: integer
-          weight: 10
+          example: 10
         durability:
           type: integer
-          durability: 100
+          example: 100
         max_stack:
           type: integer
           example: 1
@@ -696,7 +697,7 @@ components:
           type: string
           description: The error message
           example: The item does not exist
-        errorType:
+        ErrorType:
           $ref: '#/components/schemas/ErrorType'
         code:
           type: integer
@@ -710,7 +711,7 @@ components:
       required:
         - errorId
         - error
-        - errorType
+        - ErrorType
         - code
         - timestamp
     ItemPostRequest:
@@ -997,43 +998,3 @@ components:
         - HEALTHY
         - UNHEALTHY
         - UNKNOWN
-  item_type:
-    $ref: ./enum/ItemType.yml
-  status:
-    $ref: ./enum/Status.yml
-  item:
-    $ref: ./types/Item.yml
-  inventory_item:
-    $ref: ./types/InventoryItem.yml
-  position:
-    $ref: ./types/Position.yml
-  item_shape:
-    $ref: ./types/ItemShape.yml
-  inventory:
-    $ref: ./types/Inventory.yml
-  inventory_meta:
-    $ref: ./types/InventoryMeta.yml
-  user:
-    $ref: ./types/User.yml
-  version:
-    $ref: ./types/Version.yml
-  inventory_post_request:
-    $ref: ./requests/InventoryPostRequest.yml
-  add_item_request:
-    $ref: ./requests/AddItemToInventoryRequest.yml
-  move_item_request:
-    $ref: ./requests/MoveItemRequest.yml
-  item_post_request:
-    $ref: ./requests/ItemPostRequest.yml
-  user_post_request:
-    $ref: ./requests/UserPostRequest.yml
-  item_list_response:
-    $ref: ./responses/ItemListResponse.yml
-  inventory_list_response:
-    $ref: ./responses/InventoryListResponse.yml
-  user_list_response:
-    $ref: ./responses/UserListResponse.yml
-  errorType:
-    $ref: ./errors/ErrorType.yml
-  error:
-    $ref: ./errors/Error.yml

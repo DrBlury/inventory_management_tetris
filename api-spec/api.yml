@@ -1,5 +1,5 @@
 ---
-openapi: "3.1.0"
+openapi: "3.0.0"
 info:
   title: Inventory Manager
   description: Inventory Manager API
@@ -8,18 +8,16 @@ info:
     name: unlicensed
     url: 'www.linuxcode.net'
 tags:
-  inventory:
+  - name: inventory
     description: Inventory operations
-  info:
+  - name: info
     description: Information operations
-  item:
+  - name: item
     description: Item operations
-  user:
+  - name: user
     description: User operations
 servers:
   - url: inventory.linuxcode.net
     description: Inventory server for example
 paths:
   $ref: './resources/_index.yml'
-components:
-  $ref: './schemas/_index.yml'
