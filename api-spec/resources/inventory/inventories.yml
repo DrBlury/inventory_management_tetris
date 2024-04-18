@@ -1,6 +1,7 @@
 ---
 get:
   summary: Get all inventories
+  description: Get all inventories
   operationId: getAllInventories
   tags:
     - inventory
@@ -23,6 +24,7 @@ get:
 
 post:
   summary: Add new inventory
+  description: Add new inventory
   operationId: addInventory
   tags:
     - inventory

@@ -22,6 +22,7 @@ paths:
   /api/items:
     get:
       summary: Get all items
+      description: Get all items
       operationId: getAllItems
       tags:
         - item
@@ -63,6 +64,7 @@ paths:
   /api/items/{itemId}:
     get:
       summary: Get item by ID
+      description: Get item by ID
       operationId: getItemById
       tags:
         - item
@@ -89,6 +91,7 @@ paths:
       security: []
     put:
       summary: Update an item
+      description: Update an item
       operationId: updateItemById
       tags:
         - item
@@ -124,6 +127,7 @@ paths:
       security: []
     delete:
       summary: Delete item by ID
+      description: Delete item by ID
       operationId: deleteItemById
       tags:
         - item
@@ -146,6 +150,7 @@ paths:
   /api/users:
     get:
       summary: Get all users
+      description: Get all users
       operationId: getAllUsers
       tags:
         - user
@@ -187,6 +192,7 @@ paths:
   /api/users/{userId}:
     get:
       summary: Get user by ID
+      description: Get user by ID
       operationId: getUserById
       tags:
         - user
@@ -221,6 +227,7 @@ paths:
       security: []
     put:
       summary: Update an user
+      description: Update an user
       operationId: updateUserById
       tags:
         - user
@@ -252,6 +259,7 @@ paths:
       security: []
     delete:
       summary: Delete user by ID
+      description: Delete user by ID
       operationId: deleteUserById
       tags:
         - user
@@ -274,6 +282,7 @@ paths:
   /api/inventories:
     get:
       summary: Get all inventories
+      description: Get all inventories
       operationId: getAllInventories
       tags:
         - inventory
@@ -293,6 +302,7 @@ paths:
       security: []
     post:
       summary: Add new inventory
+      description: Add new inventory
       operationId: addInventory
       tags:
         - inventory
@@ -319,6 +329,7 @@ paths:
   /api/inventories/{inventoryId}:
     get:
       summary: Get inventory by ID
+      description: Get inventory by ID
       operationId: getInventoryById
       tags:
         - inventory
@@ -352,6 +363,7 @@ paths:
       security: []
     put:
       summary: Update an inventory
+      description: Update an inventory
       operationId: updateInventoryById
       tags:
         - inventory
@@ -391,6 +403,7 @@ paths:
       security: []
     delete:
       summary: Delete inventory by ID
+      description: Delete inventory by ID
       operationId: deleteInventoryById
       tags:
         - inventory
@@ -413,6 +426,7 @@ paths:
   /api/inventories/{inventoryId}/move:
     post:
       summary: Move an item already in the inventory
+      description: Move an item already in the inventory
       operationId: moveItemInInventory
       tags:
         - inventory
@@ -443,6 +457,7 @@ paths:
   /api/inventories/{inventoryId}/add:
     post:
       summary: Add a new item to the inventory at the first possible position
+      description: Add a new item to the inventory at the first possible position
       operationId: addItemInInventory
       tags:
         - inventory
@@ -479,7 +494,7 @@ paths:
       tags:
         - info
       summary: Get metrics
-      description: Get metrics
+      description: Get metrics for prometheus
       operationId: getMetrics
       responses:
         '200':
@@ -504,8 +519,8 @@ paths:
     get:
       tags:
         - info
-      summary: Get version
-      description: Get version
+      summary: Get version info of the service
+      description: Get version info of the service
       operationId: getVersion
       responses:
         '200':
@@ -525,8 +540,8 @@ paths:
     get:
       tags:
         - info
-      summary: Get status
-      description: Get status
+      summary: Get status of the service
+      description: Get status of the service
       operationId: getStatus
       responses:
         '200':

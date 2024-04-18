@@ -1,6 +1,7 @@
 ---
 get:
   summary: Get item by ID
+  description: Get item by ID
   operationId: getItemById
   tags:
     - item
@@ -30,6 +31,7 @@ get:
 
 put:
   summary: Update an item
+  description: Update an item
   operationId: updateItemById
   tags:
     - item
@@ -68,6 +70,7 @@ put:
 
 delete:
   summary: Delete item by ID
+  description: Delete item by ID
   operationId: deleteItemById
   tags:
     - item

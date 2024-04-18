@@ -1,6 +1,7 @@
 ---
 get:
   summary: Get inventory by ID
+  description: Get inventory by ID
   operationId: getInventoryById
   tags:
     - inventory
@@ -38,6 +39,7 @@ get:
 
 put:
   summary: Update an inventory
+  description: Update an inventory
   operationId: updateInventoryById
   tags:
     - inventory
@@ -80,6 +82,7 @@ put:
 
 delete:
   summary: Delete inventory by ID
+  description: Delete inventory by ID
   operationId: deleteInventoryById
   tags:
     - inventory

@@ -37,6 +37,7 @@
     "/api/items": {
       "get": {
         "summary": "Get all items",
+        "description": "Get all items",
         "operationId": "getAllItems",
         "tags": [
           "item"
@@ -102,6 +103,7 @@
     "/api/items/{itemId}": {
       "get": {
         "summary": "Get item by ID",
+        "description": "Get item by ID",
         "operationId": "getItemById",
         "tags": [
           "item"
@@ -142,6 +144,7 @@
       },
       "put": {
         "summary": "Update an item",
+        "description": "Update an item",
         "operationId": "updateItemById",
         "tags": [
           "item"
@@ -197,6 +200,7 @@
       },
       "delete": {
         "summary": "Delete item by ID",
+        "description": "Delete item by ID",
         "operationId": "deleteItemById",
         "tags": [
           "item"
@@ -230,6 +234,7 @@
     "/api/users": {
       "get": {
         "summary": "Get all users",
+        "description": "Get all users",
         "operationId": "getAllUsers",
         "tags": [
           "user"
@@ -295,6 +300,7 @@
     "/api/users/{userId}": {
       "get": {
         "summary": "Get user by ID",
+        "description": "Get user by ID",
         "operationId": "getUserById",
         "tags": [
           "user"
@@ -349,6 +355,7 @@
       },
       "put": {
         "summary": "Update an user",
+        "description": "Update an user",
         "operationId": "updateUserById",
         "tags": [
           "user"
@@ -397,6 +404,7 @@
       },
       "delete": {
         "summary": "Delete user by ID",
+        "description": "Delete user by ID",
         "operationId": "deleteUserById",
         "tags": [
           "user"
@@ -430,6 +438,7 @@
     "/api/inventories": {
       "get": {
         "summary": "Get all inventories",
+        "description": "Get all inventories",
         "operationId": "getAllInventories",
         "tags": [
           "inventory"
@@ -460,6 +469,7 @@
       },
       "post": {
         "summary": "Add new inventory",
+        "description": "Add new inventory",
         "operationId": "addInventory",
         "tags": [
           "inventory"
@@ -502,6 +512,7 @@
     "/api/inventories/{inventoryId}": {
       "get": {
         "summary": "Get inventory by ID",
+        "description": "Get inventory by ID",
         "operationId": "getInventoryById",
         "tags": [
           "inventory"
@@ -554,6 +565,7 @@
       },
       "put": {
         "summary": "Update an inventory",
+        "description": "Update an inventory",
         "operationId": "updateInventoryById",
         "tags": [
           "inventory"
@@ -616,6 +628,7 @@
       },
       "delete": {
         "summary": "Delete inventory by ID",
+        "description": "Delete inventory by ID",
         "operationId": "deleteInventoryById",
         "tags": [
           "inventory"
@@ -649,6 +662,7 @@
     "/api/inventories/{inventoryId}/move": {
       "post": {
         "summary": "Move an item already in the inventory",
+        "description": "Move an item already in the inventory",
         "operationId": "moveItemInInventory",
         "tags": [
           "inventory"
@@ -696,6 +710,7 @@
     "/api/inventories/{inventoryId}/add": {
       "post": {
         "summary": "Add a new item to the inventory at the first possible position",
+        "description": "Add a new item to the inventory at the first possible position",
         "operationId": "addItemInInventory",
         "tags": [
           "inventory"
@@ -753,7 +768,7 @@
           "info"
         ],
         "summary": "Get metrics",
-        "description": "Get metrics",
+        "description": "Get metrics for prometheus",
         "operationId": "getMetrics",
         "responses": {
           "200": {
@@ -792,8 +807,8 @@
         "tags": [
           "info"
         ],
-        "summary": "Get version",
-        "description": "Get version",
+        "summary": "Get version info of the service",
+        "description": "Get version info of the service",
         "operationId": "getVersion",
         "responses": {
           "200": {
@@ -825,8 +840,8 @@
         "tags": [
           "info"
         ],
-        "summary": "Get status",
-        "description": "Get status",
+        "summary": "Get status of the service",
+        "description": "Get status of the service",
         "operationId": "getStatus",
         "responses": {
           "200": {

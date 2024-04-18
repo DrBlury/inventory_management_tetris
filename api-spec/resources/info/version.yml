@@ -2,8 +2,8 @@
 get:
   tags:
     - info
-  summary: Get version
-  description: Get version
+  summary: Get version info of the service
+  description: Get version info of the service
   operationId: getVersion
   responses:
     '200':

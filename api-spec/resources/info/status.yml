@@ -2,8 +2,8 @@
 get:
   tags:
     - info
-  summary: Get status
-  description: Get status
+  summary: Get status of the service
+  description: Get status of the service
   operationId: getStatus
   responses:
     '200':

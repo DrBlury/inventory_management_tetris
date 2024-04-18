@@ -1,6 +1,7 @@
 ---
 get:
   summary: Get user by ID
+  description: Get user by ID
   operationId: getUserById
   tags:
     - user
@@ -38,6 +39,7 @@ get:
 
 put:
   summary: Update an user
+  description: Update an user
   operationId: updateUserById
   tags:
     - user
@@ -72,6 +74,7 @@ put:
 
 delete:
   summary: Delete user by ID
+  description: Delete user by ID
   operationId: deleteUserById
   tags:
     - user

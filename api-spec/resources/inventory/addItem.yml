@@ -1,6 +1,7 @@
 ---
 post:
   summary: Add a new item to the inventory at the first possible position
+  description: Add a new item to the inventory at the first possible position
   operationId: addItemInInventory
   tags:
     - inventory

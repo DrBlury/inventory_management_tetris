@@ -3,7 +3,7 @@ get:
   tags:
     - info
   summary: Get metrics
-  description: Get metrics
+  description: Get metrics for prometheus
   operationId: getMetrics
   responses:
     '200':

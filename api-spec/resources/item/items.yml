@@ -1,6 +1,7 @@
 ---
 get:
   summary: Get all items
+  description: Get all items
   operationId: getAllItems
   tags:
     - item

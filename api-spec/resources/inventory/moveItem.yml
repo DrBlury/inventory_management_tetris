@@ -1,6 +1,7 @@
 ---
 post:
   summary: Move an item already in the inventory
+  description: Move an item already in the inventory
   operationId: moveItemInInventory
   tags:
     - inventory
