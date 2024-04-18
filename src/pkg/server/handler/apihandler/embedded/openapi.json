@@ -524,9 +524,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/Inventory"
-                  }
+                  "$ref": "#/components/schemas/Inventory"
                 }
               }
             }
@@ -899,6 +897,11 @@
             "example": 4
           }
         },
+        "example": {
+          "rawshape": "#####..#####",
+          "height": 3,
+          "width": 4
+        },
         "required": [
           "rawshape",
           "height",
@@ -966,6 +969,23 @@
             "$ref": "#/components/schemas/ItemType"
           }
         },
+        "example": {
+          "id": 1,
+          "variant": "rare",
+          "name": "Sword",
+          "description": "A sword that can be used to fight enemies.",
+          "buy_value": 100,
+          "sell_value": 50,
+          "weight": 10,
+          "durability": 100,
+          "max_stack": 1,
+          "shape": {
+            "rawshape": "###",
+            "height": 3,
+            "width": 1
+          },
+          "type": "meleeWeapon"
+        },
         "required": [
           "id",
           "variant",
@@ -1005,6 +1025,13 @@
             "example": 0
           }
         },
+        "example": {
+          "page": 1,
+          "pages": 10,
+          "limit": 10,
+          "total": 100,
+          "offset": 0
+        },
         "required": [
           "page",
           "pages",
@@ -1026,6 +1053,51 @@
           },
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
+          }
+        },
+        "example": {
+          "items": [
+            {
+              "id": 1,
+              "variant": "rare",
+              "name": "Sword",
+              "description": "A sword that can be used to fight enemies.",
+              "buy_value": 100,
+              "sell_value": 50,
+              "weight": 10,
+              "durability": 100,
+              "max_stack": 1,
+              "shape": {
+                "rawshape": "###",
+                "height": 3,
+                "width": 1
+              },
+              "type": "meleeWeapon"
+            },
+            {
+              "id": 2,
+              "variant": "common",
+              "name": "Shield",
+              "description": "A shield that can be used to block enemy attacks.",
+              "buy_value": 50,
+              "sell_value": 25,
+              "weight": 15,
+              "durability": 150,
+              "max_stack": 1,
+              "shape": {
+                "rawshape": "####",
+                "height": 2,
+                "width": 2
+              },
+              "type": "shield"
+            }
+          ],
+          "pagination": {
+            "page": 1,
+            "pages": 10,
+            "limit": 10,
+            "total": 100,
+            "offset": 0
           }
         },
         "required": [
@@ -1124,6 +1196,22 @@
             "$ref": "#/components/schemas/ItemShape"
           }
         },
+        "example": {
+          "name": "Sword",
+          "variant": "Iron",
+          "description": "A sword made of iron.",
+          "buy_value": 200,
+          "sell_value": 70,
+          "weight": 20,
+          "durability": 350,
+          "max_stack": 1,
+          "type": "meleeWeapon",
+          "shape": {
+            "rawshape": "###",
+            "height": 3,
+            "width": 1
+          }
+        },
         "required": [
           "name",
           "variant",
@@ -1149,6 +1237,10 @@
             "type": "integer",
             "example": 10
           }
+        },
+        "example": {
+          "height": 10,
+          "width": 10
         },
         "required": [
           "height",
@@ -1179,6 +1271,16 @@
             "$ref": "#/components/schemas/Volume"
           }
         },
+        "example": {
+          "id": 1,
+          "name": "Backpack",
+          "userId": 1,
+          "max_weight": 850,
+          "volume": {
+            "height": 3,
+            "width": 4
+          }
+        },
         "required": [
           "id",
           "name",
@@ -1206,6 +1308,36 @@
             }
           }
         },
+        "example": {
+          "id": 1,
+          "username": "JohnDoe",
+          "inventories": [
+            {
+              "inventoryMeta": {
+                "id": 1,
+                "name": "Main Inventory",
+                "description": "The main inventory",
+                "created": "2020-01-01T00:00:00Z"
+              },
+              "items": [
+                {
+                  "id": 1,
+                  "name": "Item 1",
+                  "description": "The first item",
+                  "quantity": 1,
+                  "created": "2020-01-01T00:00:00Z"
+                },
+                {
+                  "id": 2,
+                  "name": "Item 2",
+                  "description": "The second item",
+                  "quantity": 2,
+                  "created": "2020-01-01T00:00:00Z"
+                }
+              ]
+            }
+          ]
+        },
         "required": [
           "id",
           "username",
@@ -1225,6 +1357,69 @@
           },
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
+          }
+        },
+        "example": {
+          "users": [
+            {
+              "id": 1,
+              "username": "john_doe",
+              "inventories": [
+                {
+                  "id": 1,
+                  "name": "Backpack",
+                  "userId": 1,
+                  "max_weight": 850,
+                  "volume": {
+                    "height": 3,
+                    "width": 4
+                  }
+                },
+                {
+                  "id": 2,
+                  "name": "Bank",
+                  "userId": 1,
+                  "max_weight": 10000,
+                  "volume": {
+                    "height": 10,
+                    "width": 10
+                  }
+                }
+              ]
+            },
+            {
+              "id": 2,
+              "username": "jane_doe",
+              "inventories": [
+                {
+                  "id": 3,
+                  "name": "Big Backpack",
+                  "userId": 2,
+                  "max_weight": 1350,
+                  "volume": {
+                    "height": 5,
+                    "width": 8
+                  }
+                },
+                {
+                  "id": 4,
+                  "name": "Small Bank",
+                  "userId": 2,
+                  "max_weight": 1000,
+                  "volume": {
+                    "height": 7,
+                    "width": 7
+                  }
+                }
+              ]
+            }
+          ],
+          "pagination": {
+            "page": 1,
+            "pages": 10,
+            "limit": 10,
+            "total": 100,
+            "offset": 0
           }
         },
         "required": [
@@ -1249,79 +1444,15 @@
             "example": "password"
           }
         },
+        "example": {
+          "username": "john_doe",
+          "email": "something@something.com",
+          "password": "password"
+        },
         "required": [
           "username",
           "email",
           "password"
-        ]
-      },
-      "Position": {
-        "type": "object",
-        "description": "This object holds the position data.",
-        "properties": {
-          "x": {
-            "type": "integer",
-            "example": 3
-          },
-          "y": {
-            "type": "integer",
-            "example": 4
-          },
-          "rotation": {
-            "type": "integer",
-            "example": 2
-          }
-        },
-        "required": [
-          "x",
-          "y",
-          "rotation"
-        ]
-      },
-      "InventoryItem": {
-        "type": "object",
-        "description": "This object holds the inventory item data.",
-        "properties": {
-          "item": {
-            "$ref": "#/components/schemas/Item"
-          },
-          "position": {
-            "$ref": "#/components/schemas/Position"
-          },
-          "quantity": {
-            "type": "integer",
-            "example": 1
-          },
-          "durability_left": {
-            "type": "integer",
-            "example": 100
-          }
-        },
-        "required": [
-          "item",
-          "position",
-          "quantity",
-          "durability_left"
-        ]
-      },
-      "Inventory": {
-        "type": "object",
-        "description": "This object holds the inventory meta data and the items in the inventory as an array of InventoryItem objects.",
-        "properties": {
-          "inventoryMeta": {
-            "$ref": "#/components/schemas/InventoryMeta"
-          },
-          "items": {
-            "type": "array",
-            "description": "An array of InventoryItem objects.",
-            "items": {
-              "$ref": "#/components/schemas/InventoryItem"
-            }
-          }
-        },
-        "required": [
-          "inventoryMeta",
-          "items"
         ]
       },
       "InventoryListResponse": {
@@ -1332,11 +1463,42 @@
             "type": "array",
             "description": "The list of inventories.",
             "items": {
-              "$ref": "#/components/schemas/Inventory"
+              "$ref": "#/components/schemas/InventoryMeta"
             }
           },
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
+          }
+        },
+        "example": {
+          "inventories": [
+            {
+              "id": 1,
+              "name": "Backpack",
+              "userId": 1,
+              "max_weight": 850,
+              "volume": {
+                "height": 3,
+                "width": 4
+              }
+            },
+            {
+              "id": 2,
+              "name": "Chest",
+              "userId": 1,
+              "max_weight": 1500,
+              "volume": {
+                "height": 10,
+                "width": 10
+              }
+            }
+          ],
+          "pagination": {
+            "page": 1,
+            "pages": 10,
+            "limit": 10,
+            "total": 100,
+            "offset": 0
           }
         },
         "required": [
@@ -1364,11 +1526,156 @@
             "$ref": "#/components/schemas/Volume"
           }
         },
+        "example": {
+          "name": "Backpack",
+          "user_id": 1,
+          "max_weight": 850,
+          "volume": {
+            "height": 10,
+            "width": 10
+          }
+        },
         "required": [
           "name",
           "user_id",
           "max_weight",
           "volume"
+        ]
+      },
+      "Position": {
+        "type": "object",
+        "description": "This object holds the position data.",
+        "properties": {
+          "x": {
+            "type": "integer",
+            "example": 3
+          },
+          "y": {
+            "type": "integer",
+            "example": 4
+          },
+          "rotation": {
+            "type": "integer",
+            "example": 2
+          }
+        },
+        "example": {
+          "x": 3,
+          "y": 4,
+          "rotation": 2
+        },
+        "required": [
+          "x",
+          "y",
+          "rotation"
+        ]
+      },
+      "InventoryItem": {
+        "type": "object",
+        "description": "This object holds the inventory item data.",
+        "properties": {
+          "item": {
+            "$ref": "#/components/schemas/Item"
+          },
+          "position": {
+            "$ref": "#/components/schemas/Position"
+          },
+          "quantity": {
+            "type": "integer",
+            "example": 1
+          },
+          "durability_left": {
+            "type": "integer",
+            "example": 100
+          }
+        },
+        "example": {
+          "item": {
+            "id": 1,
+            "variant": "rare",
+            "name": "Sword",
+            "description": "A sword that can be used to fight enemies.",
+            "buy_value": 100,
+            "sell_value": 50,
+            "weight": 10,
+            "durability": 100,
+            "max_stack": 1,
+            "shape": {
+              "rawshape": "#####..#####",
+              "height": 3,
+              "width": 4
+            },
+            "type": "meleeWeapon"
+          },
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "quantity": 1,
+          "durability_left": 70
+        },
+        "required": [
+          "item",
+          "position",
+          "quantity",
+          "durability_left"
+        ]
+      },
+      "Inventory": {
+        "type": "object",
+        "description": "This object holds the inventory meta data and the items in the inventory as an array of InventoryItem objects.",
+        "properties": {
+          "inventoryMeta": {
+            "$ref": "#/components/schemas/InventoryMeta"
+          },
+          "items": {
+            "type": "array",
+            "description": "An array of InventoryItem objects.",
+            "items": {
+              "$ref": "#/components/schemas/InventoryItem"
+            }
+          }
+        },
+        "example": {
+          "inventoryMeta": {
+            "id": 1,
+            "name": "Backpack",
+            "userId": 1,
+            "max_weight": 850,
+            "volume": {
+              "height": 3,
+              "width": 4
+            }
+          },
+          "items": [
+            {
+              "id": 1,
+              "variant": "rare",
+              "name": "Sword",
+              "description": "A sword that can be used to fight enemies.",
+              "buy_value": 100,
+              "sell_value": 50,
+              "weight": 10,
+              "durability": 100,
+              "max_stack": 1,
+              "shape": {
+                "rawshape": "###",
+                "height": 3,
+                "width": 1
+              },
+              "type": "meleeWeapon",
+              "position": {
+                "x": 0,
+                "y": 0
+              },
+              "quantity": 1,
+              "durability_left": 70
+            }
+          ]
+        },
+        "required": [
+          "inventoryMeta",
+          "items"
         ]
       },
       "MoveItemRequest": {
@@ -1385,6 +1692,17 @@
             "type": "integer",
             "example": 1
           }
+        },
+        "example": {
+          "original_position": {
+            "x": 0,
+            "y": 0
+          },
+          "new_position": {
+            "x": 1,
+            "y": 0
+          },
+          "quantity": 1
         },
         "required": [
           "original_position",
@@ -1409,6 +1727,31 @@
           },
           "position": {
             "$ref": "#/components/schemas/Position"
+          }
+        },
+        "example": {
+          "item": {
+            "id": 1,
+            "variant": "rare",
+            "name": "Sword",
+            "description": "A sword that can be used to fight enemies.",
+            "buy_value": 100,
+            "sell_value": 50,
+            "weight": 10,
+            "durability": 100,
+            "max_stack": 1,
+            "shape": {
+              "rawshape": "###",
+              "height": 3,
+              "width": 1
+            },
+            "type": "meleeWeapon"
+          },
+          "quantity": 1,
+          "durability_left": 100,
+          "position": {
+            "x": 0,
+            "y": 0
           }
         },
         "required": [
@@ -1446,6 +1789,13 @@
             "description": "The date of the commit",
             "example": "2020-01-01T00:00:00Z"
           }
+        },
+        "example": {
+          "version": "1.0.0",
+          "buildDate": "2020-01-01",
+          "description": "This is the API for the inventory management system",
+          "commitHash": 1234567890,
+          "commitDate": "2020-01-01T00:00:00Z"
         },
         "required": [
           "version",

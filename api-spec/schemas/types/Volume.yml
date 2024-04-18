@@ -9,6 +9,10 @@ properties:
     type: integer
     example: 10
 
+example:
+  height: 10
+  width: 10
+
 required:
   - height
   - width

@@ -12,6 +12,11 @@ properties:
     type: integer
     example: 4
 
+example:
+  rawshape: '#####..#####'
+  height: 3
+  width: 4
+
 required:
   - rawshape
   - height

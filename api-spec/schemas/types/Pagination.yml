@@ -18,6 +18,13 @@ properties:
     type: integer
     example: 0
 
+example:
+  page: 1
+  pages: 10
+  limit: 10
+  total: 100
+  offset: 0
+
 required:
   - page
   - pages

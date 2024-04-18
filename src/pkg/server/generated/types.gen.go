@@ -90,7 +90,7 @@ type InventoryItem struct {
 // InventoryListResponse This object holds the inventory list response data. It includes the list of inventories and pagination data.
 type InventoryListResponse struct {
 	// Inventories The list of inventories.
-	Inventories []Inventory `json:"inventories"`
+	Inventories []InventoryMeta `json:"inventories"`
 
 	// Pagination This object holds the pagination data.
 	Pagination Pagination `json:"pagination"`

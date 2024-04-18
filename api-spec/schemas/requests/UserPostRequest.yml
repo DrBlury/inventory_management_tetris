@@ -12,6 +12,11 @@ properties:
     type: string
     example: 'password'
 
+example:
+  username: 'john_doe'
+  email: 'something@something.com'
+  password: 'password'
+
 required:
   - username
   - email

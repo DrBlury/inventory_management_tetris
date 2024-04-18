@@ -18,8 +18,7 @@ get:
       content:
         application/json:
           schema:
-            items:
-              $ref: '../../schemas/_index.yml#/Inventory'
+            $ref: '../../schemas/_index.yml#/Inventory'
     '400':
       description: Invalid ID supplied (e.g. not an integer)
       content:

@@ -12,6 +12,11 @@ properties:
     type: integer
     example: 2
 
+example:
+  x: 3
+  y: 4
+  rotation: 2
+
 required:
   - x
   - y

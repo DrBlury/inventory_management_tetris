@@ -13,6 +13,27 @@ properties:
     items:
       $ref: './InventoryMeta.yml'
 
+example:
+  id: 1
+  username: 'JohnDoe'
+  inventories:
+    - inventoryMeta:
+        id: 1
+        name: 'Main Inventory'
+        description: 'The main inventory'
+        created: '2020-01-01T00:00:00Z'
+      items:
+        - id: 1
+          name: 'Item 1'
+          description: 'The first item'
+          quantity: 1
+          created: '2020-01-01T00:00:00Z'
+        - id: 2
+          name: 'Item 2'
+          description: 'The second item'
+          quantity: 2
+          created: '2020-01-01T00:00:00Z'
+
 required:
   - id
   - username
