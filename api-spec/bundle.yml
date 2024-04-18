@@ -388,6 +388,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security: []
     delete:
       summary: Delete inventory by ID
       operationId: deleteInventoryById
@@ -492,6 +493,13 @@ paths:
                   metrics:
                     type: object
                     description: Metrics for prometheus
+        '400':
+          description: You somehow managed to mess up the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
   /info/version:
     get:
       tags:
@@ -506,6 +514,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Version'
+        '400':
+          description: You somehow managed to mess up the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
   /info/status:
     get:
       tags:
@@ -520,6 +535,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
+        '400':
+          description: You somehow managed to mess up the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
   /info/openapi.json:
     get:
       tags:
@@ -534,6 +556,13 @@ paths:
             application/json:
               schema:
                 type: object
+        '400':
+          description: You somehow managed to mess up the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
   /info/openapi.html:
     get:
       tags:
@@ -558,6 +587,13 @@ paths:
               schema:
                 type: string
                 example: <html>...</html>
+        '400':
+          description: You somehow managed to mess up the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security: []
 components:
   schemas:
     ItemShape:

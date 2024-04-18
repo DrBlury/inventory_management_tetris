@@ -75,6 +75,9 @@ put:
           schema:
             $ref: '../../schemas/_index.yml#/Error'
 
+  # This API has no security
+  security: []
+
 delete:
   summary: Delete inventory by ID
   operationId: deleteInventoryById

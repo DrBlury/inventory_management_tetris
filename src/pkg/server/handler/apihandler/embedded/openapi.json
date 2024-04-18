@@ -611,7 +611,8 @@
               }
             }
           }
-        }
+        },
+        "security": []
       },
       "delete": {
         "summary": "Delete inventory by ID",
@@ -771,8 +772,19 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "You somehow managed to mess up the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
-        }
+        },
+        "security": []
       }
     },
     "/info/version": {
@@ -793,8 +805,19 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "You somehow managed to mess up the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
-        }
+        },
+        "security": []
       }
     },
     "/info/status": {
@@ -815,8 +838,19 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "You somehow managed to mess up the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
-        }
+        },
+        "security": []
       }
     },
     "/info/openapi.json": {
@@ -837,8 +871,19 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "You somehow managed to mess up the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
-        }
+        },
+        "security": []
       }
     },
     "/info/openapi.html": {
@@ -873,8 +918,19 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "You somehow managed to mess up the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
-        }
+        },
+        "security": []
       }
     }
   },
