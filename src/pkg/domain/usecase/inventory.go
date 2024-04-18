@@ -78,6 +78,12 @@ func (a appLogicImpl) DeleteInventoryById(ctx context.Context, inventoryId int) 
 		return err
 	}
 
+	// invalidate cache
+	err = a.cache.Invalidate(ctx, "allInventoriesMeta")
+	if err != nil {
+		a.log.Error("error invalidating all inventories in cache", zap.Error(err))
+	}
+
 	// log what inventory was deleted
 	a.log.Info("deleted inventory", zap.String("name", deletedInventory.Invname.String))
 	return nil
