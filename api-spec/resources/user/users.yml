@@ -24,10 +24,12 @@ get:
 
 post:
   summary: Add new user
+  description: Add new user
   operationId: addUser
   tags:
     - user
   requestBody:
+    description: User to add to the system
     required: true
     content:
       application/json:

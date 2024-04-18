@@ -42,11 +42,13 @@ paths:
       security: []
     post:
       summary: Add new item
+      description: Add new item
       operationId: addItem
       tags:
         - item
       requestBody:
         required: true
+        description: Item to add to the system
         content:
           application/json:
             schema:
@@ -105,6 +107,7 @@ paths:
             format: int64
       requestBody:
         required: true
+        description: Item object that needs to be updated
         content:
           application/json:
             schema:
@@ -170,10 +173,12 @@ paths:
       security: []
     post:
       summary: Add new user
+      description: Add new user
       operationId: addUser
       tags:
         - user
       requestBody:
+        description: User to add to the system
         required: true
         content:
           application/json:
@@ -241,6 +246,7 @@ paths:
             format: int64
       requestBody:
         required: true
+        description: User object that needs to be updated
         content:
           application/json:
             schema:
@@ -308,6 +314,7 @@ paths:
         - inventory
       requestBody:
         required: true
+        description: Inventory to add to the system
         content:
           application/json:
             schema:
@@ -377,6 +384,7 @@ paths:
             format: int64
       requestBody:
         required: true
+        description: Inventory object that needs to be updated
         content:
           application/json:
             schema:
@@ -440,6 +448,7 @@ paths:
             format: int64
       requestBody:
         required: true
+        description: Position data and quantity to move
         content:
           application/json:
             schema:
@@ -471,6 +480,7 @@ paths:
             format: int64
       requestBody:
         required: true
+        description: Item to add to inventory and quantity and optional position
         content:
           application/json:
             schema:

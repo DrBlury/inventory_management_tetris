@@ -15,6 +15,7 @@ post:
         format: int64
   requestBody:
     required: true
+    description: Item to add to inventory and quantity and optional position
     content:
       application/json:
         schema:

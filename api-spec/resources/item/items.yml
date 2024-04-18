@@ -24,11 +24,13 @@ get:
 
 post:
   summary: Add new item
+  description: Add new item
   operationId: addItem
   tags:
     - item
   requestBody:
     required: true
+    description: Item to add to the system
     content:
       application/json:
         schema:

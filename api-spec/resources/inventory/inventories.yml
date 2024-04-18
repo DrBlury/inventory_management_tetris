@@ -30,6 +30,7 @@ post:
     - inventory
   requestBody:
     required: true
+    description: Inventory to add to the system
     content:
       application/json:
         schema:

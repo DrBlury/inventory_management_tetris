@@ -53,6 +53,7 @@ put:
         format: int64
   requestBody:
     required: true
+    description: Inventory object that needs to be updated
     content:
       application/json:
         schema:

@@ -45,6 +45,7 @@ put:
         format: int64
   requestBody:
     required: true
+    description: Item object that needs to be updated
     content:
       application/json:
         schema:
