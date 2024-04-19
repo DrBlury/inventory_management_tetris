@@ -34,7 +34,7 @@
       rawshape: '####'
       height: 2
       width: 2
-    type: shield
+    type: meleeWeapon
   position:
     x: 3
     y: 0

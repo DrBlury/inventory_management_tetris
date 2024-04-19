@@ -32,7 +32,7 @@ func SetDefaults() {
 func LoadConfig(
 	version string,
 	buildDate string,
-	description string,
+	details string,
 	commitHash string,
 	commitDate string,
 ) (*Config, error) {
@@ -40,11 +40,11 @@ func LoadConfig(
 	viper.AutomaticEnv()
 
 	infoConfig := &domain.Info{
-		Version:     version,
-		BuildDate:   buildDate,
-		Description: description,
-		CommitHash:  commitHash,
-		CommitDate:  commitDate,
+		Version:    version,
+		BuildDate:  buildDate,
+		Details:    details,
+		CommitHash: commitHash,
+		CommitDate: commitDate,
 	}
 
 	routerConfig := &router.Config{

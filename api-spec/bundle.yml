@@ -3,9 +3,12 @@ info:
   title: Inventory Manager
   description: Inventory Manager API
   version: 1.0.0
+  contact:
+    name: LinuxCode
+    email: jbensch@linuxcode.net
   license:
-    name: unlicensed
-    url: www.linuxcode.net
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
 servers:
   - url: inventory.linuxcode.net
     description: Inventory server for example
@@ -62,7 +65,7 @@ paths:
                       rawshape: '####'
                       height: 2
                       width: 2
-                    type: shield
+                    type: meleeWeapon
                 pagination:
                   page: 1
                   pages: 10
@@ -1042,7 +1045,7 @@ paths:
               example:
                 version: 1.0.0
                 buildDate: '2020-01-01'
-                description: This is an API.
+                details: This is an API.
                 commitHash: 0d1444adb917eacc71321f1281904f71c5e378ca
                 commitDate: '2020-01-01T00:00:00Z'
         '400':
@@ -1281,7 +1284,7 @@ components:
             rawshape: '####'
             height: 2
             width: 2
-          type: shield
+          type: meleeWeapon
     Pagination:
       type: object
       description: This object holds the pagination data.
@@ -1350,7 +1353,7 @@ components:
               rawshape: '####'
               height: 2
               width: 2
-            type: shield
+            type: meleeWeapon
         pagination:
           page: 1
           pages: 10
@@ -1840,7 +1843,7 @@ components:
               rawshape: '####'
               height: 2
               width: 2
-            type: shield
+            type: meleeWeapon
           position:
             x: 3
             'y': 0
@@ -1966,7 +1969,7 @@ components:
           type: string
           description: The date the code was built
           example: '2020-01-01'
-        description:
+        details:
           type: string
           description: A description of the API
           example: This is the API for the x service
@@ -1981,13 +1984,13 @@ components:
       example:
         version: 1.0.0
         buildDate: '2020-01-01'
-        description: This is an API.
+        details: This is an API.
         commitHash: 0d1444adb917eacc71321f1281904f71c5e378ca
         commitDate: '2020-01-01T00:00:00Z'
       required:
         - version
         - buildDate
-        - description
+        - details
         - commitHash
         - commitDate
     Status:

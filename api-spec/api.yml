@@ -4,9 +4,12 @@ info:
   title: Inventory Manager
   description: Inventory Manager API
   version: 1.0.0
+  contact:
+    name: LinuxCode
+    email: jbensch@linuxcode.net
   license:
-    name: unlicensed
-    url: 'www.linuxcode.net'
+    name: MIT License
+    url: 'https://opensource.org/licenses/MIT'
 tags:
   - name: inventory
     description: Inventory operations

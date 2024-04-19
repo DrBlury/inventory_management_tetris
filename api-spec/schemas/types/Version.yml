@@ -10,7 +10,7 @@ properties:
     type: string
     description: The date the code was built
     example: 2020-01-01
-  description:
+  details:
     type: string
     description: A description of the API
     example: This is the API for the x service
@@ -29,6 +29,6 @@ example:
 required:
   - version
   - buildDate
-  - description
+  - details
   - commitHash
   - commitDate

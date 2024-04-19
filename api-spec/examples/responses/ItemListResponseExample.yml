@@ -27,7 +27,7 @@ items:
       rawshape: '####'
       height: 2
       width: 2
-    type: shield
+    type: meleeWeapon
 pagination:
   page: 1
   pages: 10

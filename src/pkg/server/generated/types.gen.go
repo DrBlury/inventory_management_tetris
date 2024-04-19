@@ -250,8 +250,8 @@ type Version struct {
 	// CommitHash The hash of the commit
 	CommitHash string `json:"commitHash"`
 
-	// Description A description of the API
-	Description string `json:"description"`
+	// Details A description of the API
+	Details string `json:"details"`
 
 	// Version The version of the API
 	Version string `json:"version"`
