@@ -370,24 +370,22 @@ paths:
                 $ref: '#/components/schemas/User'
               example:
                 id: 1
-                username: JohnDoe
+                username: john_doe
                 inventories:
-                  - inventoryMeta:
-                      id: 1
-                      name: Main Inventory
-                      text: The main inventory
-                      created: '2020-01-01T00:00:00Z'
-                    items:
-                      - id: 1
-                        name: Item 1
-                        text: The first item
-                        quantity: 1
-                        created: '2020-01-01T00:00:00Z'
-                      - id: 2
-                        name: Item 2
-                        text: The second item
-                        quantity: 2
-                        created: '2020-01-01T00:00:00Z'
+                  - id: 1
+                    name: Backpack
+                    userId: 1
+                    max_weight: 850
+                    volume:
+                      height: 3
+                      width: 4
+                  - id: 2
+                    name: Bank
+                    userId: 1
+                    max_weight: 10000
+                    volume:
+                      height: 10
+                      width: 10
         '400':
           description: Bad request - e.g. invalid user
           content:
@@ -427,24 +425,22 @@ paths:
                   $ref: '#/components/schemas/User'
                 example:
                   id: 1
-                  username: JohnDoe
+                  username: john_doe
                   inventories:
-                    - inventoryMeta:
-                        id: 1
-                        name: Main Inventory
-                        text: The main inventory
-                        created: '2020-01-01T00:00:00Z'
-                      items:
-                        - id: 1
-                          name: Item 1
-                          text: The first item
-                          quantity: 1
-                          created: '2020-01-01T00:00:00Z'
-                        - id: 2
-                          name: Item 2
-                          text: The second item
-                          quantity: 2
-                          created: '2020-01-01T00:00:00Z'
+                    - id: 1
+                      name: Backpack
+                      userId: 1
+                      max_weight: 850
+                      volume:
+                        height: 3
+                        width: 4
+                    - id: 2
+                      name: Bank
+                      userId: 1
+                      max_weight: 10000
+                      volume:
+                        height: 10
+                        width: 10
         '400':
           description: Invalid ID supplied - wrong format of user ID
           content:
@@ -495,24 +491,22 @@ paths:
                 $ref: '#/components/schemas/User'
               example:
                 id: 1
-                username: JohnDoe
+                username: john_doe
                 inventories:
-                  - inventoryMeta:
-                      id: 1
-                      name: Main Inventory
-                      text: The main inventory
-                      created: '2020-01-01T00:00:00Z'
-                    items:
-                      - id: 1
-                        name: Item 1
-                        text: The first item
-                        quantity: 1
-                        created: '2020-01-01T00:00:00Z'
-                      - id: 2
-                        name: Item 2
-                        text: The second item
-                        quantity: 2
-                        created: '2020-01-01T00:00:00Z'
+                  - id: 1
+                    name: Backpack
+                    userId: 1
+                    max_weight: 850
+                    volume:
+                      height: 3
+                      width: 4
+                  - id: 2
+                    name: Bank
+                    userId: 1
+                    max_weight: 10000
+                    volume:
+                      height: 10
+                      width: 10
         '400':
           description: Invalid request - wrong format of user ID or wrong format of user object
           content:
@@ -647,23 +641,25 @@ paths:
                     height: 3
                     width: 4
                 items:
-                  - id: 1
-                    variant: rare
-                    name: Sword
-                    text: A sword that can be used to fight tall enemies.
-                    buy_value: 100
-                    sell_value: 50
-                    weight: 10
-                    durability: 100
-                    max_stack: 1
-                    shape:
-                      rawshape: '###'
-                      height: 3
-                      width: 1
-                    type: meleeWeapon
+                  - item:
+                      id: 1
+                      variant: rare
+                      name: Sword
+                      text: A sword that can be used to fight tiny enemies.
+                      buy_value: 100
+                      sell_value: 50
+                      weight: 10
+                      durability: 100
+                      max_stack: 1
+                      shape:
+                        rawshape: '###'
+                        height: 3
+                        width: 1
+                      type: meleeWeapon
                     position:
                       x: 0
                       'y': 0
+                      rotation: 0
                     quantity: 1
                     durability_left: 70
         '400':
@@ -712,23 +708,25 @@ paths:
                     height: 3
                     width: 4
                 items:
-                  - id: 1
-                    variant: rare
-                    name: Sword
-                    text: A sword that can be used to fight tall enemies.
-                    buy_value: 100
-                    sell_value: 50
-                    weight: 10
-                    durability: 100
-                    max_stack: 1
-                    shape:
-                      rawshape: '###'
-                      height: 3
-                      width: 1
-                    type: meleeWeapon
+                  - item:
+                      id: 1
+                      variant: rare
+                      name: Sword
+                      text: A sword that can be used to fight tiny enemies.
+                      buy_value: 100
+                      sell_value: 50
+                      weight: 10
+                      durability: 100
+                      max_stack: 1
+                      shape:
+                        rawshape: '###'
+                        height: 3
+                        width: 1
+                      type: meleeWeapon
                     position:
                       x: 0
                       'y': 0
+                      rotation: 0
                     quantity: 1
                     durability_left: 70
         '400':
@@ -792,23 +790,25 @@ paths:
                     height: 3
                     width: 4
                 items:
-                  - id: 1
-                    variant: rare
-                    name: Sword
-                    text: A sword that can be used to fight tall enemies.
-                    buy_value: 100
-                    sell_value: 50
-                    weight: 10
-                    durability: 100
-                    max_stack: 1
-                    shape:
-                      rawshape: '###'
-                      height: 3
-                      width: 1
-                    type: meleeWeapon
+                  - item:
+                      id: 1
+                      variant: rare
+                      name: Sword
+                      text: A sword that can be used to fight tiny enemies.
+                      buy_value: 100
+                      sell_value: 50
+                      weight: 10
+                      durability: 100
+                      max_stack: 1
+                      shape:
+                        rawshape: '###'
+                        height: 3
+                        width: 1
+                      type: meleeWeapon
                     position:
                       x: 0
                       'y': 0
+                      rotation: 0
                     quantity: 1
                     durability_left: 70
         '400':
@@ -886,9 +886,11 @@ paths:
               original_position:
                 x: 0
                 'y': 0
+                rotation: 0
               new_position:
                 x: 1
                 'y': 0
+                rotation: 0
               quantity: 1
       responses:
         '200':
@@ -952,6 +954,7 @@ paths:
               position:
                 x: 0
                 'y': 0
+                rotation: 0
       responses:
         '200':
           description: Added item to inventory
@@ -978,6 +981,7 @@ paths:
                 position:
                   x: 0
                   'y': 0
+                  rotation: 2
                 quantity: 1
                 durability_left: 70
         '400':
@@ -1039,7 +1043,7 @@ paths:
                 version: 1.0.0
                 buildDate: '2020-01-01'
                 description: This is an API.
-                commitHash: 1234567890
+                commitHash: 0d1444adb917eacc71321f1281904f71c5e378ca
                 commitDate: '2020-01-01T00:00:00Z'
         '400':
           description: You somehow managed to mess up the version request
@@ -1539,24 +1543,22 @@ components:
           $ref: '#/components/schemas/InventoryMetaList'
       example:
         id: 1
-        username: JohnDoe
+        username: john_doe
         inventories:
-          - inventoryMeta:
-              id: 1
-              name: Main Inventory
-              text: The main inventory
-              created: '2020-01-01T00:00:00Z'
-            items:
-              - id: 1
-                name: Item 1
-                text: The first item
-                quantity: 1
-                created: '2020-01-01T00:00:00Z'
-              - id: 2
-                name: Item 2
-                text: The second item
-                quantity: 2
-                created: '2020-01-01T00:00:00Z'
+          - id: 1
+            name: Backpack
+            userId: 1
+            max_weight: 850
+            volume:
+              height: 3
+              width: 4
+          - id: 2
+            name: Bank
+            userId: 1
+            max_weight: 10000
+            volume:
+              height: 10
+              width: 10
       required:
         - id
         - username
@@ -1789,6 +1791,7 @@ components:
         position:
           x: 0
           'y': 0
+          rotation: 2
         quantity: 1
         durability_left: 70
       required:
@@ -1802,42 +1805,46 @@ components:
       items:
         $ref: '#/components/schemas/InventoryItem'
       example:
-        - id: 1
-          variant: rare
-          name: Sword
-          description: A sword that can be used to fight tiny enemies.
-          buy_value: 100
-          sell_value: 50
-          weight: 10
-          durability: 100
-          max_stack: 1
-          shape:
-            rawshape: '###'
-            height: 3
-            width: 1
-          type: meleeWeapon
+        - item:
+            id: 1
+            variant: rare
+            name: Sword
+            text: A sword that can be used to fight tiny enemies.
+            buy_value: 100
+            sell_value: 50
+            weight: 10
+            durability: 100
+            max_stack: 1
+            shape:
+              rawshape: '###'
+              height: 3
+              width: 1
+            type: meleeWeapon
           position:
             x: 0
             'y': 0
+            rotation: 2
           quantity: 1
           durability_left: 70
-        - id: 2
-          variant: wooden
-          name: Shield
-          description: A shield that can be used to block attacks.
-          buy_value: 50
-          sell_value: 25
-          weight: 5
-          durability: 50
-          max_stack: 1
-          shape:
-            rawshape: '####'
-            height: 2
-            width: 2
-          type: shield
+        - item:
+            id: 2
+            variant: wooden
+            name: Shield
+            text: A shield that can be used to block attacks.
+            buy_value: 50
+            sell_value: 25
+            weight: 5
+            durability: 50
+            max_stack: 1
+            shape:
+              rawshape: '####'
+              height: 2
+              width: 2
+            type: shield
           position:
             x: 3
             'y': 0
+            rotation: 0
           quantity: 1
           durability_left: 30
     Inventory:
@@ -1858,23 +1865,25 @@ components:
             height: 3
             width: 4
         items:
-          - id: 1
-            variant: rare
-            name: Sword
-            text: A sword that can be used to fight tall enemies.
-            buy_value: 100
-            sell_value: 50
-            weight: 10
-            durability: 100
-            max_stack: 1
-            shape:
-              rawshape: '###'
-              height: 3
-              width: 1
-            type: meleeWeapon
+          - item:
+              id: 1
+              variant: rare
+              name: Sword
+              text: A sword that can be used to fight tiny enemies.
+              buy_value: 100
+              sell_value: 50
+              weight: 10
+              durability: 100
+              max_stack: 1
+              shape:
+                rawshape: '###'
+                height: 3
+                width: 1
+              type: meleeWeapon
             position:
               x: 0
               'y': 0
+              rotation: 0
             quantity: 1
             durability_left: 70
       required:
@@ -1895,9 +1904,11 @@ components:
         original_position:
           x: 0
           'y': 0
+          rotation: 0
         new_position:
           x: 1
           'y': 0
+          rotation: 0
         quantity: 1
       required:
         - original_position
@@ -1938,6 +1949,7 @@ components:
         position:
           x: 0
           'y': 0
+          rotation: 0
       required:
         - item
         - quantity
@@ -1961,7 +1973,7 @@ components:
         commitHash:
           type: string
           description: The hash of the commit
-          example: 1234567890
+          example: 0d1444adb917eacc71321f1281904f71c5e378ca
         commitDate:
           type: string
           description: The date of the commit
@@ -1970,7 +1982,7 @@ components:
         version: 1.0.0
         buildDate: '2020-01-01'
         description: This is an API.
-        commitHash: 1234567890
+        commitHash: 0d1444adb917eacc71321f1281904f71c5e378ca
         commitDate: '2020-01-01T00:00:00Z'
       required:
         - version

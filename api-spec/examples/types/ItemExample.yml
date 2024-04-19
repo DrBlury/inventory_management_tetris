@@ -12,4 +12,4 @@ shape:
   rawshape: '###'
   height: 3
   width: 1
-type: meleeWeapon
+type: "meleeWeapon"

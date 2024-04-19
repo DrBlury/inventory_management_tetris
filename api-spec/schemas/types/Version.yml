@@ -17,7 +17,7 @@ properties:
   commitHash:
     type: string
     description: The hash of the commit
-    example: 1234567890
+    example: "0d1444adb917eacc71321f1281904f71c5e378ca"
   commitDate:
     type: string
     description: The date of the commit

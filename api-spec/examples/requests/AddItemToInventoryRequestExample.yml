@@ -13,9 +13,10 @@ item:
     rawshape: '###'
     height: 3
     width: 1
-  type: meleeWeapon
+  type: "meleeWeapon"
 quantity: 1
 durability_left: 100
 position:
   x: 0
   y: 0
+  rotation: 0

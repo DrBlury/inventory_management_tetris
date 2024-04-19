@@ -2,7 +2,9 @@
 original_position:
   x: 0
   y: 0
+  rotation: 0
 new_position:
   x: 1
   y: 0
+  rotation: 0
 quantity: 1

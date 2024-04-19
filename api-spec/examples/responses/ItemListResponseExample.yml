@@ -13,7 +13,7 @@ items:
       rawshape: '###'
       height: 3
       width: 1
-    type: meleeWeapon
+    type: "meleeWeapon"
   - id: 2
     variant: 'common'
     name: 'Shield'
