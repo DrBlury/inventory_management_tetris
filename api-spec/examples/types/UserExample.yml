@@ -1,20 +1,18 @@
 ---
 id: 1
-username: 'JohnDoe'
+username: 'john_doe'
 inventories:
-  - inventoryMeta:
-      id: 1
-      name: 'Main Inventory'
-      text: 'The main inventory'
-      created: '2020-01-01T00:00:00Z'
-    items:
-      - id: 1
-        name: 'Item 1'
-        text: 'The first item'
-        quantity: 1
-        created: '2020-01-01T00:00:00Z'
-      - id: 2
-        name: 'Item 2'
-        text: 'The second item'
-        quantity: 2
-        created: '2020-01-01T00:00:00Z'
+  - id: 1
+    name: 'Backpack'
+    userId: 1
+    max_weight: 850
+    volume:
+      height: 3
+      width: 4
+  - id: 2
+    name: 'Bank'
+    userId: 1
+    max_weight: 10000
+    volume:
+      height: 10
+      width: 10
