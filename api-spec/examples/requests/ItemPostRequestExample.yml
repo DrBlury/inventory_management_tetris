@@ -1,0 +1,14 @@
+---
+name: 'Sword'
+variant: 'Iron'
+text: 'A sword made of iron.'
+buy_value: 200
+sell_value: 70
+weight: 20
+durability: 350
+max_stack: 1
+type: meleeWeapon
+shape:
+  rawshape: '###'
+  height: 3
+  width: 1

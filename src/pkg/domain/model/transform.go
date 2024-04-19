@@ -53,13 +53,13 @@ func MapRepoItemsToDomainItems(rItems ...repo.Item) *[]Item {
 				Weight:   int(rItem.Weight.Int32),
 				MaxStack: int(rItem.MaxStack.Int32),
 			},
-			Name:        rItem.Name.String,
-			Description: rItem.Description.String,
-			Type:        itemType,
-			Durability:  int(rItem.Durability.Int32),
-			BuyValue:    int(rItem.BuyValue.Int32),
-			SellValue:   int(rItem.SellValue.Int32),
-			Variant:     rItem.Variant.String,
+			Name:       rItem.Name.String,
+			Text:       rItem.Text.String,
+			Type:       itemType,
+			Durability: int(rItem.Durability.Int32),
+			BuyValue:   int(rItem.BuyValue.Int32),
+			SellValue:  int(rItem.SellValue.Int32),
+			Variant:    rItem.Variant.String,
 		})
 	}
 	return &domainItems

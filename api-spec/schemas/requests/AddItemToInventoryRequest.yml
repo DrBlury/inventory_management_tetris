@@ -14,26 +14,7 @@ properties:
     $ref: '../types/Position.yml'
 
 example:
-  item:
-    id: 1
-    variant: 'rare'
-    name: 'Sword'
-    description: 'A sword that can be used to fight enemies.'
-    buy_value: 100
-    sell_value: 50
-    weight: 10
-    durability: 100
-    max_stack: 1
-    shape:
-      rawshape: '###'
-      height: 3
-      width: 1
-    type: meleeWeapon
-  quantity: 1
-  durability_left: 100
-  position:
-    x: 0
-    y: 0
+  $ref: '../../examples/_index.yml#/AddItemToInventoryRequestExample'
 
 required:
   - item

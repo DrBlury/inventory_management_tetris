@@ -1,7 +1,7 @@
 ---
 get:
-  summary: Get item by ID
-  description: Get item by ID
+  summary: Get item
+  description: Get an item by ID
   operationId: getItemById
   tags:
     - item
@@ -13,6 +13,7 @@ get:
       schema:
         type: integer
         format: int64
+      example: 1
   responses:
     '200':
       description: successful operation - returns item
@@ -21,17 +22,25 @@ get:
           schema:
             items:
               $ref: '../../schemas/_index.yml#/Item'
-    '400':
-      description: Invalid ID supplied (e.g. not an integer)
+            example:
+              $ref: '../../examples/_index.yml#/ItemExample'
     '404':
-      description: Can not find item (item ID)
+      description: Can not find item (item ID) to return
+    '400':
+      description: Invalid ID of item supplied (e.g. not an integer) - could not return item
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []
 
 put:
   summary: Update an item
-  description: Update an item
+  description: Update an item by ID
   operationId: updateItemById
   tags:
     - item
@@ -43,6 +52,7 @@ put:
       schema:
         type: integer
         format: int64
+      example: 1
   requestBody:
     required: true
     description: Item object that needs to be updated
@@ -50,28 +60,28 @@ put:
       application/json:
         schema:
           $ref: '../../schemas/_index.yml#/ItemPostRequest'
+        example:
+          $ref: '../../examples/_index.yml#/ItemPostRequestExample'
   responses:
     '200':
       description: Update done
     '404':
-      description: Can not find item (item ID)
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/Error'
+      description: Can not find item (item ID) to update
     '400':
-      description: Invalid ID supplied
+      description: Invalid ID of Item supplied (e.g. not an integer) - could not update item
       content:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []
 
 delete:
-  summary: Delete item by ID
-  description: Delete item by ID
+  summary: Delete an item
+  description: Delete an item by ID
   operationId: deleteItemById
   tags:
     - item
@@ -83,13 +93,20 @@ delete:
       schema:
         type: integer
         format: int64
+      example: 1
   responses:
     '200':
       description: Deleted item (item ID)
-    '400':
-      description: Invalid ID supplied (e.g. not an integer)
     '404':
-      description: Can not find item (item ID)
+      description: Can not find item (item ID) to delete
+    '400':
+      description: Invalid ID of Item supplied (e.g. not an integer) - could not delete item
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []

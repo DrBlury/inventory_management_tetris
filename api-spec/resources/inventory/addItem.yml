@@ -1,25 +1,28 @@
 ---
 post:
-  summary: Add a new item to the inventory at the first possible position
-  description: Add a new item to the inventory at the first possible position
+  summary: Add item to inventory (with optional position)
+  description: Adds a new item to the inventory with an optional position
   operationId: addItemInInventory
   tags:
     - inventory
   parameters:
     - name: inventoryId
       in: path
-      description: ID of inventory
+      description: ID of inventory to add item to
       required: true
       schema:
         type: integer
         format: int64
+      example: 1
   requestBody:
     required: true
-    description: Item to add to inventory and quantity and optional position
+    description: Item to add with quantity and optional position
     content:
       application/json:
         schema:
           $ref: '../../schemas/_index.yml#/AddItemToInventoryRequest'
+        example:
+          $ref: '../../examples/_index.yml#/AddItemToInventoryRequestExample'
   responses:
     '200':
       description: Added item to inventory
@@ -27,12 +30,16 @@ post:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/InventoryItem'
+          example:
+            $ref: '../../examples/_index.yml#/InventoryItemExample'
     '400':
-      description: Bad request (e.g. invalid item)
+      description: Bad request (e.g. invalid item or invalid position)
       content:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []

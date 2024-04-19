@@ -8,7 +8,7 @@ properties:
   variant:
     type: string
     example: 'Iron'
-  description:
+  text:
     type: string
     example: 'A sword made of iron.'
   buy_value:
@@ -32,24 +32,12 @@ properties:
     $ref: '../types/ItemShape.yml'
 
 example:
-  name: 'Sword'
-  variant: 'Iron'
-  description: 'A sword made of iron.'
-  buy_value: 200
-  sell_value: 70
-  weight: 20
-  durability: 350
-  max_stack: 1
-  type: meleeWeapon
-  shape:
-    rawshape: '###'
-    height: 3
-    width: 1
+  $ref: '../../examples/_index.yml#/ItemPostRequestExample'
 
 required:
   - name
   - variant
-  - description
+  - text
   - buy_value
   - sell_value
   - weight

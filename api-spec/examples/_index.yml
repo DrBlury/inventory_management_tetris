@@ -1,0 +1,74 @@
+---
+# Enums
+StatusExample:
+  $ref: './enum/StatusExample.yml'
+ItemTypeExample:
+  $ref: './enum/ItemTypeExample.yml'
+ErrorTypeExample:
+  $ref: './enum/ErrorTypeExample.yml'
+
+# Schemas
+ItemExample:
+  $ref: './types/ItemExample.yml'
+ItemListExample:
+  $ref: './types/ItemListExample.yml'
+
+InventoryItemExample:
+  $ref: './types/InventoryItemExample.yml'
+InventoryItemListExample:
+  $ref: './types/InventoryItemListExample.yml'
+
+PositionExample:
+  $ref: './types/PositionExample.yml'
+ItemShapeExample:
+  $ref: './types/ItemShapeExample.yml'
+InventoryExample:
+  $ref: './types/InventoryExample.yml'
+
+InventoryMetaExample:
+  $ref: './types/InventoryMetaExample.yml'
+InventoryMetaListExample:
+  $ref: './types/InventoryMetaListExample.yml'
+
+# TODO
+UserExample:
+  $ref: './types/UserExample.yml'
+UserListExample:
+  $ref: './types/UserListExample.yml'
+
+VersionExample:
+  $ref: './types/VersionExample.yml'
+VolumeExample:
+  $ref: './types/VolumeExample.yml'
+PaginationExample:
+  $ref: './types/PaginationExample.yml'
+
+# Requests
+# Inventory
+InventoryPostRequestExample:
+  $ref: './requests/InventoryPostRequestExample.yml'
+AddItemToInventoryRequestExample:
+  $ref: './requests/AddItemToInventoryRequestExample.yml'
+MoveItemRequestExample:
+  $ref: './requests/MoveItemRequestExample.yml'
+
+# Item
+ItemPostRequestExample:
+  $ref: './requests/ItemPostRequestExample.yml'
+
+# User
+UserPostRequestExample:
+  $ref: './requests/UserPostRequestExample.yml'
+
+# Responses
+ItemListResponseExample:
+  $ref: './responses/ItemListResponseExample.yml'
+InventoryListResponseExample:
+  $ref: './responses/InventoryListResponseExample.yml'
+UserListResponseExample:
+  $ref: './responses/UserListResponseExample.yml'
+
+# Errors
+ErrorExample:
+  $ref: './errors/ErrorExample.yml'
+

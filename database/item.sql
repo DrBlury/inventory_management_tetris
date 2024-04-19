@@ -18,7 +18,7 @@ ORDER BY
 INSERT INTO
   item (
     name,
-    description,
+    text,
     variant,
     buy_value,
     sell_value,
@@ -54,7 +54,7 @@ RETURNING
 UPDATE "item"
 SET
   name = $1,
-  description = $2,
+  text = $2,
   variant = $3,
   buy_value = $4,
   sell_value = $5,

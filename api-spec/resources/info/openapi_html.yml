@@ -2,6 +2,9 @@
 get:
   tags:
     - info
+  summary: Get describing html of openapi spec
+  description: Retrieve the OpenAPI spec as HTML
+  operationId: getOpenAPIHTML
   parameters:
     - name: render
       in: query
@@ -10,10 +13,7 @@ get:
       schema:
         type: string
         description: OpenAPI html renderer name (scalar or spotlight)
-        example: scalar
-  summary: Get describing html of openapi spec
-  description: Get describing html of openapi spec
-  operationId: getOpenAPIHTML
+      example: scalar
   responses:
     '200':
       description: The rendered HTML for the OpenAPI spec
@@ -23,11 +23,13 @@ get:
             type: string
             example: "<html>...</html>"
     '400':
-      description: You somehow managed to mess up the request
+      description: You somehow managed to mess up the oapi html request
       content:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []

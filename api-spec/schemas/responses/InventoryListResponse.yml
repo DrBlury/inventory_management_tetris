@@ -3,35 +3,12 @@ type: object
 description: This object holds the inventory list response data. It includes the list of inventories and pagination data.
 properties:
   inventories:
-    type: array
-    description: The list of inventories.
-    items:
-      $ref: '../types/InventoryMeta.yml'
+    $ref: '../types/InventoryMetaList.yml'
   pagination:
     $ref: '../types/Pagination.yml'
 
 example:
-  inventories:
-    - id: 1
-      name: 'Backpack'
-      userId: 1
-      max_weight: 850
-      volume:
-        height: 3
-        width: 4
-    - id: 2
-      name: 'Chest'
-      userId: 1
-      max_weight: 1500
-      volume:
-        height: 10
-        width: 10
-  pagination:
-    page: 1
-    pages: 10
-    limit: 10
-    total: 100
-    offset: 0
+  $ref: '../../examples/_index.yml#/InventoryListResponseExample'
 
 required:
   - inventories

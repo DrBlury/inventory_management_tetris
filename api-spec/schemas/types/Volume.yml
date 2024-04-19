@@ -10,8 +10,7 @@ properties:
     example: 10
 
 example:
-  height: 10
-  width: 10
+  $ref: '../../examples/_index.yml#/VolumeExample'
 
 required:
   - height

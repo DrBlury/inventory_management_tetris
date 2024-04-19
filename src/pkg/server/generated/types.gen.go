@@ -71,8 +71,8 @@ type Inventory struct {
 	// InventoryMeta This object holds the inventory meta data (restrictions, owner, etc.)
 	InventoryMeta InventoryMeta `json:"inventoryMeta"`
 
-	// Items An array of InventoryItem objects.
-	Items []InventoryItem `json:"items"`
+	// Items The list of inventory items.
+	Items InventoryItemList `json:"items"`
 }
 
 // InventoryItem This object holds the inventory item data.
@@ -87,10 +87,13 @@ type InventoryItem struct {
 	Quantity int      `json:"quantity"`
 }
 
+// InventoryItemList The list of inventory items.
+type InventoryItemList = []InventoryItem
+
 // InventoryListResponse This object holds the inventory list response data. It includes the list of inventories and pagination data.
 type InventoryListResponse struct {
-	// Inventories The list of inventories.
-	Inventories []InventoryMeta `json:"inventories"`
+	// Inventories The list of inventory metas.
+	Inventories InventoryMetaList `json:"inventories"`
 
 	// Pagination This object holds the pagination data.
 	Pagination Pagination `json:"pagination"`
@@ -107,6 +110,9 @@ type InventoryMeta struct {
 	Volume Volume `json:"volume"`
 }
 
+// InventoryMetaList The list of inventory metas.
+type InventoryMetaList = []InventoryMeta
+
 // InventoryPostRequest This object holds the request data for creating an inventory.
 type InventoryPostRequest struct {
 	MaxWeight int    `json:"max_weight"`
@@ -119,16 +125,16 @@ type InventoryPostRequest struct {
 
 // Item This object holds the item data.
 type Item struct {
-	BuyValue    int    `json:"buy_value"`
-	Description string `json:"description"`
-	Durability  int    `json:"durability"`
-	Id          int    `json:"id"`
-	MaxStack    int    `json:"max_stack"`
-	Name        string `json:"name"`
-	SellValue   int    `json:"sell_value"`
+	BuyValue   int    `json:"buy_value"`
+	Durability int    `json:"durability"`
+	Id         int    `json:"id"`
+	MaxStack   int    `json:"max_stack"`
+	Name       string `json:"name"`
+	SellValue  int    `json:"sell_value"`
 
 	// Shape This object holds the item shape data.
 	Shape ItemShape `json:"shape"`
+	Text  string    `json:"text"`
 
 	// Type The type of the item.
 	Type    ItemType `json:"type"`
@@ -136,10 +142,13 @@ type Item struct {
 	Weight  int      `json:"weight"`
 }
 
+// ItemList The list of items.
+type ItemList = []Item
+
 // ItemListResponse This object holds the item list response data. It includes the list of items and pagination data.
 type ItemListResponse struct {
 	// Items The list of items.
-	Items []Item `json:"items"`
+	Items ItemList `json:"items"`
 
 	// Pagination This object holds the pagination data.
 	Pagination Pagination `json:"pagination"`
@@ -147,15 +156,15 @@ type ItemListResponse struct {
 
 // ItemPostRequest This object holds the request data for creating a new item.
 type ItemPostRequest struct {
-	BuyValue    int    `json:"buy_value"`
-	Description string `json:"description"`
-	Durability  int    `json:"durability"`
-	MaxStack    int    `json:"max_stack"`
-	Name        string `json:"name"`
-	SellValue   int    `json:"sell_value"`
+	BuyValue   int    `json:"buy_value"`
+	Durability int    `json:"durability"`
+	MaxStack   int    `json:"max_stack"`
+	Name       string `json:"name"`
+	SellValue  int    `json:"sell_value"`
 
 	// Shape This object holds the item shape data.
 	Shape ItemShape `json:"shape"`
+	Text  string    `json:"text"`
 
 	// Type The type of the item.
 	Type    ItemType `json:"type"`
@@ -204,10 +213,15 @@ type Status string
 
 // User This object holds the user data.
 type User struct {
-	Id          int             `json:"id"`
-	Inventories []InventoryMeta `json:"inventories"`
-	Username    string          `json:"username"`
+	Id int `json:"id"`
+
+	// Inventories The list of inventory metas.
+	Inventories InventoryMetaList `json:"inventories"`
+	Username    string            `json:"username"`
 }
+
+// UserList The list of users.
+type UserList = []User
 
 // UserListResponse This object holds the user list response data. It includes the list of users and pagination data.
 type UserListResponse struct {
@@ -215,7 +229,7 @@ type UserListResponse struct {
 	Pagination Pagination `json:"pagination"`
 
 	// Users The list of users.
-	Users []User `json:"users"`
+	Users UserList `json:"users"`
 }
 
 // UserPostRequest This object holds the request data for creating a new user.

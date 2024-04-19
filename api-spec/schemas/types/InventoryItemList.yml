@@ -1,0 +1,8 @@
+---
+type: array
+description: The list of inventory items.
+items:
+  $ref: '../types/InventoryItem.yml'
+
+example:
+  $ref: '../../examples/_index.yml#/InventoryItemListExample'

@@ -1,0 +1,8 @@
+---
+type: array
+description: The list of items.
+items:
+  $ref: '../types/Item.yml'
+
+example:
+  $ref: '../../examples/_index.yml#/ItemListExample'

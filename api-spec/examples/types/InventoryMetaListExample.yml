@@ -1,0 +1,15 @@
+---
+- id: 1
+  name: 'Backpack'
+  userId: 1
+  max_weight: 850
+  volume:
+    height: 3
+    width: 4
+- id: 2
+  name: 'Chest'
+  userId: 1
+  max_weight: 1500
+  volume:
+    height: 10
+    width: 10

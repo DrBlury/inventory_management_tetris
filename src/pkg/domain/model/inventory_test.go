@@ -40,13 +40,13 @@ func genExampleItemWithMatrix(matrix [][]int) *Item {
 			MaxStack: 1,
 		},
 
-		Name:        "Test Item",
-		Description: "This is a test item",
-		SellValue:   100,
-		BuyValue:    100,
-		Durability:  100,
-		Variant:     "Test Variant",
-		Type:        Armor,
+		Name:       "Test Item",
+		Text:       "This is a test item",
+		SellValue:  100,
+		BuyValue:   100,
+		Durability: 100,
+		Variant:    "Test Variant",
+		Type:       Armor,
 	}
 }
 

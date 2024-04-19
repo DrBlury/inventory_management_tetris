@@ -1,0 +1,29 @@
+---
+- id: 1
+  variant: 'rare'
+  name: 'Sword'
+  text: 'A sword that can be used to fight enemies.'
+  buy_value: 100
+  sell_value: 50
+  weight: 10
+  durability: 100
+  max_stack: 1
+  shape:
+    rawshape: '###'
+    height: 3
+    width: 1
+  type: meleeWeapon
+- id: 2
+  variant: 'common'
+  name: 'Shield'
+  text: 'A shield that can be used to block enemy attacks.'
+  buy_value: 50
+  sell_value: 25
+  weight: 15
+  durability: 150
+  max_stack: 1
+  shape:
+    rawshape: '####'
+    height: 2
+    width: 2
+  type: shield

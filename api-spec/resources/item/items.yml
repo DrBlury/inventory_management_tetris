@@ -1,7 +1,7 @@
 ---
 get:
   summary: Get all items
-  description: Get all items
+  description: Retrieve all items
   operationId: getAllItems
   tags:
     - item
@@ -12,19 +12,17 @@ get:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/ItemListResponse'
+          example:
+            $ref: '../../examples/_index.yml#/ItemListResponseExample'
     '404':
       description: No items found
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/Error'
 
   # This API has no security
   security: []
 
 post:
-  summary: Add new item
-  description: Add new item
+  summary: Add a new item
+  description: Add a new item to the system
   operationId: addItem
   tags:
     - item
@@ -35,6 +33,8 @@ post:
       application/json:
         schema:
           $ref: '../../schemas/_index.yml#/ItemPostRequest'
+        example:
+          $ref: '../../examples/_index.yml#/ItemPostRequestExample'
   responses:
     '201':
       description: Added item - returns the newly created item
@@ -42,8 +42,16 @@ post:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Item'
+          example:
+            $ref: '../../examples/_index.yml#/ItemExample'
     '400':
       description: Bad request - e.g. invalid item
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []

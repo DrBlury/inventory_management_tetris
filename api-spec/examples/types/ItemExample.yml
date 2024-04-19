@@ -1,0 +1,15 @@
+---
+id: 1
+variant: 'gigantic'
+name: 'Sword'
+text: 'A sword that can be used to fight gigantic enemies.'
+buy_value: 100
+sell_value: 50
+weight: 10
+durability: 100
+max_stack: 1
+shape:
+  rawshape: '###'
+  height: 3
+  width: 1
+type: meleeWeapon

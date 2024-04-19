@@ -1,7 +1,7 @@
 ---
 get:
-  summary: Get user by ID
-  description: Get user by ID
+  summary: Get a user
+  description: Get a user by ID
   operationId: getUserById
   tags:
     - user
@@ -13,6 +13,7 @@ get:
       schema:
         type: integer
         format: int64
+      example: 1
   responses:
     '200':
       description: successful operation
@@ -21,25 +22,25 @@ get:
           schema:
             items:
               $ref: '../../schemas/_index.yml#/User'
+            example:
+              $ref: '../../examples/_index.yml#/UserExample'
     '400':
-      description: Invalid ID supplied
+      description: Invalid ID supplied - wrong format of user ID
       content:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
     '404':
-      description: Can not find user (user ID)
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/Error'
+      description: Can not find user (user ID) to return
 
   # This API has no security
   security: []
 
 put:
-  summary: Update an user
-  description: Update an user
+  summary: Update a user
+  description: Update a user by ID
   operationId: updateUserById
   tags:
     - user
@@ -51,6 +52,7 @@ put:
       schema:
         type: integer
         format: int64
+      example: 1
   requestBody:
     required: true
     description: User object that needs to be updated
@@ -58,6 +60,8 @@ put:
       application/json:
         schema:
           $ref: '../../schemas/_index.yml#/UserPostRequest'
+        example:
+          $ref: '../../examples/_index.yml#/UserPostRequestExample'
   responses:
     '200':
       description: Update done - returns updated user
@@ -65,17 +69,25 @@ put:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/User'
+          example:
+            $ref: '../../examples/_index.yml#/UserExample'
     '404':
-      description: Can not find user (user ID)
+      description: Can not find user (user ID) to update
     '400':
-      description: Invalid ID supplied
+      description: Invalid request - wrong format of user ID or wrong format of user object
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []
 
 delete:
-  summary: Delete user by ID
-  description: Delete user by ID
+  summary: Delete a user
+  description: Delete a user by ID
   operationId: deleteUserById
   tags:
     - user
@@ -87,13 +99,20 @@ delete:
       schema:
         type: integer
         format: int64
+      example: 1
   responses:
     '200':
       description: Deleted user (user ID)
     '400':
-      description: Invalid ID supplied
+      description: Invalid ID supplied - wrong format of user ID, deletion not possible
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
     '404':
-      description: Can not find user (user ID)
+      description: Can not find user (user ID) to delete
 
   # This API has no security
   security: []

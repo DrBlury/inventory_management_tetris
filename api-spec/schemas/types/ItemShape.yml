@@ -13,9 +13,7 @@ properties:
     example: 4
 
 example:
-  rawshape: '#####..#####'
-  height: 3
-  width: 4
+  $ref: '../../examples/_index.yml#/ItemShapeExample'
 
 required:
   - rawshape

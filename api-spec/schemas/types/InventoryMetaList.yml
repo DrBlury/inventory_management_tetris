@@ -1,0 +1,8 @@
+---
+type: array
+description: The list of inventory metas.
+items:
+  $ref: '../types/InventoryMeta.yml'
+
+example:
+  $ref: '../../examples/_index.yml#/InventoryMetaListExample'

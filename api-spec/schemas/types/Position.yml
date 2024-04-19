@@ -13,9 +13,7 @@ properties:
     example: 2
 
 example:
-  x: 3
-  y: 4
-  rotation: 2
+  $ref: '../../examples/_index.yml#/PositionExample'
 
 required:
   - x

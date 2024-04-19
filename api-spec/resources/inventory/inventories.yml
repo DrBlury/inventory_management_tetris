@@ -1,7 +1,7 @@
 ---
 get:
   summary: Get all inventories
-  description: Get all inventories
+  description: Retrieve all inventories
   operationId: getAllInventories
   tags:
     - inventory
@@ -12,19 +12,23 @@ get:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/InventoryListResponse'
+          example:
+            $ref: '../../examples/_index.yml#/InventoryListResponseExample'
     '404':
       description: No inventories found
       content:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []
 
 post:
   summary: Add new inventory
-  description: Add new inventory
+  description: Add new inventory to the system
   operationId: addInventory
   tags:
     - inventory
@@ -35,6 +39,8 @@ post:
       application/json:
         schema:
           $ref: '../../schemas/_index.yml#/InventoryPostRequest'
+        example:
+          $ref: '../../examples/_index.yml#/InventoryPostRequestExample'
   responses:
     '201':
       description: Added inventory - returns the newly created inventory
@@ -42,12 +48,16 @@ post:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Inventory'
+          example:
+            $ref: '../../examples/_index.yml#/InventoryExample'
     '400':
       description: Bad request - e.g. invalid inventory
       content:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []

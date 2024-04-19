@@ -4,6 +4,9 @@ ItemType:
   $ref: './enum/ItemType.yml'
 Status:
   $ref: './enum/Status.yml'
+ErrorType:
+  $ref: './enum/ErrorType.yml'
+
 
 # Schemas
 Item:
@@ -49,8 +52,5 @@ UserListResponse:
   $ref: './responses/UserListResponse.yml'
 
 # Errors
-ErrorType:
-  $ref: './errors/ErrorType.yml'
-
 Error:
   $ref: './errors/Error.yml'

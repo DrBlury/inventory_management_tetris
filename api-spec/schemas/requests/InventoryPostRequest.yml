@@ -15,12 +15,7 @@ properties:
     $ref: '../types/Volume.yml'
 
 example:
-  name: 'Backpack'
-  user_id: 1
-  max_weight: 850
-  volume:
-    height: 10
-    width: 10
+  $ref: '../../examples/_index.yml#/InventoryPostRequestExample'
 
 required:
   - name

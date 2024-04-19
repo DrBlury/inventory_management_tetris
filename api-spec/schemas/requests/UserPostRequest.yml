@@ -13,9 +13,7 @@ properties:
     example: 'password'
 
 example:
-  username: 'john_doe'
-  email: 'something@something.com'
-  password: 'password'
+  $ref: '../../examples/_index.yml#/UserPostRequestExample'
 
 required:
   - username

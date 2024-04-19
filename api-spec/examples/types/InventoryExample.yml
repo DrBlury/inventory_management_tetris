@@ -1,0 +1,29 @@
+---
+inventoryMeta:
+  id: 1
+  name: 'Backpack'
+  userId: 1
+  max_weight: 850
+  volume:
+    height: 3
+    width: 4
+items:
+  - id: 1
+    variant: 'rare'
+    name: 'Sword'
+    text: 'A sword that can be used to fight tall enemies.'
+    buy_value: 100
+    sell_value: 50
+    weight: 10
+    durability: 100
+    max_stack: 1
+    shape:
+      rawshape: '###'
+      height: 3
+      width: 1
+    type: meleeWeapon
+    position:
+      x: 0
+      y: 0
+    quantity: 1
+    durability_left: 70

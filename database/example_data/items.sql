@@ -3,7 +3,7 @@ INSERT INTO
   items (
     variant,
     name,
-    description,
+    text,
     buy_value,
     sell_value,
     max_stack,
@@ -30,7 +30,7 @@ INSERT INTO
   items (
     variant,
     name,
-    description,
+    text,
     buy_value,
     sell_value,
     max_stack,

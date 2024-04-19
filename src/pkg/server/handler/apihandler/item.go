@@ -57,15 +57,15 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var createItemParams = domain.CreateItemParams{
-		Name:        dtoItem.Name,
-		Description: dtoItem.Description,
-		Variant:     dtoItem.Variant,
-		Type:        domain.ItemType(dtoItem.Type),
-		BuyValue:    dtoItem.BuyValue,
-		SellValue:   dtoItem.SellValue,
-		MaxStack:    dtoItem.MaxStack,
-		Weight:      dtoItem.Weight,
-		Durability:  dtoItem.Durability,
+		Name:       dtoItem.Name,
+		Text:       dtoItem.Text,
+		Variant:    dtoItem.Variant,
+		Type:       domain.ItemType(dtoItem.Type),
+		BuyValue:   dtoItem.BuyValue,
+		SellValue:  dtoItem.SellValue,
+		MaxStack:   dtoItem.MaxStack,
+		Weight:     dtoItem.Weight,
+		Durability: dtoItem.Durability,
 		Shape: domain.Shape{
 			Width:    dtoItem.Shape.Width,
 			Height:   dtoItem.Shape.Height,

@@ -51,19 +51,19 @@ func (a appLogicImpl) AddItem(ctx context.Context, createItemParams domain.Creat
 	repoItemType := repo.ItemType(createItemParams.Type)
 	a.log.Info("item type", zap.Any("repo type", repoItemType))
 	createdItem, err := a.queries.CreateItem(ctx, repo.CreateItemParams{
-		Name:        pgtype.Text{String: createItemParams.Name, Valid: true},
-		Description: pgtype.Text{String: createItemParams.Description, Valid: true},
-		Variant:     pgtype.Text{String: createItemParams.Variant, Valid: true},
-		Type:        repo.NullItemType{ItemType: repoItemType, Valid: true},
-		BuyValue:    pgtype.Int4{Int32: int32(createItemParams.BuyValue), Valid: true},
-		SellValue:   pgtype.Int4{Int32: int32(createItemParams.SellValue), Valid: true},
-		MaxStack:    pgtype.Int4{Int32: int32(createItemParams.MaxStack), Valid: true},
-		Weight:      pgtype.Int4{Int32: int32(createItemParams.Weight), Valid: true},
-		Durability:  pgtype.Int4{Int32: int32(createItemParams.Durability), Valid: true},
-		Height:      pgtype.Int4{Int32: int32(createItemParams.Shape.Height), Valid: true},
-		Width:       pgtype.Int4{Int32: int32(createItemParams.Shape.Width), Valid: true},
-		Rawshape:    pgtype.Text{String: createItemParams.Shape.RawShape, Valid: true},
-		CreatedAt:   pgtype.Timestamp{Time: time.Now(), Valid: true},
+		Name:       pgtype.Text{String: createItemParams.Name, Valid: true},
+		Text:       pgtype.Text{String: createItemParams.Text, Valid: true},
+		Variant:    pgtype.Text{String: createItemParams.Variant, Valid: true},
+		Type:       repo.NullItemType{ItemType: repoItemType, Valid: true},
+		BuyValue:   pgtype.Int4{Int32: int32(createItemParams.BuyValue), Valid: true},
+		SellValue:  pgtype.Int4{Int32: int32(createItemParams.SellValue), Valid: true},
+		MaxStack:   pgtype.Int4{Int32: int32(createItemParams.MaxStack), Valid: true},
+		Weight:     pgtype.Int4{Int32: int32(createItemParams.Weight), Valid: true},
+		Durability: pgtype.Int4{Int32: int32(createItemParams.Durability), Valid: true},
+		Height:     pgtype.Int4{Int32: int32(createItemParams.Shape.Height), Valid: true},
+		Width:      pgtype.Int4{Int32: int32(createItemParams.Shape.Width), Valid: true},
+		Rawshape:   pgtype.Text{String: createItemParams.Shape.RawShape, Valid: true},
+		CreatedAt:  pgtype.Timestamp{Time: time.Now(), Valid: true},
 	})
 	if err != nil {
 		return nil, err
@@ -147,19 +147,19 @@ func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (*domain.Item
 func (a appLogicImpl) UpdateItem(ctx context.Context, itemId int, updateItemParams domain.UpdateItemParams) error {
 	repoItemType := repo.ItemType(updateItemParams.Type)
 	_, err := a.queries.UpdateItem(ctx, repo.UpdateItemParams{
-		ID:          int32(itemId),
-		Name:        pgtype.Text{String: updateItemParams.Name, Valid: true},
-		Description: pgtype.Text{String: updateItemParams.Description, Valid: true},
-		Variant:     pgtype.Text{String: updateItemParams.Variant, Valid: true},
-		Type:        repo.NullItemType{ItemType: repoItemType, Valid: true},
-		BuyValue:    pgtype.Int4{Int32: int32(updateItemParams.BuyValue), Valid: true},
-		SellValue:   pgtype.Int4{Int32: int32(updateItemParams.SellValue), Valid: true},
-		MaxStack:    pgtype.Int4{Int32: int32(updateItemParams.MaxStack), Valid: true},
-		Weight:      pgtype.Int4{Int32: int32(updateItemParams.Weight), Valid: true},
-		Durability:  pgtype.Int4{Int32: int32(updateItemParams.Durability), Valid: true},
-		Height:      pgtype.Int4{Int32: int32(updateItemParams.Shape.Height), Valid: true},
-		Width:       pgtype.Int4{Int32: int32(updateItemParams.Shape.Width), Valid: true},
-		Rawshape:    pgtype.Text{String: updateItemParams.Shape.RawShape, Valid: true},
+		ID:         int32(itemId),
+		Name:       pgtype.Text{String: updateItemParams.Name, Valid: true},
+		Text:       pgtype.Text{String: updateItemParams.Text, Valid: true},
+		Variant:    pgtype.Text{String: updateItemParams.Variant, Valid: true},
+		Type:       repo.NullItemType{ItemType: repoItemType, Valid: true},
+		BuyValue:   pgtype.Int4{Int32: int32(updateItemParams.BuyValue), Valid: true},
+		SellValue:  pgtype.Int4{Int32: int32(updateItemParams.SellValue), Valid: true},
+		MaxStack:   pgtype.Int4{Int32: int32(updateItemParams.MaxStack), Valid: true},
+		Weight:     pgtype.Int4{Int32: int32(updateItemParams.Weight), Valid: true},
+		Durability: pgtype.Int4{Int32: int32(updateItemParams.Durability), Valid: true},
+		Height:     pgtype.Int4{Int32: int32(updateItemParams.Shape.Height), Valid: true},
+		Width:      pgtype.Int4{Int32: int32(updateItemParams.Shape.Width), Valid: true},
+		Rawshape:   pgtype.Text{String: updateItemParams.Shape.RawShape, Valid: true},
 	})
 	if err != nil {
 		return err
