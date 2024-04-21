@@ -40,11 +40,11 @@ tasks:
       - echo "You can now connect delve via port 2345 to the container for remote debugging"
     silent: true
 
-  lint:
+  lint-go:
     desc: 'Lint the project using golangci-lint'
     cmds:
       - echo "linting the project"
-      - docker run --rm -v "./src:/src" golangci/golangci-lint:latest /bin/sh -c "cd /src golangci-lint run"
+      - docker run --rm -v "./src:/src" golangci/golangci-lint:latest /bin/sh -c "cd /src && golangci-lint run"
     silent: true
 
   build-push:

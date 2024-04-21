@@ -128,7 +128,10 @@ func (a appLogicImpl) DeleteUserById(ctx context.Context, userId int) error {
 	}
 
 	// invalidate cache
-	a.cache.Invalidate(context.Background(), "allUsers")
+	err = a.cache.Invalidate(context.Background(), "allUsers")
+	if err != nil {
+		return err
+	}
 
 	// log what user was deleted
 	a.log.Info("deleted user", zap.String("username", repoUser.Username.String))

@@ -46,7 +46,11 @@ func (a APIHandler) GetVersion(w http.ResponseWriter, r *http.Request) {
 // (GET /info/openapi.json)
 func (a APIHandler) GetOpenAPIJSON(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(openapiJSON)
+	_, err := w.Write(openapiJSON)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
 
 // Get openapi HTML

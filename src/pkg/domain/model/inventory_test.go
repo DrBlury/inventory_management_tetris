@@ -59,7 +59,11 @@ func Test_inventoryItemPlaceCheck(t *testing.T) {
 		{1, 0, 0, 0},
 	})
 
-	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0}, 1, 100)
+	_, err := exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0}, 1, 100)
+	if err != nil {
+		t.Errorf("expected nil, got %v", err)
+		t.FailNow()
+	}
 
 	testCases := []struct {
 		name     string
@@ -100,15 +104,15 @@ func Test_inventoryItemAdd(t *testing.T) {
 		{1, 0, 0},
 	})
 
-	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0}, 1, 100)
+	_, _ = exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0}, 1, 100)
 
 	// add a few more items
-	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 4, Y: 7, Rotation: 0}, 1, 100)
+	_, _ = exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 4, Y: 7, Rotation: 0}, 1, 100)
 
 	// rotated item
-	exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 7, Y: 7, Rotation: 1}, 1, 100)
+	_, _ = exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 7, Y: 7, Rotation: 1}, 1, 100)
 
-	exampleInventory.AddItemAtPosition(*createBox(6, 6, false), &Position{X: 4, Y: 0, Rotation: 0}, 1, 100)
+	_, _ = exampleInventory.AddItemAtPosition(*createBox(6, 6, false), &Position{X: 4, Y: 0, Rotation: 0}, 1, 100)
 
 	// add another box shaped item
 	exampleItem.ItemMeta.Shape = Shape{
