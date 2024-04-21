@@ -1,8 +1,10 @@
 ---
 type: string
 description: The status of the API
-example: HEALTHY
 enum:
   - HEALTHY
   - UNHEALTHY
   - UNKNOWN
+
+example:
+  $ref: '../../examples/_index.yml#/StatusExample'
