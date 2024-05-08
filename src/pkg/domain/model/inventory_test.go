@@ -4,11 +4,11 @@ import (
 	"testing"
 )
 
-func genExampleInventoryMeta() InventoryMeta {
-	exampleInventoryMeta := InventoryMeta{
-		ID:        1,
+func genExampleInventoryMeta() *InventoryMeta {
+	exampleInventoryMeta := &InventoryMeta{
+		Id:        1,
 		Name:      "Test Inventory",
-		UserID:    1,
+		UserId:    1,
 		Width:     10,
 		Height:    10,
 		MaxWeight: 100,
@@ -29,11 +29,11 @@ func genExampleItemWithMatrix(matrix [][]int) *Item {
 		}
 	}
 	return &Item{
-		ItemMeta: ItemMeta{
-			ID: 1,
-			Shape: Shape{
-				Width:    len(matrix[0]),
-				Height:   len(matrix),
+		ItemMeta: &ItemMeta{
+			Id: 1,
+			Shape: &Shape{
+				Width:    int64(len(matrix[0])),
+				Height:   int64(len(matrix)),
 				RawShape: rawShape,
 			},
 			Weight:   10,
@@ -46,7 +46,7 @@ func genExampleItemWithMatrix(matrix [][]int) *Item {
 		BuyValue:   100,
 		Durability: 100,
 		Variant:    "Test Variant",
-		Type:       Armor,
+		Type:       ItemType_ARMOR,
 	}
 }
 
@@ -59,7 +59,7 @@ func Test_inventoryItemPlaceCheck(t *testing.T) {
 		{1, 0, 0, 0},
 	})
 
-	_, err := exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0}, 1, 100)
+	_, err := exampleInventory.AddItemAtPosition(exampleItem, &Position{X: 0, Y: 0, Rotation: 0}, 1, 100)
 	if err != nil {
 		t.Errorf("expected nil, got %v", err)
 		t.FailNow()
@@ -104,23 +104,23 @@ func Test_inventoryItemAdd(t *testing.T) {
 		{1, 0, 0},
 	})
 
-	_, _ = exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 0, Y: 0, Rotation: 0}, 1, 100)
+	_, _ = exampleInventory.AddItemAtPosition(exampleItem, &Position{X: 0, Y: 0, Rotation: 0}, 1, 100)
 
 	// add a few more items
-	_, _ = exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 4, Y: 7, Rotation: 0}, 1, 100)
+	_, _ = exampleInventory.AddItemAtPosition(exampleItem, &Position{X: 4, Y: 7, Rotation: 0}, 1, 100)
 
 	// rotated item
-	_, _ = exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 7, Y: 7, Rotation: 1}, 1, 100)
+	_, _ = exampleInventory.AddItemAtPosition(exampleItem, &Position{X: 7, Y: 7, Rotation: 1}, 1, 100)
 
-	_, _ = exampleInventory.AddItemAtPosition(*createBox(6, 6, false), &Position{X: 4, Y: 0, Rotation: 0}, 1, 100)
+	_, _ = exampleInventory.AddItemAtPosition(createBox(6, 6, false), &Position{X: 4, Y: 0, Rotation: 0}, 1, 100)
 
 	// add another box shaped item
-	exampleItem.ItemMeta.Shape = Shape{
+	exampleItem.ItemMeta.Shape = &Shape{
 		Width:    2,
 		Height:   2,
 		RawShape: "####",
 	}
-	_, error := exampleInventory.AddItemAtPosition(*exampleItem, &Position{X: 6, Y: 2, Rotation: 0}, 1, 100)
+	_, error := exampleInventory.AddItemAtPosition(exampleItem, &Position{X: 6, Y: 2, Rotation: 0}, 1, 100)
 	if error != nil {
 		t.Errorf("expected nil, got %v", error)
 		t.FailNow()
@@ -175,7 +175,7 @@ func createLShapedItem() *Item {
 
 func Test_inventoryAddItem(t *testing.T) {
 	exampleInventory := NewInventory(genExampleInventoryMeta())
-	if exampleInventory.AddItem(*createBox(3, 3, true), 1, 100) != true {
+	if exampleInventory.AddItem(createBox(3, 3, true), 1, 100) != true {
 		t.Errorf("expected true, got false")
 		t.FailNow()
 	}
@@ -183,20 +183,20 @@ func Test_inventoryAddItem(t *testing.T) {
 	lShapedItem := createLShapedItem()
 	// add 3 L shaped items
 	for i := 0; i < 3; i++ {
-		if exampleInventory.AddItem(*lShapedItem, 1, 100) != true {
+		if exampleInventory.AddItem(lShapedItem, 1, 100) != true {
 			t.Errorf("expected true, got false")
 			t.FailNow()
 		}
 	}
 
 	// add a 6x6 box that's hollow
-	if ok := exampleInventory.AddItem(*createBox(6, 6, false), 1, 100); !ok {
+	if ok := exampleInventory.AddItem(createBox(6, 6, false), 1, 100); !ok {
 		t.FailNow()
 	}
 
 	// add three 2x2 boxes
 	for i := 0; i < 3; i++ {
-		if ok := exampleInventory.AddItem(*createBox(2, 2, true), 1, 100); !ok {
+		if ok := exampleInventory.AddItem(createBox(2, 2, true), 1, 100); !ok {
 			t.FailNow()
 		}
 	}
