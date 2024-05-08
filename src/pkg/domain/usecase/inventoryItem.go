@@ -9,7 +9,7 @@ import (
 )
 
 // AddItemInInventory adds an item to the inventory at the first possible position
-func (a appLogicImpl) AddItemInInventory(ctx context.Context, inventoryId int, item domain.Item, quantity int, durability int) error {
+func (a appLogicImpl) AddItemInInventory(ctx context.Context, inventoryId int64, item *domain.Item, quantity int64, durability int64) error {
 	// get inventory
 	inventory, err := a.GetInventoryById(ctx, inventoryId)
 	if err != nil {
@@ -30,7 +30,7 @@ func (a appLogicImpl) AddItemInInventory(ctx context.Context, inventoryId int, i
 }
 
 // AddItemInInventoryAtPosition adds an item to the inventory at the given position
-func (a appLogicImpl) AddItemInInventoryAtPosition(ctx context.Context, inventoryId int, item domain.Item, position domain.Position, quantity int, durability int) error {
+func (a appLogicImpl) AddItemInInventoryAtPosition(ctx context.Context, inventoryId int64, item *domain.Item, position *domain.Position, quantity int64, durability int64) error {
 	// get inventory
 	inventory, err := a.GetInventoryById(ctx, inventoryId)
 	if err != nil {
@@ -38,11 +38,11 @@ func (a appLogicImpl) AddItemInInventoryAtPosition(ctx context.Context, inventor
 	}
 
 	// add the item to the inventory
-	inventoryItem, err := inventory.AddItemAtPosition(item, &position, quantity, durability)
+	inventoryItem, err := inventory.AddItemAtPosition(item, position, quantity, durability)
 	if err != nil {
 		return err
 	}
-	a.log.Info("added item to inventory", zap.Int("inventoryId", inventoryId), zap.Int("itemId", inventoryItem.Item.ItemMeta.ID), zap.Any("position", position))
+	a.log.Info("added item to inventory", zap.Int64("inventoryId", inventoryId), zap.Int64("itemId", inventoryItem.Item.ItemMeta.Id), zap.Any("position", position))
 
 	// TODO update the inventory in the database
 
@@ -57,7 +57,7 @@ func (a appLogicImpl) AddItemInInventoryAtPosition(ctx context.Context, inventor
 }
 
 // DeleteItemFromInventory deletes the given amount of items from the inventory at the given position
-func (a appLogicImpl) DeleteItemFromInventory(ctx context.Context, inventoryId int, itemId int, position domain.Position, amount int) error {
+func (a appLogicImpl) DeleteItemFromInventory(ctx context.Context, inventoryId int64, itemId int64, position *domain.Position, amount int64) error {
 	// get inventory
 	inventory, err := a.GetInventoryById(ctx, inventoryId)
 	if err != nil {
@@ -66,7 +66,8 @@ func (a appLogicImpl) DeleteItemFromInventory(ctx context.Context, inventoryId i
 
 	// find the item in the inventory
 	for i, invItem := range inventory.Items {
-		if invItem.Item.ItemMeta.ID == itemId && invItem.Position == position {
+		currentPos := invItem.Position
+		if invItem.Item.ItemMeta.Id == itemId && currentPos == position {
 			// check the amount of that item in the inventory
 			if invItem.Quantity < amount {
 				return fmt.Errorf("not enough items in inventory")

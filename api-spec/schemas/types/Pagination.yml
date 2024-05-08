@@ -4,18 +4,23 @@ description: This object holds the pagination data.
 properties:
   page:
     type: integer
+    format: int64
     example: 1
   pages:
     type: integer
+    format: int64
     example: 10
   limit:
     type: integer
+    format: int64
     example: 10
   total:
     type: integer
+    format: int64
     example: 100
   offset:
     type: integer
+    format: int64
     example: 0
 
 example:

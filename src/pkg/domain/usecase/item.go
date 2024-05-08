@@ -13,7 +13,7 @@ import (
 )
 
 // GetAllItems returns all items that exist
-func (a appLogicImpl) GetAllItems(ctx context.Context) (*[]domain.Item, error) {
+func (a appLogicImpl) GetAllItems(ctx context.Context) ([]*domain.Item, error) {
 	// check for cache hits
 	allItems, err := a.getAllItems(ctx)
 	if err == nil && allItems != nil {
@@ -44,7 +44,7 @@ func (a appLogicImpl) GetAllItems(ctx context.Context) (*[]domain.Item, error) {
 }
 
 // AddItem adds a new item to the database
-func (a appLogicImpl) AddItem(ctx context.Context, createItemParams domain.CreateItemParams) (*domain.Item, error) {
+func (a appLogicImpl) AddItem(ctx context.Context, createItemParams *domain.CreateItemParams) (*domain.Item, error) {
 	a.log.Info("creating item", zap.String("name", createItemParams.Name))
 	a.log.Info("item type", zap.Any("type", createItemParams.Type))
 
@@ -85,15 +85,15 @@ func (a appLogicImpl) AddItem(ctx context.Context, createItemParams domain.Creat
 	// map repo model to domain model
 	var domainItem *domain.Item
 	domainItems := domain.MapRepoItemsToDomainItems(createdItem)
-	if len(*domainItems) > 0 {
-		domainItem = &(*domainItems)[0]
+	if len(domainItems) > 0 {
+		domainItem = domainItems[0]
 	}
 
 	return domainItem, nil
 }
 
 // DeleteItemById deletes the item with the given id
-func (a appLogicImpl) DeleteItemById(ctx context.Context, itemId int) error {
+func (a appLogicImpl) DeleteItemById(ctx context.Context, itemId int64) error {
 	repoItem, err := a.queries.DeleteItem(ctx, int32(itemId))
 	if err != nil {
 		return err
@@ -103,7 +103,7 @@ func (a appLogicImpl) DeleteItemById(ctx context.Context, itemId int) error {
 	a.log.Info("deleted item", zap.String("name", repoItem.Name.String))
 
 	// invalidate cache for this item
-	key := "ItemID-" + strconv.Itoa(itemId)
+	key := "ItemID-" + strconv.Itoa(int(itemId))
 	err = a.cache.Invalidate(ctx, key)
 	if err != nil {
 		a.log.Error("error invalidating item in cache", zap.Error(err))
@@ -119,7 +119,7 @@ func (a appLogicImpl) DeleteItemById(ctx context.Context, itemId int) error {
 }
 
 // GetItemById returns the item with the given id
-func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (*domain.Item, error) {
+func (a appLogicImpl) GetItemById(ctx context.Context, itemId int64) (*domain.Item, error) {
 	result, err := a.getItemFromCache(ctx, itemId)
 	if err == nil && result != nil {
 		// We got a cache hit! Wonderful!
@@ -133,7 +133,7 @@ func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (*domain.Item
 
 	// map repo model to domain model
 	domainItems := domain.MapRepoItemsToDomainItems(repoItem)
-	domainItem := &(*domainItems)[0]
+	domainItem := domainItems[0]
 
 	// Store the item in the cache, ignore error for now
 	err = a.setItemInCache(ctx, itemId, domainItem)
@@ -144,7 +144,7 @@ func (a appLogicImpl) GetItemById(ctx context.Context, itemId int) (*domain.Item
 	return domainItem, nil
 }
 
-func (a appLogicImpl) UpdateItem(ctx context.Context, itemId int, updateItemParams domain.UpdateItemParams) error {
+func (a appLogicImpl) UpdateItem(ctx context.Context, itemId int64, updateItemParams *domain.UpdateItemParams) error {
 	repoItemType := repo.ItemType(updateItemParams.Type)
 	_, err := a.queries.UpdateItem(ctx, repo.UpdateItemParams{
 		ID:         int32(itemId),
@@ -166,8 +166,8 @@ func (a appLogicImpl) UpdateItem(ctx context.Context, itemId int, updateItemPara
 	}
 
 	// log what item was updated
-	a.log.Info("updated item", zap.Int("id", itemId))
-	key := "ItemID-" + strconv.Itoa(itemId)
+	a.log.Info("updated item", zap.Int64("id", itemId))
+	key := "ItemID-" + strconv.Itoa(int(itemId))
 	err = a.cache.Invalidate(ctx, key)
 	if err != nil {
 		a.log.Error("error invalidating item in cache", zap.Error(err))

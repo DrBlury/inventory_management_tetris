@@ -13,18 +13,23 @@ properties:
     example: 'A sword made of iron.'
   buy_value:
     type: integer
+    format: int64
     example: 100
   sell_value:
     type: integer
+    format: int64
     example: 50
   weight:
     type: integer
+    format: int64
     example: 10
   durability:
     type: integer
+    format: int64
     example: 200
   max_stack:
     type: integer
+    format: int64
     example: 1
   type:
     $ref: '../enum/ItemType.yml'

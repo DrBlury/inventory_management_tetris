@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+import "ItemType.proto";
+import "ItemMeta.proto";
+
+message Item {
+  ItemMeta ItemMeta = 1;
+  string Name = 2;
+  string Text = 3;
+  ItemType Type = 4;
+  int64 Durability = 5;
+  int64 SellValue = 6;
+  int64 BuyValue = 7;
+  string Variant = 8;
+}

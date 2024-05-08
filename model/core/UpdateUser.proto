@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+message UpdateUserParams {
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}

@@ -12,8 +12,8 @@ func Test_parseShape(t *testing.T) {
 	height := 4
 	shape := &Shape{
 		RawShape: rawShape,
-		Width:    width,
-		Height:   height,
+		Width:    int64(width),
+		Height:   int64(height),
 	}
 	matrix := shape.getMatrix()
 
@@ -56,8 +56,8 @@ func Test_rotateShape(t *testing.T) {
 
 	// create a real instance of the item
 	inventoryItem := InventoryItem{
-		Item:           *exampleItem,
-		Position:       Position{X: 0, Y: 0, Rotation: 0},
+		Item:           exampleItem,
+		Position:       &Position{X: 0, Y: 0, Rotation: 0},
 		Quantity:       1,
 		DurabilityLeft: 100,
 	}

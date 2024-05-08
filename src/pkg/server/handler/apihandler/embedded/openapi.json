@@ -1649,10 +1649,12 @@
           },
           "height": {
             "type": "integer",
+            "format": "int64",
             "example": 3
           },
           "width": {
             "type": "integer",
+            "format": "int64",
             "example": 4
           }
         },
@@ -1687,6 +1689,7 @@
         "properties": {
           "id": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "variant": {
@@ -1808,22 +1811,27 @@
         "properties": {
           "page": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "pages": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           },
           "limit": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           },
           "total": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           },
           "offset": {
             "type": "integer",
+            "format": "int64",
             "example": 0
           }
         },
@@ -1921,22 +1929,27 @@
           },
           "buy_value": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           },
           "sell_value": {
             "type": "integer",
+            "format": "int64",
             "example": 50
           },
           "weight": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           },
           "durability": {
             "type": "integer",
+            "format": "int64",
             "example": 200
           },
           "max_stack": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "type": {
@@ -2036,10 +2049,12 @@
         "properties": {
           "height": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           },
           "width": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           }
         },
@@ -2058,6 +2073,7 @@
         "properties": {
           "id": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "name": {
@@ -2066,10 +2082,12 @@
           },
           "userId": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "max_weight": {
             "type": "integer",
+            "format": "int64",
             "example": 850
           },
           "volume": {
@@ -2129,6 +2147,7 @@
         "properties": {
           "id": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "username": {
@@ -2396,10 +2415,12 @@
           },
           "user_id": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "max_weight": {
             "type": "integer",
+            "format": "int64",
             "example": 850
           },
           "volume": {
@@ -2428,14 +2449,17 @@
         "properties": {
           "x": {
             "type": "integer",
+            "format": "int64",
             "example": 3
           },
           "y": {
             "type": "integer",
+            "format": "int64",
             "example": 4
           },
           "rotation": {
             "type": "integer",
+            "format": "int64",
             "example": 2
           }
         },
@@ -2462,10 +2486,12 @@
           },
           "quantity": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "durability_left": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           }
         },
@@ -2631,6 +2657,7 @@
           },
           "quantity": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           }
         },
@@ -2662,10 +2689,12 @@
           },
           "quantity": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "durability_left": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           },
           "position": {

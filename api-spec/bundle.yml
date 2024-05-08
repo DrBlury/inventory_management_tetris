@@ -1165,9 +1165,11 @@ components:
           example: '#####..#####'
         height:
           type: integer
+          format: int64
           example: 3
         width:
           type: integer
+          format: int64
           example: 4
       example:
         rawshape: '#####..#####'
@@ -1195,6 +1197,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 1
         variant:
           type: string
@@ -1291,18 +1294,23 @@ components:
       properties:
         page:
           type: integer
+          format: int64
           example: 1
         pages:
           type: integer
+          format: int64
           example: 10
         limit:
           type: integer
+          format: int64
           example: 10
         total:
           type: integer
+          format: int64
           example: 100
         offset:
           type: integer
+          format: int64
           example: 0
       example:
         page: 1
@@ -1378,18 +1386,23 @@ components:
           example: A sword made of iron.
         buy_value:
           type: integer
+          format: int64
           example: 100
         sell_value:
           type: integer
+          format: int64
           example: 50
         weight:
           type: integer
+          format: int64
           example: 10
         durability:
           type: integer
+          format: int64
           example: 200
         max_stack:
           type: integer
+          format: int64
           example: 1
         type:
           $ref: '#/components/schemas/ItemType'
@@ -1470,9 +1483,11 @@ components:
       properties:
         height:
           type: integer
+          format: int64
           example: 10
         width:
           type: integer
+          format: int64
           example: 10
       example:
         height: 10
@@ -1486,15 +1501,18 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 1
         name:
           type: string
           example: Backpack
         userId:
           type: integer
+          format: int64
           example: 1
         max_weight:
           type: integer
+          format: int64
           example: 850
         volume:
           $ref: '#/components/schemas/Volume'
@@ -1538,6 +1556,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 1
         username:
           type: string
@@ -1722,9 +1741,11 @@ components:
           example: Backpack
         user_id:
           type: integer
+          format: int64
           example: 1
         max_weight:
           type: integer
+          format: int64
           example: 850
         volume:
           $ref: '#/components/schemas/Volume'
@@ -1746,12 +1767,15 @@ components:
       properties:
         x:
           type: integer
+          format: int64
           example: 3
         'y':
           type: integer
+          format: int64
           example: 4
         rotation:
           type: integer
+          format: int64
           example: 2
       example:
         x: 3
@@ -1771,9 +1795,11 @@ components:
           $ref: '#/components/schemas/Position'
         quantity:
           type: integer
+          format: int64
           example: 1
         durability_left:
           type: integer
+          format: int64
           example: 100
       example:
         item:
@@ -1902,6 +1928,7 @@ components:
           $ref: '#/components/schemas/Position'
         quantity:
           type: integer
+          format: int64
           example: 1
       example:
         original_position:
@@ -1925,9 +1952,11 @@ components:
           $ref: '#/components/schemas/Item'
         quantity:
           type: integer
+          format: int64
           example: 1
         durability_left:
           type: integer
+          format: int64
           example: 100
         position:
           $ref: '#/components/schemas/Position'

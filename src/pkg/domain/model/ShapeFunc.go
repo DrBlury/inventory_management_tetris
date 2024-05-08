@@ -1,14 +1,6 @@
 package domain
 
-import (
-	"fmt"
-)
-
-type Shape struct {
-	RawShape string
-	Width    int
-	Height   int
-}
+import "fmt"
 
 func (s *Shape) getMatrix() [][]int {
 	// Initialize the shape matrix
@@ -19,8 +11,8 @@ func (s *Shape) getMatrix() [][]int {
 
 	// cut the raw shape into rows
 	rows := []string{}
-	for i := 0; i < len(s.RawShape); i += s.Width {
-		rows = append(rows, s.RawShape[i:i+s.Width])
+	for i := 0; i < len(s.RawShape); i += int(s.Width) {
+		rows = append(rows, s.RawShape[i:i+int(s.Width)])
 	}
 
 	// fill the shape matrix
@@ -63,8 +55,8 @@ func (s *Shape) applyRotations(rotations int) {
 			}
 		}
 	}
-	s.Height = height
-	s.Width = width
+	s.Height = int64(height)
+	s.Width = int64(width)
 	s.RawShape = rawShape
 }
 

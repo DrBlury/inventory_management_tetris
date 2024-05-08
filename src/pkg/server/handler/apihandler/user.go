@@ -56,7 +56,7 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	createUserParams := domain.CreateUserParams{
+	createUserParams := &domain.CreateUserParams{
 		Username: dtoUser.Username,
 		Email:    dtoUser.Email,
 		Password: dtoUser.Password,
@@ -81,7 +81,7 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 // (DELETE /api/users/{userId})
 func (a APIHandler) DeleteUserById(w http.ResponseWriter, r *http.Request, userId int64) {
 	// call domain layer
-	err := a.AppLogic.DeleteUserById(r.Context(), int(userId))
+	err := a.AppLogic.DeleteUserById(r.Context(), userId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
@@ -96,7 +96,7 @@ func (a APIHandler) DeleteUserById(w http.ResponseWriter, r *http.Request, userI
 // (GET /api/users/{userId})
 func (a APIHandler) GetUserById(w http.ResponseWriter, r *http.Request, userId int64) {
 	// call domain layer
-	user, err := a.AppLogic.GetUserById(r.Context(), int(userId))
+	user, err := a.AppLogic.GetUserById(r.Context(), userId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
@@ -133,14 +133,14 @@ func (a APIHandler) UpdateUserById(w http.ResponseWriter, r *http.Request, userI
 		return
 	}
 
-	updateUserParams := domain.UpdateUserParams{
+	updateUserParams := &domain.UpdateUserParams{
 		Username: dtoUser.Username,
 		Email:    dtoUser.Email,
 		Password: dtoUser.Password,
 	}
 
 	// call domain layer
-	updatedUser, err := a.AppLogic.UpdateUser(r.Context(), int(userId), updateUserParams)
+	updatedUser, err := a.AppLogic.UpdateUser(r.Context(), userId, updateUserParams)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error

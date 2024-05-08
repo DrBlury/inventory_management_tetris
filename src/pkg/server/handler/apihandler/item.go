@@ -56,17 +56,19 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var createItemParams = domain.CreateItemParams{
+	itemType := MapEnumItemTypeToDomain(dtoItem.Type)
+
+	var createItemParams = &domain.CreateItemParams{
 		Name:       dtoItem.Name,
 		Text:       dtoItem.Text,
 		Variant:    dtoItem.Variant,
-		Type:       domain.ItemType(dtoItem.Type),
+		Type:       itemType,
 		BuyValue:   dtoItem.BuyValue,
 		SellValue:  dtoItem.SellValue,
 		MaxStack:   dtoItem.MaxStack,
 		Weight:     dtoItem.Weight,
 		Durability: dtoItem.Durability,
-		Shape: domain.Shape{
+		Shape: &domain.Shape{
 			Width:    dtoItem.Shape.Width,
 			Height:   dtoItem.Shape.Height,
 			RawShape: dtoItem.Shape.Rawshape,
@@ -88,7 +90,7 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 // (DELETE /api/items/{itemId})
 func (a APIHandler) DeleteItemById(w http.ResponseWriter, r *http.Request, itemId int64) {
 	// call domain layer
-	err := a.AppLogic.DeleteItemById(r.Context(), int(itemId))
+	err := a.AppLogic.DeleteItemById(r.Context(), itemId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
@@ -103,7 +105,7 @@ func (a APIHandler) DeleteItemById(w http.ResponseWriter, r *http.Request, itemI
 // (GET /api/items/{itemId})
 func (a APIHandler) GetItemById(w http.ResponseWriter, r *http.Request, itemId int64) {
 	// call domain layer
-	item, err := a.AppLogic.GetItemById(r.Context(), int(itemId))
+	item, err := a.AppLogic.GetItemById(r.Context(), itemId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return

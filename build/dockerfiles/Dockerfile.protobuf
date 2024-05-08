@@ -1,0 +1,20 @@
+# Use alpine image with golang
+FROM golang
+
+# Install the protobuf compiler
+RUN apt-get update && apt-get install -y unzip
+ENV PROTOC_ZIP=protoc-25.1-linux-x86_64
+ENV DOWNLOAD_URL=https://github.com/protocolbuffers/protobuf/releases/download/v25.1
+RUN curl -LO $DOWNLOAD_URL/$PROTOC_ZIP.zip
+RUN unzip -o $PROTOC_ZIP -d /usr/local bin/protoc
+RUN unzip -o $PROTOC_ZIP -d /usr/local 'include/*'
+RUN export PATH="$PATH:$HOME/.local/bin"
+RUN rm -f $PROTOC_ZIP.zip
+# Install the protoc go plugin.
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+
+# Set the working directory.
+WORKDIR /app
+
+# accept the proto files as input
+CMD protoc --go_out=./generated *.proto

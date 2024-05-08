@@ -8,6 +8,7 @@ properties:
     $ref: '../types/Position.yml'
   quantity:
     type: integer
+    format: int64
     example: 1
 
 example:

@@ -25,29 +25,29 @@ func NewAppLogic(queries *repo.Queries, logger *zap.SugaredLogger, cache *cache.
 
 type AppLogic interface {
 	// Inventories
-	GetAllInventories(ctx context.Context) (*[]domain.InventoryMeta, error)
-	AddInventory(ctx context.Context, createInventoryParams domain.CreateInventoryParams) (*domain.InventoryMeta, error)
-	DeleteInventoryById(ctx context.Context, inventoryId int) error
-	GetInventoryById(ctx context.Context, inventoryId int) (*domain.Inventory, error)
-	UpdateInventory(ctx context.Context, inventoryId int, updateInventoryParams domain.UpdateInventoryParams) (*domain.InventoryMeta, error)
+	GetAllInventories(ctx context.Context) ([]*domain.InventoryMeta, error)
+	AddInventory(ctx context.Context, createInventoryParams *domain.CreateInventoryParams) (*domain.InventoryMeta, error)
+	DeleteInventoryById(ctx context.Context, inventoryId int64) error
+	GetInventoryById(ctx context.Context, inventoryId int64) (*domain.Inventory, error)
+	UpdateInventory(ctx context.Context, inventoryId int64, updateInventoryParams *domain.UpdateInventoryParams) (*domain.InventoryMeta, error)
 
 	// Items
-	GetAllItems(ctx context.Context) (*[]domain.Item, error)
-	AddItem(ctx context.Context, createItemParams domain.CreateItemParams) (*domain.Item, error)
-	DeleteItemById(ctx context.Context, itemId int) error
-	GetItemById(ctx context.Context, itemId int) (*domain.Item, error)
-	UpdateItem(ctx context.Context, itemId int, updateItemParams domain.UpdateItemParams) error
+	GetAllItems(ctx context.Context) ([]*domain.Item, error)
+	AddItem(ctx context.Context, createItemParams *domain.CreateItemParams) (*domain.Item, error)
+	DeleteItemById(ctx context.Context, itemId int64) error
+	GetItemById(ctx context.Context, itemId int64) (*domain.Item, error)
+	UpdateItem(ctx context.Context, itemId int64, updateItemParams *domain.UpdateItemParams) error
 
 	// Users
-	GetUserById(ctx context.Context, userId int) (*domain.User, error)
+	GetUserById(ctx context.Context, userId int64) (*domain.User, error)
 	GetUserByUsername(ctx context.Context, username string) (*domain.User, error)
-	AddUser(ctx context.Context, createUserParams domain.CreateUserParams) (*domain.User, error)
-	DeleteUserById(ctx context.Context, userId int) error
-	GetAllUsers(ctx context.Context) (*[]domain.User, error)
-	UpdateUser(ctx context.Context, userId int, updateUserParams domain.UpdateUserParams) (*domain.User, error)
+	AddUser(ctx context.Context, createUserParams *domain.CreateUserParams) (*domain.User, error)
+	DeleteUserById(ctx context.Context, userId int64) error
+	GetAllUsers(ctx context.Context) ([]*domain.User, error)
+	UpdateUser(ctx context.Context, userId int64, updateUserParams *domain.UpdateUserParams) (*domain.User, error)
 
 	// Inventory Item
-	AddItemInInventory(ctx context.Context, inventoryId int, item domain.Item, quantity int, durability int) error
-	AddItemInInventoryAtPosition(ctx context.Context, inventoryId int, item domain.Item, position domain.Position, quantity int, durability int) error
-	DeleteItemFromInventory(ctx context.Context, inventoryId int, itemId int, position domain.Position, amount int) error
+	AddItemInInventory(ctx context.Context, inventoryId int64, item *domain.Item, quantity int64, durability int64) error
+	AddItemInInventoryAtPosition(ctx context.Context, inventoryId int64, item *domain.Item, position *domain.Position, quantity int64, durability int64) error
+	DeleteItemFromInventory(ctx context.Context, inventoryId int64, itemId int64, position *domain.Position, amount int64) error
 }

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+import "Item.proto";
+import "Position.proto";
+
+message InventoryItem {
+  Item item = 1;
+  Position position = 2;
+  int64 Quantity = 3;
+  int64 DurabilityLeft = 4;
+}

@@ -7,7 +7,7 @@ sell_value: 70
 weight: 20
 durability: 350
 max_stack: 1
-type: meleeWeapon
+type: "meleeWeapon"
 shape:
   rawshape: '###'
   height: 3

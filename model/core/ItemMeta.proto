@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+import "Shape.proto";
+
+message ItemMeta {
+  int64 id = 1;
+  Shape shape = 2;
+  int64 weight = 3;
+  int64 maxStack = 4;
+}

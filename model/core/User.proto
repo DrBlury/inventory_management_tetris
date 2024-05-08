@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+import "InventoryMeta.proto";
+
+message User {
+  int64 id = 1;
+  string username = 2;
+  repeated InventoryMeta inventories = 3;
+  string salt = 4;
+  string password_hash = 5;
+  string email = 6;
+}

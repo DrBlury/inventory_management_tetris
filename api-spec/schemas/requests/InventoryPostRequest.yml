@@ -7,9 +7,11 @@ properties:
     example: 'Backpack'
   user_id:
     type: integer
+    format: int64
     example: 1
   max_weight:
     type: integer
+    format: int64
     example: 850
   volume:
     $ref: '../types/Volume.yml'

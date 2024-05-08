@@ -4,6 +4,7 @@ description: This object holds the item data.
 properties:
   id:
     type: integer
+    format: int64
     example: 1
   variant:
     type: string
@@ -16,18 +17,23 @@ properties:
     example: 'A sword that can be used to fight slow enemies.'
   buy_value:
     type: integer
+    format: int64
     example: 100
   sell_value:
     type: integer
+    format: int64
     example: 50
   weight:
     type: integer
+    format: int64
     example: 10
   durability:
     type: integer
+    format: int64
     example: 100
   max_stack:
     type: integer
+    format: int64
     example: 1
   shape:
     $ref: './ItemShape.yml'

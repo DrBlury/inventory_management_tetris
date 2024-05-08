@@ -4,12 +4,15 @@ description: This object holds the position data.
 properties:
   x:
     type: integer
+    format: int64
     example: 3
   y:
     type: integer
+    format: int64
     example: 4
   rotation:
     type: integer
+    format: int64
     example: 2
 
 example:

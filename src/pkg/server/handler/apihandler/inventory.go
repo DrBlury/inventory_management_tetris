@@ -57,8 +57,8 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	createInventoryParams := domain.CreateInventoryParams{
-		UserID:    dtoInventory.UserId,
+	createInventoryParams := &domain.CreateInventoryParams{
+		UserId:    dtoInventory.UserId,
 		Name:      dtoInventory.Name,
 		MaxWeight: dtoInventory.MaxWeight,
 		Width:     dtoInventory.Volume.Width,
@@ -85,7 +85,7 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 // (DELETE /api/inventories/{inventoryId})
 func (a APIHandler) DeleteInventoryById(w http.ResponseWriter, r *http.Request, inventoryId int64) {
 	// call domain layer
-	err := a.AppLogic.DeleteInventoryById(r.Context(), int(inventoryId))
+	err := a.AppLogic.DeleteInventoryById(r.Context(), inventoryId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
@@ -100,7 +100,7 @@ func (a APIHandler) DeleteInventoryById(w http.ResponseWriter, r *http.Request, 
 // (GET /api/inventories/{inventoryId})
 func (a APIHandler) GetInventoryById(w http.ResponseWriter, r *http.Request, inventoryId int64) {
 	// call domain layer
-	inventory, err := a.AppLogic.GetInventoryById(r.Context(), int(inventoryId))
+	inventory, err := a.AppLogic.GetInventoryById(r.Context(), inventoryId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
@@ -134,8 +134,8 @@ func (a APIHandler) UpdateInventoryById(w http.ResponseWriter, r *http.Request, 
 		return
 	}
 
-	updateInventoryParams := domain.UpdateInventoryParams{
-		UserID:    dtoInventory.UserId,
+	updateInventoryParams := &domain.UpdateInventoryParams{
+		UserId:    dtoInventory.UserId,
 		Name:      dtoInventory.Name,
 		MaxWeight: dtoInventory.MaxWeight,
 		Width:     dtoInventory.Volume.Width,
@@ -143,7 +143,7 @@ func (a APIHandler) UpdateInventoryById(w http.ResponseWriter, r *http.Request, 
 	}
 
 	// call domain layer
-	updatedInventory, err := a.AppLogic.UpdateInventory(r.Context(), int(inventoryId), updateInventoryParams)
+	updatedInventory, err := a.AppLogic.UpdateInventory(r.Context(), inventoryId, updateInventoryParams)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return

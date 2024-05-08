@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+message Position{
+    int64 x = 1;
+    int64 y = 2;
+    int64 rotation = 3;
+}

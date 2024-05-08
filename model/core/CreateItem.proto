@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+import "Shape.proto";
+import "ItemType.proto";
+
+message CreateItemParams {
+  string name = 1;
+  string variant = 2;
+  string text = 3;
+  int64 buyValue = 4;
+  int64 sellValue = 5;
+  int64 weight = 6;
+  int64 durability = 7;
+  int64 maxStack = 8;
+  ItemType type = 9;
+  Shape shape = 10;
+}

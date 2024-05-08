@@ -134,6 +134,34 @@ tasks:
       - task gen-api-chi
     silent: true
 
+  gen-proto:
+    desc: 'Generate the go files from the protobuf definition'
+    cmds:
+      - echo "Generating the go files from the protobuf definition"
+      # Build the protoc image
+      - docker build -t drblury/protoc -f ./build/dockerfiles/Dockerfile.protobuf .
+
+      # Create/Clear generated folder
+      - rm -rf ./model/generated/*
+      - mkdir -p ./model/generated
+
+      # Create core model files
+      - mkdir -p ./model/core/generated
+      - docker run --rm -v $(pwd)/model/core:/app drblury/protoc
+      - mv ./model/core/generated/* ./model/generated/
+
+      # Create external model files (only if you use a gRPC API)
+      # - mkdir -p ./model/request/generated
+      # - docker run --rm -v $(pwd)/model/request:/app drblury/protoc
+      # - mv ./model/request/generated/* ./model/generated/
+
+      # Create domain model folder
+      # - rm -rf ./src/pkg/domain/model/*
+      # - mkdir -p ./src/pkg/domain/model
+      # Delete all protobuf files from the domain model folder
+      - find ./src/pkg/domain/model -type f -name "*.pb.go" -delete
+      - mv ./model/generated/domain/* ./src/pkg/domain/model/
+
   install-tools:
     desc: 'Install the local tools globally'
     cmds:
@@ -159,7 +187,7 @@ tasks:
     desc: 'Run scc to show stats'
     cmds:
       - echo "Running scc to show stats"
-      - docker run --rm -it -v "$PWD:/pwd"  ghcr.io/lhoupert/scc:master scc /pwd
+      - docker run --rm -it -v "$PWD:/pwd" ghcr.io/lhoupert/scc:master scc /pwd  -n openapi.json
     silent: true
 
   format-in-docker:
