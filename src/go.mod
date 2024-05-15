@@ -64,6 +64,7 @@ require (
 	github.com/go-chi/cors v1.2.1
 	github.com/go-chi/render v1.0.3
 	github.com/google/uuid v1.6.0
+	github.com/joomcode/errorx v1.1.1
 	github.com/oapi-codegen/nethttp-middleware v1.0.1
 	github.com/prometheus/client_golang v1.19.0
 	github.com/spf13/viper v1.18.2

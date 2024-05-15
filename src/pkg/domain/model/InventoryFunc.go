@@ -1,6 +1,10 @@
 package domain
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/joomcode/errorx"
+)
 
 func NewInventory(inventoryMeta *InventoryMeta) *Inventory {
 	return &Inventory{
@@ -11,7 +15,7 @@ func NewInventory(inventoryMeta *InventoryMeta) *Inventory {
 
 func (i *Inventory) AddItemAtPosition(item *Item, position *Position, quantity int64, durability int64) (*InventoryItem, error) {
 	if !i.CheckItemPlacement(item, position) {
-		return nil, &NoFitPositionError{}
+		return nil, errorx.InternalError.New("placement failed")
 	}
 
 	inventoryItem := &InventoryItem{
@@ -79,7 +83,7 @@ func (i *Inventory) GetFitPosition(item *Item) (*Position, error) {
 		}
 	}
 
-	return nil, &NoFitPositionError{}
+	return nil, errorx.InternalError.New("no fit position found")
 }
 
 func (i *Inventory) getItemsInMatrix() [][]int {
