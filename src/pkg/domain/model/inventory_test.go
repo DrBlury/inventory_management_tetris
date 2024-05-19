@@ -175,7 +175,8 @@ func createLShapedItem() *Item {
 
 func Test_inventoryAddItem(t *testing.T) {
 	exampleInventory := NewInventory(genExampleInventoryMeta())
-	if exampleInventory.AddItem(createBox(3, 3, true), 1, 100) != true {
+	_, ok := exampleInventory.AddItem(createBox(3, 3, true), 1, 100)
+	if !ok {
 		t.Errorf("expected true, got false")
 		t.FailNow()
 	}
@@ -183,20 +184,23 @@ func Test_inventoryAddItem(t *testing.T) {
 	lShapedItem := createLShapedItem()
 	// add 3 L shaped items
 	for i := 0; i < 3; i++ {
-		if exampleInventory.AddItem(lShapedItem, 1, 100) != true {
+		_, ok := exampleInventory.AddItem(lShapedItem, 1, 100)
+		if !ok {
 			t.Errorf("expected true, got false")
 			t.FailNow()
 		}
 	}
 
 	// add a 6x6 box that's hollow
-	if ok := exampleInventory.AddItem(createBox(6, 6, false), 1, 100); !ok {
+	_, ok = exampleInventory.AddItem(createBox(6, 6, false), 1, 100)
+	if !ok {
 		t.FailNow()
 	}
 
 	// add three 2x2 boxes
 	for i := 0; i < 3; i++ {
-		if ok := exampleInventory.AddItem(createBox(2, 2, true), 1, 100); !ok {
+		_, ok := exampleInventory.AddItem(createBox(2, 2, true), 1, 100)
+		if !ok {
 			t.FailNow()
 		}
 	}

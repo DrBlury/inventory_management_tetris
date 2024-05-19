@@ -75,6 +75,8 @@ func LoadConfig(
 		EnableOTel:     viper.GetBool("OTEL_ENABLED"),
 		MeterProvider:  viper.GetString("OTEL_METER_PROVIDER"),
 		TracerProvider: viper.GetString("OTEL_TRACER_PROVIDER"),
+		ServiceName:    viper.GetString("OTEL_SERVICE_NAME"),
+		ServiceVersion: viper.GetString("OTEL_SERVICE_VERSION"),
 	}
 
 	cacheConfig := &cache.Config{

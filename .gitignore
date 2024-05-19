@@ -4,3 +4,4 @@ package-lock.json
 package.json
 dbml-error.log
 .DS_Store
+otel_data

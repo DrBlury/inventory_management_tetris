@@ -47,7 +47,7 @@ type AppLogic interface {
 	UpdateUser(ctx context.Context, userId int64, updateUserParams *domain.UpdateUserParams) (*domain.User, error)
 
 	// Inventory Item
-	AddItemInInventory(ctx context.Context, inventoryId int64, item *domain.Item, quantity int64, durability int64) error
-	AddItemInInventoryAtPosition(ctx context.Context, inventoryId int64, item *domain.Item, position *domain.Position, quantity int64, durability int64) error
-	DeleteItemFromInventory(ctx context.Context, inventoryId int64, itemId int64, position *domain.Position, amount int64) error
+	AddItemInInventory(ctx context.Context, inventoryId int64, item *domain.Item, quantity int64, durability int64) (*domain.Inventory, error)
+	AddItemInInventoryAtPosition(ctx context.Context, inventoryId int64, item *domain.Item, position *domain.Position, quantity int64, durability int64) (*domain.Inventory, error)
+	DeleteItemFromInventory(ctx context.Context, inventoryId int64, itemId int64, position *domain.Position, amount int64) (*domain.Inventory, error)
 }

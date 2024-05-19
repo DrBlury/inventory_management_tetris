@@ -81,7 +81,7 @@ tasks:
     silent: true
 
   lint-api-2:
-    desc: 'Lintint the bundled api-spec using vacuum'
+    desc: 'Linting the bundled api-spec using vacuum'
     cmds:
       - echo "Linting the api-spec"
       - docker run --rm -v ./api-spec/:/work:ro dshanley/vacuum lint bundle.yml -d -p /work

@@ -29,10 +29,11 @@ func (i *Inventory) AddItemAtPosition(item *Item, position *Position, quantity i
 	return inventoryItem, nil
 }
 
-func (i *Inventory) AddItem(item *Item, quantity int64, durability int64) bool {
+// AddItem adds the item to the inventory and returns the result of the operation and the new position in the inventory.
+func (i *Inventory) AddItem(item *Item, quantity int64, durability int64) (*Position, bool) {
 	positionSuggestion, err := i.GetFitPosition(item)
 	if err != nil {
-		return false // item was not added because it did not fit
+		return nil, false // item was not added because it did not fit
 	}
 
 	// add the item to the inventory
@@ -43,7 +44,7 @@ func (i *Inventory) AddItem(item *Item, quantity int64, durability int64) bool {
 		DurabilityLeft: durability,
 	})
 
-	return true // item was added
+	return positionSuggestion, true // item was added
 }
 
 func (i *Inventory) RemoveItem(itemId int64) {
