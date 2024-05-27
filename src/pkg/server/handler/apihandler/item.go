@@ -5,6 +5,7 @@ import (
 	domain "linuxcode/inventory_manager/pkg/domain/model"
 	server "linuxcode/inventory_manager/pkg/server/generated"
 	handler "linuxcode/inventory_manager/pkg/server/handler"
+	dtoTransform "linuxcode/inventory_manager/pkg/server/transform"
 	"net/http"
 
 	"github.com/go-chi/render"
@@ -56,18 +57,18 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	itemType := MapEnumItemTypeToDomain(dtoItem.Type)
+	domainItemType := dtoTransform.ToItemType(dtoItem.Type)
 
 	var createItemParams = &domain.CreateItemParams{
 		Name:       dtoItem.Name,
-		Text:       dtoItem.Text,
 		Variant:    dtoItem.Variant,
-		Type:       itemType,
+		Text:       dtoItem.Text,
 		BuyValue:   dtoItem.BuyValue,
 		SellValue:  dtoItem.SellValue,
-		MaxStack:   dtoItem.MaxStack,
 		Weight:     dtoItem.Weight,
 		Durability: dtoItem.Durability,
+		MaxStack:   dtoItem.MaxStack,
+		Type:       domainItemType,
 		Shape: &domain.Shape{
 			Width:    dtoItem.Shape.Width,
 			Height:   dtoItem.Shape.Height,

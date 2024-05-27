@@ -7,5 +7,4 @@ option go_package = "./domain";
 message CreateUserParams {
   string username = 1;
   string email = 2;
-  string password = 3;
 }

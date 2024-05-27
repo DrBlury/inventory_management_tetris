@@ -5,6 +5,7 @@ import (
 	domain "linuxcode/inventory_manager/pkg/domain/model"
 	server "linuxcode/inventory_manager/pkg/server/generated"
 	handler "linuxcode/inventory_manager/pkg/server/handler"
+	dtoTransform "linuxcode/inventory_manager/pkg/server/transform"
 	"net/http"
 
 	"github.com/go-chi/render"
@@ -17,19 +18,18 @@ func (a APIHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	// call domain layer
 	users, err := a.AppLogic.GetAllUsers(r.Context())
 	if err != nil {
-
 		handler.HandleInternalServerError(w, r, err)
 		return
 	}
 
-	// TODO map domain model to dto
-	// usersDTO := make([]server.User, 0, len(*users))
-	// for _, user := range *users {
-	// 	usersDTO = append(usersDTO, transform.UserDTOFromDomain(&user))
-	// }
+	// map to dto users
+	usersDTO := make([]*server.User, 0)
+	for _, user := range users {
+		usersDTO = append(usersDTO, dtoTransform.ToDTOUser(user))
+	}
 
 	// return response
-	render.JSON(w, r, users)
+	render.JSON(w, r, usersDTO)
 }
 
 // Add new user
@@ -59,7 +59,6 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	createUserParams := &domain.CreateUserParams{
 		Username: dtoUser.Username,
 		Email:    dtoUser.Email,
-		Password: dtoUser.Password,
 	}
 
 	// call domain layer
@@ -70,11 +69,12 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO map to dto
+	// map to dto user
+	userDTO := dtoTransform.ToDTOUser(addedUser)
 
 	// return response
 	render.Status(r, http.StatusCreated)
-	render.JSON(w, r, addedUser)
+	render.JSON(w, r, userDTO)
 }
 
 // Delete user by ID
@@ -102,11 +102,11 @@ func (a APIHandler) GetUserById(w http.ResponseWriter, r *http.Request, userId i
 		return
 	}
 
-	// TODO: map domain model to dto
-	// userDTO := transform.UserDTOFromDomain(user)
+	// map to dto user
+	userDTO := dtoTransform.ToDTOUser(user)
 
 	// return response
-	render.JSON(w, r, user)
+	render.JSON(w, r, userDTO)
 }
 
 // Update an user
@@ -136,7 +136,6 @@ func (a APIHandler) UpdateUserById(w http.ResponseWriter, r *http.Request, userI
 	updateUserParams := &domain.UpdateUserParams{
 		Username: dtoUser.Username,
 		Email:    dtoUser.Email,
-		Password: dtoUser.Password,
 	}
 
 	// call domain layer
@@ -148,9 +147,10 @@ func (a APIHandler) UpdateUserById(w http.ResponseWriter, r *http.Request, userI
 		return
 	}
 
-	// TODO map to dto
+	// Map user to dto
+	userDTO := dtoTransform.ToDTOUser(updatedUser)
 
 	// return response
 	w.WriteHeader(http.StatusOK)
-	render.JSON(w, r, updatedUser)
+	render.JSON(w, r, userDTO)
 }
