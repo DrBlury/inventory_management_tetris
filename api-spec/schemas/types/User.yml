@@ -9,6 +9,9 @@ properties:
   username:
     type: string
     example: 'JohnDoe'
+  email:
+    type: string
+    example: 'something@something.com'
   inventories:
     $ref: './InventoryMetaList.yml'
 
@@ -18,4 +21,5 @@ example:
 required:
   - id
   - username
+  - email
   - inventories

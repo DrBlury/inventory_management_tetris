@@ -28,8 +28,6 @@ table item {
 table user {
   id int [pk, increment]
   username varchar(255)
-  salt varchar(255)
-  password_hash varchar(255)
   email varchar(255)
   created_at timestamp [default: `now()`]
 }

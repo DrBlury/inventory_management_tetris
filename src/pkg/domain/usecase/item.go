@@ -49,7 +49,7 @@ func (a appLogicImpl) AddItem(ctx context.Context, createItemParams *domain.Crea
 	a.log.Info("item type", zap.Any("type", createItemParams.Type))
 
 	repoItemType := repo.ItemType(createItemParams.Type)
-	a.log.Info("item type", zap.Any("repo type", repoItemType))
+	a.log.Info("item type", zap.String("repo type", string(repoItemType)))
 	createdItem, err := a.queries.CreateItem(ctx, repo.CreateItemParams{
 		Name:       pgtype.Text{String: createItemParams.Name, Valid: true},
 		Text:       pgtype.Text{String: createItemParams.Text, Valid: true},

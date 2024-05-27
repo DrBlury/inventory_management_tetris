@@ -408,6 +408,7 @@
                     {
                       "id": 1,
                       "username": "john_doe",
+                      "email": "something@something.com",
                       "inventories": [
                         {
                           "id": 1,
@@ -434,6 +435,7 @@
                     {
                       "id": 2,
                       "username": "jane_doe",
+                      "email": "different@something.com",
                       "inventories": [
                         {
                           "id": 3,
@@ -506,8 +508,7 @@
               },
               "example": {
                 "username": "john_doe",
-                "email": "something@something.com",
-                "password": "password"
+                "email": "something@something.com"
               }
             }
           }
@@ -523,6 +524,7 @@
                 "example": {
                   "id": 1,
                   "username": "john_doe",
+                  "email": "something@something.com",
                   "inventories": [
                     {
                       "id": 1,
@@ -603,6 +605,7 @@
                   "example": {
                     "id": 1,
                     "username": "john_doe",
+                    "email": "something@something.com",
                     "inventories": [
                       {
                         "id": 1,
@@ -683,8 +686,7 @@
               },
               "example": {
                 "username": "john_doe",
-                "email": "something@something.com",
-                "password": "password"
+                "email": "something@something.com"
               }
             }
           }
@@ -700,6 +702,7 @@
                 "example": {
                   "id": 1,
                   "username": "john_doe",
+                  "email": "something@something.com",
                   "inventories": [
                     {
                       "id": 1,
@@ -1706,22 +1709,27 @@
           },
           "buy_value": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           },
           "sell_value": {
             "type": "integer",
+            "format": "int64",
             "example": 50
           },
           "weight": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           },
           "durability": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           },
           "max_stack": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "shape": {
@@ -2154,6 +2162,10 @@
             "type": "string",
             "example": "JohnDoe"
           },
+          "email": {
+            "type": "string",
+            "example": "something@something.com"
+          },
           "inventories": {
             "$ref": "#/components/schemas/InventoryMetaList"
           }
@@ -2161,6 +2173,7 @@
         "example": {
           "id": 1,
           "username": "john_doe",
+          "email": "something@something.com",
           "inventories": [
             {
               "id": 1,
@@ -2187,6 +2200,7 @@
         "required": [
           "id",
           "username",
+          "email",
           "inventories"
         ]
       },
@@ -2267,6 +2281,7 @@
             {
               "id": 1,
               "username": "john_doe",
+              "email": "something@something.com",
               "inventories": [
                 {
                   "id": 1,
@@ -2293,6 +2308,7 @@
             {
               "id": 2,
               "username": "jane_doe",
+              "email": "different@something.com",
               "inventories": [
                 {
                   "id": 3,
@@ -2341,21 +2357,15 @@
           "email": {
             "type": "string",
             "example": "john_doe@test.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "password"
           }
         },
         "example": {
           "username": "john_doe",
-          "email": "something@something.com",
-          "password": "password"
+          "email": "something@something.com"
         },
         "required": [
           "username",
-          "email",
-          "password"
+          "email"
         ]
       },
       "InventoryListResponse": {

@@ -1,6 +1,7 @@
 ---
 id: 1
 username: 'john_doe'
+email: 'something@something.com'
 inventories:
   - id: 1
     name: 'Backpack'

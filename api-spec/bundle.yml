@@ -296,6 +296,7 @@ paths:
                 users:
                   - id: 1
                     username: john_doe
+                    email: something@something.com
                     inventories:
                       - id: 1
                         name: Backpack
@@ -313,6 +314,7 @@ paths:
                           width: 10
                   - id: 2
                     username: jane_doe
+                    email: different@something.com
                     inventories:
                       - id: 3
                         name: Big Backpack
@@ -363,7 +365,6 @@ paths:
             example:
               username: john_doe
               email: something@something.com
-              password: password
       responses:
         '201':
           description: Added user - returns the newly created user
@@ -374,6 +375,7 @@ paths:
               example:
                 id: 1
                 username: john_doe
+                email: something@something.com
                 inventories:
                   - id: 1
                     name: Backpack
@@ -429,6 +431,7 @@ paths:
                 example:
                   id: 1
                   username: john_doe
+                  email: something@something.com
                   inventories:
                     - id: 1
                       name: Backpack
@@ -484,7 +487,6 @@ paths:
             example:
               username: john_doe
               email: something@something.com
-              password: password
       responses:
         '200':
           description: Update done - returns updated user
@@ -495,6 +497,7 @@ paths:
               example:
                 id: 1
                 username: john_doe
+                email: something@something.com
                 inventories:
                   - id: 1
                     name: Backpack
@@ -1210,18 +1213,23 @@ components:
           example: A sword that can be used to fight slow enemies.
         buy_value:
           type: integer
+          format: int64
           example: 100
         sell_value:
           type: integer
+          format: int64
           example: 50
         weight:
           type: integer
+          format: int64
           example: 10
         durability:
           type: integer
+          format: int64
           example: 100
         max_stack:
           type: integer
+          format: int64
           example: 1
         shape:
           $ref: '#/components/schemas/ItemShape'
@@ -1561,11 +1569,15 @@ components:
         username:
           type: string
           example: JohnDoe
+        email:
+          type: string
+          example: something@something.com
         inventories:
           $ref: '#/components/schemas/InventoryMetaList'
       example:
         id: 1
         username: john_doe
+        email: something@something.com
         inventories:
           - id: 1
             name: Backpack
@@ -1584,6 +1596,7 @@ components:
       required:
         - id
         - username
+        - email
         - inventories
     UserList:
       type: array
@@ -1637,6 +1650,7 @@ components:
         users:
           - id: 1
             username: john_doe
+            email: something@something.com
             inventories:
               - id: 1
                 name: Backpack
@@ -1654,6 +1668,7 @@ components:
                   width: 10
           - id: 2
             username: jane_doe
+            email: different@something.com
             inventories:
               - id: 3
                 name: Big Backpack
@@ -1688,17 +1703,12 @@ components:
         email:
           type: string
           example: john_doe@test.com
-        password:
-          type: string
-          example: password
       example:
         username: john_doe
         email: something@something.com
-        password: password
       required:
         - username
         - email
-        - password
     InventoryListResponse:
       type: object
       description: This object holds the inventory list response data. It includes the list of inventories and pagination data.

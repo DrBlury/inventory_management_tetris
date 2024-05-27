@@ -133,10 +133,44 @@ func (a appLogicImpl) DeleteItemFromInventory(ctx context.Context, inventoryId i
 // The amount to move is optional, if not set it will move the whole stack of items.
 func (a appLogicImpl) MoveItemWithinInventory(ctx context.Context, inventoryId int64, itemId int64, startPos *domain.Position, endpos *domain.Position, amount int64) (*domain.Inventory, error) {
 	// get inventory
-	_, err := a.GetInventoryById(ctx, inventoryId)
+	inv, err := a.GetInventoryById(ctx, inventoryId)
 	if err != nil {
 		return nil, errorx.IllegalArgument.New("The requested Inventory with Id: %d does not exist.", inventoryId)
 	}
+	a.log.Info("Found inventory with ID: ", zap.Int64("inventoryId", inv.InventoryMeta.Id))
+
+	// check if the item is in the inventory
+	itemExists := false
+	var itemToMove *domain.InventoryItem
+	for _, itemInInv := range inv.Items {
+		if itemInInv.Item.ItemMeta.Id == itemId && itemInInv.Position == startPos {
+			itemExists = true
+			itemToMove = itemInInv
+			break
+		}
+	}
+
+	if !itemExists {
+		return nil, errorx.IllegalArgument.New("The requested Inventory with Id: %d does not have item to be moved at PosX: %d, PosY: %d, Rot: %d", inventoryId, startPos.X, startPos.Y, startPos.Rotation)
+	}
+
+	a.log.Info("Found item to move with ID: ", zap.Int64("itemId", itemToMove.Item.ItemMeta.Id))
+
+	// check if the amount to move is valid
+	if amount < itemToMove.Quantity {
+		return nil, errorx.IllegalArgument.New("The requested Inventory with Id: %d does not have the amount to be moved: %d", inventoryId, amount)
+	}
+
+	// move the item
+	a.queries.UpdateInventoryItem(ctx, repo.UpdateInventoryItemParams{
+		ID:          int32(itemToMove.Item.ItemMeta.Id),
+		InventoryID: pgtype.Int4{Int32: int32(inv.InventoryMeta.Id), Valid: true},
+		ItemID:      pgtype.Int4{Int32: int32(itemToMove.Item.ItemMeta.Id), Valid: true},
+		PositionX:   pgtype.Int4{Int32: int32(endpos.X), Valid: true},
+		PositionY:   pgtype.Int4{Int32: int32(endpos.Y), Valid: true},
+		Rotation:    pgtype.Int4{Int32: int32(endpos.Rotation), Valid: true},
+		Quantity:    pgtype.Int4{Int32: int32(amount), Valid: true},
+	})
 
 	// invalidate cache
 	key := fmt.Sprint("inventoryID-", inventoryId)

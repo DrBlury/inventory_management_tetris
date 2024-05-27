@@ -125,12 +125,12 @@ type InventoryPostRequest struct {
 
 // Item This object holds the item data.
 type Item struct {
-	BuyValue   int    `json:"buy_value"`
-	Durability int    `json:"durability"`
+	BuyValue   int64  `json:"buy_value"`
+	Durability int64  `json:"durability"`
 	Id         int64  `json:"id"`
-	MaxStack   int    `json:"max_stack"`
+	MaxStack   int64  `json:"max_stack"`
 	Name       string `json:"name"`
-	SellValue  int    `json:"sell_value"`
+	SellValue  int64  `json:"sell_value"`
 
 	// Shape This object holds the item shape data.
 	Shape ItemShape `json:"shape"`
@@ -139,7 +139,7 @@ type Item struct {
 	// Type The type of the item.
 	Type    ItemType `json:"type"`
 	Variant string   `json:"variant"`
-	Weight  int      `json:"weight"`
+	Weight  int64    `json:"weight"`
 }
 
 // ItemList The list of items.
@@ -213,7 +213,8 @@ type Status string
 
 // User This object holds the user data.
 type User struct {
-	Id int64 `json:"id"`
+	Email string `json:"email"`
+	Id    int64  `json:"id"`
 
 	// Inventories The list of inventory metas.
 	Inventories InventoryMetaList `json:"inventories"`
@@ -235,7 +236,6 @@ type UserListResponse struct {
 // UserPostRequest This object holds the request data for creating a new user.
 type UserPostRequest struct {
 	Email    string `json:"email"`
-	Password string `json:"password"`
 	Username string `json:"username"`
 }
 

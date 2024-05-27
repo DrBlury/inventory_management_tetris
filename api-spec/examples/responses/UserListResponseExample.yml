@@ -2,6 +2,7 @@
 users:
   - id: 1
     username: 'john_doe'
+    email: 'something@something.com'
     inventories:
       - id: 1
         name: 'Backpack'
@@ -19,6 +20,7 @@ users:
           width: 10
   - id: 2
     username: 'jane_doe'
+    email: 'different@something.com'
     inventories:
       - id: 3
         name: 'Big Backpack'
