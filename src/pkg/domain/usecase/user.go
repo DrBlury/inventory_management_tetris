@@ -89,19 +89,10 @@ func HashPassword(password, salt string) (string, error) {
 
 // AddUser creates a new user
 func (a appLogicImpl) AddUser(ctx context.Context, createUserParams *domain.CreateUserParams) (*domain.User, error) {
-	// hash password using bcrypt
-	salt := "saltySalt-" + createUserParams.Username
-	hashedPassword, err := HashPassword(createUserParams.Password, salt)
-	if err != nil {
-		return nil, err
-	}
-
 	createdUser, err := a.queries.CreateUser(ctx, repo.CreateUserParams{
-		Username:     pgtype.Text{String: createUserParams.Username, Valid: true},
-		Email:        pgtype.Text{String: createUserParams.Email, Valid: true},
-		Salt:         pgtype.Text{String: salt, Valid: true},
-		PasswordHash: pgtype.Text{String: hashedPassword, Valid: true},
-		CreatedAt:    pgtype.Timestamp{Time: time.Now(), Valid: true},
+		Username:  pgtype.Text{String: createUserParams.Username, Valid: true},
+		Email:     pgtype.Text{String: createUserParams.Email, Valid: true},
+		CreatedAt: pgtype.Timestamp{Time: time.Now(), Valid: true},
 	})
 	if err != nil {
 		return nil, err
@@ -140,19 +131,10 @@ func (a appLogicImpl) DeleteUserById(ctx context.Context, userId int64) error {
 
 // UpdateUser updates the user with the given id
 func (a appLogicImpl) UpdateUser(ctx context.Context, userId int64, updateUserParams *domain.UpdateUserParams) (*domain.User, error) {
-	// hash password using bcrypt
-	salt := "saltySalt-" + updateUserParams.Username
-	hashedPassword, err := HashPassword(updateUserParams.Password, salt)
-	if err != nil {
-		return nil, err
-	}
-
 	updatedUser, err := a.queries.UpdateUser(ctx, repo.UpdateUserParams{
-		ID:           int32(userId),
-		Username:     pgtype.Text{String: updateUserParams.Username, Valid: true},
-		Email:        pgtype.Text{String: updateUserParams.Email, Valid: true},
-		Salt:         pgtype.Text{String: salt, Valid: true},
-		PasswordHash: pgtype.Text{String: hashedPassword, Valid: true},
+		ID:       int32(userId),
+		Username: pgtype.Text{String: updateUserParams.Username, Valid: true},
+		Email:    pgtype.Text{String: updateUserParams.Email, Valid: true},
 	})
 	if err != nil {
 		return nil, err

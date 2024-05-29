@@ -10,8 +10,8 @@ info:
     name: MIT License
     url: https://opensource.org/licenses/MIT
 servers:
-  - url: inventory.linuxcode.net
-    description: Inventory server for example
+  - url: /
+    description: This server
 tags:
   - name: inventory
     description: Inventory operations

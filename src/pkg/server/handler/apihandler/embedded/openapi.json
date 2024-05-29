@@ -15,8 +15,8 @@
   },
   "servers": [
     {
-      "url": "inventory.linuxcode.net",
-      "description": "Inventory server for example"
+      "url": "/",
+      "description": "This server"
     }
   ],
   "tags": [

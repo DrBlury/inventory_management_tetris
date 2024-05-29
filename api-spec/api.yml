@@ -20,7 +20,7 @@ tags:
   - name: user
     description: User operations
 servers:
-  - url: inventory.linuxcode.net
-    description: Inventory server for example
+  - url: /
+    description: This server
 paths:
   $ref: './resources/_index.yml'
