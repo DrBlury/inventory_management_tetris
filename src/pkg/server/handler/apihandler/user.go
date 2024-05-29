@@ -88,8 +88,7 @@ func (a APIHandler) DeleteUserById(w http.ResponseWriter, r *http.Request, userI
 	}
 
 	// return response
-	// TODO Also change api response to return new status code
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusOK)
 }
 
 // Get user by ID

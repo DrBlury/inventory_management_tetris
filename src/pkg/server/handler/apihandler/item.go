@@ -99,7 +99,7 @@ func (a APIHandler) DeleteItemById(w http.ResponseWriter, r *http.Request, itemI
 
 	// return response
 	// TODO fix this response in API spec
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusOK)
 }
 
 // Get item by ID
