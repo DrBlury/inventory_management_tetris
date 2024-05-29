@@ -13,35 +13,25 @@ import (
 
 const createUser = `-- name: CreateUser :one
 INSERT INTO
-  "user" (username, email, salt, password_hash, created_at)
+  "user" (username, email, created_at)
 VALUES
-  ($1, $2, $3, $4, $5)
+  ($1, $2, $3)
 RETURNING
-  id, username, salt, password_hash, email, created_at
+  id, username, email, created_at
 `
 
 type CreateUserParams struct {
-	Username     pgtype.Text
-	Email        pgtype.Text
-	Salt         pgtype.Text
-	PasswordHash pgtype.Text
-	CreatedAt    pgtype.Timestamp
+	Username  pgtype.Text
+	Email     pgtype.Text
+	CreatedAt pgtype.Timestamp
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
-	row := q.db.QueryRow(ctx, createUser,
-		arg.Username,
-		arg.Email,
-		arg.Salt,
-		arg.PasswordHash,
-		arg.CreatedAt,
-	)
+	row := q.db.QueryRow(ctx, createUser, arg.Username, arg.Email, arg.CreatedAt)
 	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
-		&i.Salt,
-		&i.PasswordHash,
 		&i.Email,
 		&i.CreatedAt,
 	)
@@ -53,7 +43,7 @@ DELETE FROM "user"
 WHERE
   id = $1
 RETURNING
-  id, username, salt, password_hash, email, created_at
+  id, username, email, created_at
 `
 
 func (q *Queries) DeleteUser(ctx context.Context, id int32) (User, error) {
@@ -62,8 +52,6 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) (User, error) {
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
-		&i.Salt,
-		&i.PasswordHash,
 		&i.Email,
 		&i.CreatedAt,
 	)
@@ -72,7 +60,7 @@ func (q *Queries) DeleteUser(ctx context.Context, id int32) (User, error) {
 
 const getUser = `-- name: GetUser :one
 SELECT
-  id, username, salt, password_hash, email, created_at
+  id, username, email, created_at
 FROM
   "user"
 WHERE
@@ -85,8 +73,6 @@ func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
-		&i.Salt,
-		&i.PasswordHash,
 		&i.Email,
 		&i.CreatedAt,
 	)
@@ -95,7 +81,7 @@ func (q *Queries) GetUser(ctx context.Context, id int32) (User, error) {
 
 const getUserByUsername = `-- name: GetUserByUsername :one
 SELECT
-  id, username, salt, password_hash, email, created_at
+  id, username, email, created_at
 FROM
   "user"
 WHERE
@@ -108,8 +94,6 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username pgtype.Text) (
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
-		&i.Salt,
-		&i.PasswordHash,
 		&i.Email,
 		&i.CreatedAt,
 	)
@@ -118,7 +102,7 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username pgtype.Text) (
 
 const listUsers = `-- name: ListUsers :many
 SELECT
-  id, username, salt, password_hash, email, created_at
+  id, username, email, created_at
 FROM
   "user"
 ORDER BY
@@ -137,8 +121,6 @@ func (q *Queries) ListUsers(ctx context.Context) ([]User, error) {
 		if err := rows.Scan(
 			&i.ID,
 			&i.Username,
-			&i.Salt,
-			&i.PasswordHash,
 			&i.Email,
 			&i.CreatedAt,
 		); err != nil {
@@ -157,30 +139,24 @@ UPDATE "user"
 SET
   username = $1,
   email = $2,
-  salt = $3,
-  password_hash = $4,
-  created_at = $5
+  created_at = $3
 WHERE
-  id = $6
+  id = $4
 RETURNING
-  id, username, salt, password_hash, email, created_at
+  id, username, email, created_at
 `
 
 type UpdateUserParams struct {
-	Username     pgtype.Text
-	Email        pgtype.Text
-	Salt         pgtype.Text
-	PasswordHash pgtype.Text
-	CreatedAt    pgtype.Timestamp
-	ID           int32
+	Username  pgtype.Text
+	Email     pgtype.Text
+	CreatedAt pgtype.Timestamp
+	ID        int32
 }
 
 func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
 	row := q.db.QueryRow(ctx, updateUser,
 		arg.Username,
 		arg.Email,
-		arg.Salt,
-		arg.PasswordHash,
 		arg.CreatedAt,
 		arg.ID,
 	)
@@ -188,8 +164,6 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, e
 	err := row.Scan(
 		&i.ID,
 		&i.Username,
-		&i.Salt,
-		&i.PasswordHash,
 		&i.Email,
 		&i.CreatedAt,
 	)

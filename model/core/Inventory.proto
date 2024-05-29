@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+import "InventoryMeta.proto";
+import "InventoryItem.proto";
+
+message Inventory {
+  InventoryMeta inventoryMeta = 1;
+  repeated InventoryItem items = 2;
+}

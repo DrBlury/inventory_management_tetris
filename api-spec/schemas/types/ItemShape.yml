@@ -7,15 +7,15 @@ properties:
     example: '#####..#####'
   height:
     type: integer
+    format: int64
     example: 3
   width:
     type: integer
+    format: int64
     example: 4
 
 example:
-  rawshape: '#####..#####'
-  height: 3
-  width: 4
+  $ref: '../../examples/_index.yml#/ItemShapeExample'
 
 required:
   - rawshape

@@ -11,7 +11,7 @@ enum item_type {
 table item {
   id int [pk, increment]
   name varchar(255)
-  description text
+  text text
   variant varchar(255)
   buy_value int
   sell_value int
@@ -28,8 +28,6 @@ table item {
 table user {
   id int [pk, increment]
   username varchar(255)
-  salt varchar(255)
-  password_hash varchar(255)
   email varchar(255)
   created_at timestamp [default: `now()`]
 }

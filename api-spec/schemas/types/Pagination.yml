@@ -4,26 +4,27 @@ description: This object holds the pagination data.
 properties:
   page:
     type: integer
+    format: int64
     example: 1
   pages:
     type: integer
+    format: int64
     example: 10
   limit:
     type: integer
+    format: int64
     example: 10
   total:
     type: integer
+    format: int64
     example: 100
   offset:
     type: integer
+    format: int64
     example: 0
 
 example:
-  page: 1
-  pages: 10
-  limit: 10
-  total: 100
-  offset: 0
+  $ref: '../../examples/_index.yml#/PaginationExample'
 
 required:
   - page

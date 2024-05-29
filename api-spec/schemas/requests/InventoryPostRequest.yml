@@ -7,20 +7,17 @@ properties:
     example: 'Backpack'
   user_id:
     type: integer
+    format: int64
     example: 1
   max_weight:
     type: integer
+    format: int64
     example: 850
   volume:
     $ref: '../types/Volume.yml'
 
 example:
-  name: 'Backpack'
-  user_id: 1
-  max_weight: 850
-  volume:
-    height: 10
-    width: 10
+  $ref: '../../examples/_index.yml#/InventoryPostRequestExample'
 
 required:
   - name

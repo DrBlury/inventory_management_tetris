@@ -1,0 +1,130 @@
+output:
+  sort-results: true
+
+linters:
+  enable:
+    # checks whether HTTP response body is closed successfully
+    - bodyclose
+
+    # Errcheck is a program for checking for unchecked errors in go programs.
+    # These unchecked errors can be critical bugs in some cases
+    - errcheck
+
+    # Tool for detection of long functions
+    - funlen
+
+    # Checks that no init functions are present in Go code
+    - gochecknoinits
+
+    # Computes and checks the cyclomatic complexity of functions
+    - gocyclo
+
+    # Gofmt checks whether code was gofmt-ed.
+    # By default this tool runs with -s option to check for code simplification
+    - gofmt
+
+    # In addition to fixing imports, goimports also formats your code in the same style as gofmt.
+    - goimports
+
+    # Detects when assignments to existing variables are not used
+    - ineffassign
+
+    # Checks Go code for unused constants, variables, functions and types
+    - unused
+
+    # Inspects source code for security problems
+    - gosec
+
+linters-settings:
+  gosec:
+    includes:
+      - G101
+      - G102
+      - G103
+      - G104
+      - G106
+      - G107
+      - G108
+      - G109
+      - G110
+      - G201
+      - G202
+      - G203
+      - G204
+      - G301
+      - G302
+      - G303
+      - G304
+      - G305
+      - G306
+      - G307
+      - G401
+      - G402
+      - G403
+      - G404
+      - G501
+      - G502
+      - G503
+      - G504
+      - G505
+      - G602
+  gocyclo:
+    # Minimal code complexity to report.
+    # Default: 30 (but we recommend 10-20)
+    min-complexity: 15
+
+  funlen:
+    # Checks the number of lines in a function.
+    # If lower than 0, disable the check.
+    # Default: 60
+    lines: 100
+    # Checks the number of statements in a function.
+    # If lower than 0, disable the check.
+    # Default: 40
+    statements: 40
+
+  gofmt:
+    # Simplify code: gofmt with `-s` option.
+    # Default: true
+    simplify: true
+
+  goconst:
+    # Minimal length of string constant.
+    # Default: 3
+    min-len: 3
+    # Minimum occurrences of constant string count to trigger issue.
+    # Default: 3
+    min-occurrences: 2
+    # Ignore test files.
+    # Default: false
+    ignore-tests: true
+    # Look for existing constants matching the values.
+    # Default: true
+    match-constant: false
+    # Search also for duplicated numbers.
+    # Default: false
+    numbers: true
+    # Minimum value, only works with goconst.numbers
+    # Default: 3
+    min: 2
+    # Maximum value, only works with goconst.numbers
+    # Default: 3
+    max: 2
+    # Ignore when constant is not used as function argument.
+    # Default: true
+    ignore-calls: false
+
+  goimports:
+    # Put imports beginning with prefix after 3rd-party packages.
+    # It's a comma-separated list of prefixes.
+    # Default: ""
+    local-prefixes: ""
+
+issues:
+  # Report all issues
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+  # exclude gosec G601 as it is a false positive in go 1.22
+  exclude:
+    - gosec G601

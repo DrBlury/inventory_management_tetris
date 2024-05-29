@@ -1,9 +1,0 @@
----
-type: string
-example: Bad Request
-description: The error type
-enum:
-  - Bad Request
-  - Not Found
-  - Not Implemented
-  - Internal Server Error

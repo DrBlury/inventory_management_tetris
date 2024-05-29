@@ -11,7 +11,7 @@ properties:
     description: The error message
     example: The item does not exist
   ErrorType:
-    $ref: './ErrorType.yml'
+    $ref: '../enum/ErrorType.yml'
   code:
     type: integer
     description: The error code
@@ -21,6 +21,9 @@ properties:
     format: date-time
     description: The time the error occurred
     example: 2020-01-01T00:00:00Z
+
+example:
+  $ref: '../../examples/_index.yml#/ErrorExample'
 
 required:
   - errorId

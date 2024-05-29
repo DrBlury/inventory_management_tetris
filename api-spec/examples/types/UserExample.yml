@@ -1,0 +1,19 @@
+---
+id: 1
+username: 'john_doe'
+email: 'something@something.com'
+inventories:
+  - id: 1
+    name: 'Backpack'
+    userId: 1
+    max_weight: 850
+    volume:
+      height: 3
+      width: 4
+  - id: 2
+    name: 'Bank'
+    userId: 1
+    max_weight: 10000
+    volume:
+      height: 10
+      width: 10

@@ -4,30 +4,36 @@ description: This object holds the item data.
 properties:
   id:
     type: integer
+    format: int64
     example: 1
   variant:
     type: string
-    example: 'rare'
+    example: 'fast'
   name:
     type: string
     example: 'Sword'
-  description:
+  text:
     type: string
-    example: 'A sword that can be used to fight enemies.'
+    example: 'A sword that can be used to fight slow enemies.'
   buy_value:
     type: integer
+    format: int64
     example: 100
   sell_value:
     type: integer
+    format: int64
     example: 50
   weight:
     type: integer
+    format: int64
     example: 10
   durability:
     type: integer
+    format: int64
     example: 100
   max_stack:
     type: integer
+    format: int64
     example: 1
   shape:
     $ref: './ItemShape.yml'
@@ -35,26 +41,13 @@ properties:
     $ref: '../enum/ItemType.yml'
 
 example:
-  id: 1
-  variant: 'rare'
-  name: 'Sword'
-  description: 'A sword that can be used to fight enemies.'
-  buy_value: 100
-  sell_value: 50
-  weight: 10
-  durability: 100
-  max_stack: 1
-  shape:
-    rawshape: '###'
-    height: 3
-    width: 1
-  type: meleeWeapon
+  $ref: '../../examples/_index.yml#/ItemExample'
 
 required:
   - id
   - variant
   - name
-  - description
+  - text
   - buy_value
   - sell_value
   - weight

@@ -3,16 +3,20 @@ package server
 import (
 	"context"
 	"net/http"
+	"time"
 )
 
 type Server struct {
 	server *http.Server
 }
 
+const READHEADERTIMEOUT = 5 * time.Second
+
 func NewServer(cfg *Config, mux http.Handler) *Server {
 	server := &http.Server{
-		Addr:    cfg.Address,
-		Handler: mux,
+		ReadHeaderTimeout: READHEADERTIMEOUT,
+		Addr:              cfg.Address,
+		Handler:           mux,
 	}
 
 	return &Server{

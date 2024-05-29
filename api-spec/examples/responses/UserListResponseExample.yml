@@ -1,0 +1,44 @@
+---
+users:
+  - id: 1
+    username: 'john_doe'
+    email: 'something@something.com'
+    inventories:
+      - id: 1
+        name: 'Backpack'
+        userId: 1
+        max_weight: 850
+        volume:
+          height: 3
+          width: 4
+      - id: 2
+        name: 'Bank'
+        userId: 1
+        max_weight: 10000
+        volume:
+          height: 10
+          width: 10
+  - id: 2
+    username: 'jane_doe'
+    email: 'different@something.com'
+    inventories:
+      - id: 3
+        name: 'Big Backpack'
+        userId: 2
+        max_weight: 1350
+        volume:
+          height: 5
+          width: 8
+      - id: 4
+        name: 'Small Bank'
+        userId: 2
+        max_weight: 1000
+        volume:
+          height: 7
+          width: 7
+pagination:
+  page: 1
+  pages: 10
+  limit: 10
+  total: 100
+  offset: 0

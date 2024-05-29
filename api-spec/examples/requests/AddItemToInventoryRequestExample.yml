@@ -1,0 +1,22 @@
+---
+item:
+  id: 1
+  variant: 'rare'
+  name: 'Sword'
+  text: 'Example of a rare sword.'
+  buy_value: 100
+  sell_value: 50
+  weight: 10
+  durability: 100
+  max_stack: 1
+  shape:
+    rawshape: '###'
+    height: 3
+    width: 1
+  type: "meleeWeapon"
+quantity: 1
+durability_left: 100
+position:
+  x: 0
+  y: 0
+  rotation: 0

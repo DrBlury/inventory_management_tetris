@@ -5,6 +5,7 @@ import (
 	domain "linuxcode/inventory_manager/pkg/domain/model"
 	server "linuxcode/inventory_manager/pkg/server/generated"
 	handler "linuxcode/inventory_manager/pkg/server/handler"
+	dtoTransform "linuxcode/inventory_manager/pkg/server/transform"
 	"net/http"
 
 	"github.com/go-chi/render"
@@ -44,7 +45,7 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error reading request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error reading request body")
 		return
 	}
 	// unmarshal bytes into dto
@@ -52,21 +53,23 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error unmarshalling request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error unmarshalling request body")
 		return
 	}
 
-	var createItemParams = domain.CreateItemParams{
-		Name:        dtoItem.Name,
-		Description: dtoItem.Description,
-		Variant:     dtoItem.Variant,
-		Type:        domain.ItemType(dtoItem.Type),
-		BuyValue:    dtoItem.BuyValue,
-		SellValue:   dtoItem.SellValue,
-		MaxStack:    dtoItem.MaxStack,
-		Weight:      dtoItem.Weight,
-		Durability:  dtoItem.Durability,
-		Shape: domain.Shape{
+	domainItemType := dtoTransform.ToItemType(dtoItem.Type)
+
+	var createItemParams = &domain.CreateItemParams{
+		Name:       dtoItem.Name,
+		Variant:    dtoItem.Variant,
+		Text:       dtoItem.Text,
+		BuyValue:   dtoItem.BuyValue,
+		SellValue:  dtoItem.SellValue,
+		Weight:     dtoItem.Weight,
+		Durability: dtoItem.Durability,
+		MaxStack:   dtoItem.MaxStack,
+		Type:       domainItemType,
+		Shape: &domain.Shape{
 			Width:    dtoItem.Shape.Width,
 			Height:   dtoItem.Shape.Height,
 			RawShape: dtoItem.Shape.Rawshape,
@@ -88,7 +91,7 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 // (DELETE /api/items/{itemId})
 func (a APIHandler) DeleteItemById(w http.ResponseWriter, r *http.Request, itemId int64) {
 	// call domain layer
-	err := a.AppLogic.DeleteItemById(r.Context(), int(itemId))
+	err := a.AppLogic.DeleteItemById(r.Context(), itemId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
@@ -96,14 +99,14 @@ func (a APIHandler) DeleteItemById(w http.ResponseWriter, r *http.Request, itemI
 
 	// return response
 	// TODO fix this response in API spec
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusOK)
 }
 
 // Get item by ID
 // (GET /api/items/{itemId})
 func (a APIHandler) GetItemById(w http.ResponseWriter, r *http.Request, itemId int64) {
 	// call domain layer
-	item, err := a.AppLogic.GetItemById(r.Context(), int(itemId))
+	item, err := a.AppLogic.GetItemById(r.Context(), itemId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return

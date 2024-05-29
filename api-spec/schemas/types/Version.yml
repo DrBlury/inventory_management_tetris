@@ -10,29 +10,25 @@ properties:
     type: string
     description: The date the code was built
     example: 2020-01-01
-  description:
+  details:
     type: string
     description: A description of the API
-    example: This is the API for the inventory management system
+    example: This is the API for the x service
   commitHash:
     type: string
     description: The hash of the commit
-    example: 1234567890
+    example: "0d1444adb917eacc71321f1281904f71c5e378ca"
   commitDate:
     type: string
     description: The date of the commit
     example: 2020-01-01T00:00:00Z
 
 example:
-  version: 1.0.0
-  buildDate: 2020-01-01
-  description: This is the API for the inventory management system
-  commitHash: 1234567890
-  commitDate: 2020-01-01T00:00:00Z
+  $ref: '../../examples/_index.yml#/VersionExample'
 
 required:
   - version
   - buildDate
-  - description
+  - details
   - commitHash
   - commitDate

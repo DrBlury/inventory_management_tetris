@@ -1,18 +1,22 @@
 {
-  "openapi": "3.0.0",
+  "openapi": "3.1.0",
   "info": {
     "title": "Inventory Manager",
     "description": "Inventory Manager API",
     "version": "1.0.0",
+    "contact": {
+      "name": "LinuxCode",
+      "email": "jbensch@linuxcode.net"
+    },
     "license": {
-      "name": "unlicensed",
-      "url": "www.linuxcode.net"
+      "name": "MIT License",
+      "url": "https://opensource.org/licenses/MIT"
     }
   },
   "servers": [
     {
-      "url": "inventory.linuxcode.net",
-      "description": "Inventory server for example"
+      "url": "/",
+      "description": "This server"
     }
   ],
   "tags": [
@@ -37,7 +41,7 @@
     "/api/items": {
       "get": {
         "summary": "Get all items",
-        "description": "Get all items",
+        "description": "Retrieve all items",
         "operationId": "getAllItems",
         "tags": [
           "item"
@@ -49,26 +53,64 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ItemListResponse"
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": 1,
+                      "variant": "rare",
+                      "name": "Sword",
+                      "text": "A sword that can be used to fight small enemies.",
+                      "buy_value": 100,
+                      "sell_value": 50,
+                      "weight": 10,
+                      "durability": 100,
+                      "max_stack": 1,
+                      "shape": {
+                        "rawshape": "###",
+                        "height": 3,
+                        "width": 1
+                      },
+                      "type": "meleeWeapon"
+                    },
+                    {
+                      "id": 2,
+                      "variant": "common",
+                      "name": "Shield",
+                      "text": "A shield that can be used to block enemy attacks.",
+                      "buy_value": 50,
+                      "sell_value": 25,
+                      "weight": 15,
+                      "durability": 150,
+                      "max_stack": 1,
+                      "shape": {
+                        "rawshape": "####",
+                        "height": 2,
+                        "width": 2
+                      },
+                      "type": "meleeWeapon"
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "pages": 10,
+                    "limit": 10,
+                    "total": 100,
+                    "offset": 0
+                  }
                 }
               }
             }
           },
           "404": {
-            "description": "No items found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "No items found"
           }
         },
         "security": []
       },
       "post": {
-        "summary": "Add new item",
-        "description": "Add new item",
+        "summary": "Add a new item",
+        "description": "Add a new item to the system",
         "operationId": "addItem",
         "tags": [
           "item"
@@ -80,6 +122,22 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ItemPostRequest"
+              },
+              "example": {
+                "name": "Sword",
+                "variant": "Iron",
+                "text": "A sword made of iron.",
+                "buy_value": 200,
+                "sell_value": 70,
+                "weight": 20,
+                "durability": 350,
+                "max_stack": 1,
+                "type": "meleeWeapon",
+                "shape": {
+                  "rawshape": "###",
+                  "height": 3,
+                  "width": 1
+                }
               }
             }
           }
@@ -91,12 +149,43 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Item"
+                },
+                "example": {
+                  "id": 1,
+                  "variant": "gigantic",
+                  "name": "Sword",
+                  "text": "A sword that can be used to fight gigantic enemies.",
+                  "buy_value": 100,
+                  "sell_value": 50,
+                  "weight": 10,
+                  "durability": 100,
+                  "max_stack": 1,
+                  "shape": {
+                    "rawshape": "###",
+                    "height": 3,
+                    "width": 1
+                  },
+                  "type": "meleeWeapon"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request - e.g. invalid item"
+            "description": "Bad request - e.g. invalid item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
+                }
+              }
+            }
           }
         },
         "security": []
@@ -104,8 +193,8 @@
     },
     "/api/items/{itemId}": {
       "get": {
-        "summary": "Get item by ID",
-        "description": "Get item by ID",
+        "summary": "Get item",
+        "description": "Get an item by ID",
         "operationId": "getItemById",
         "tags": [
           "item"
@@ -119,7 +208,8 @@
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "responses": {
@@ -130,23 +220,54 @@
                 "schema": {
                   "items": {
                     "$ref": "#/components/schemas/Item"
+                  },
+                  "example": {
+                    "id": 1,
+                    "variant": "gigantic",
+                    "name": "Sword",
+                    "text": "A sword that can be used to fight gigantic enemies.",
+                    "buy_value": 100,
+                    "sell_value": 50,
+                    "weight": 10,
+                    "durability": 100,
+                    "max_stack": 1,
+                    "shape": {
+                      "rawshape": "###",
+                      "height": 3,
+                      "width": 1
+                    },
+                    "type": "meleeWeapon"
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid ID supplied (e.g. not an integer)"
+            "description": "Invalid ID of item supplied (e.g. not an integer) - could not return item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Can not find item (item ID)"
+            "description": "Can not find item (item ID) to return"
           }
         },
         "security": []
       },
       "put": {
         "summary": "Update an item",
-        "description": "Update an item",
+        "description": "Update an item by ID",
         "operationId": "updateItemById",
         "tags": [
           "item"
@@ -160,7 +281,8 @@
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "requestBody": {
@@ -170,6 +292,22 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ItemPostRequest"
+              },
+              "example": {
+                "name": "Sword",
+                "variant": "Iron",
+                "text": "A sword made of iron.",
+                "buy_value": 200,
+                "sell_value": 70,
+                "weight": 20,
+                "durability": 350,
+                "max_stack": 1,
+                "type": "meleeWeapon",
+                "shape": {
+                  "rawshape": "###",
+                  "height": 3,
+                  "width": 1
+                }
               }
             }
           }
@@ -179,31 +317,31 @@
             "description": "Update done"
           },
           "400": {
-            "description": "Invalid ID supplied",
+            "description": "Invalid ID of Item supplied (e.g. not an integer) - could not update item",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
           },
           "404": {
-            "description": "Can not find item (item ID)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "Can not find item (item ID) to update"
           }
         },
         "security": []
       },
       "delete": {
-        "summary": "Delete item by ID",
-        "description": "Delete item by ID",
+        "summary": "Delete an item",
+        "description": "Delete an item by ID",
         "operationId": "deleteItemById",
         "tags": [
           "item"
@@ -217,7 +355,8 @@
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "responses": {
@@ -225,10 +364,24 @@
             "description": "Deleted item (item ID)"
           },
           "400": {
-            "description": "Invalid ID supplied (e.g. not an integer)"
+            "description": "Invalid ID of Item supplied (e.g. not an integer) - could not delete item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Can not find item (item ID)"
+            "description": "Can not find item (item ID) to delete"
           }
         },
         "security": []
@@ -237,7 +390,7 @@
     "/api/users": {
       "get": {
         "summary": "Get all users",
-        "description": "Get all users",
+        "description": "Retrieve all users",
         "operationId": "getAllUsers",
         "tags": [
           "user"
@@ -249,6 +402,71 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserListResponse"
+                },
+                "example": {
+                  "users": [
+                    {
+                      "id": 1,
+                      "username": "john_doe",
+                      "email": "something@something.com",
+                      "inventories": [
+                        {
+                          "id": 1,
+                          "name": "Backpack",
+                          "userId": 1,
+                          "max_weight": 850,
+                          "volume": {
+                            "height": 3,
+                            "width": 4
+                          }
+                        },
+                        {
+                          "id": 2,
+                          "name": "Bank",
+                          "userId": 1,
+                          "max_weight": 10000,
+                          "volume": {
+                            "height": 10,
+                            "width": 10
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": 2,
+                      "username": "jane_doe",
+                      "email": "different@something.com",
+                      "inventories": [
+                        {
+                          "id": 3,
+                          "name": "Big Backpack",
+                          "userId": 2,
+                          "max_weight": 1350,
+                          "volume": {
+                            "height": 5,
+                            "width": 8
+                          }
+                        },
+                        {
+                          "id": 4,
+                          "name": "Small Bank",
+                          "userId": 2,
+                          "max_weight": 1000,
+                          "volume": {
+                            "height": 7,
+                            "width": 7
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "pages": 10,
+                    "limit": 10,
+                    "total": 100,
+                    "offset": 0
+                  }
                 }
               }
             }
@@ -259,6 +477,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
@@ -267,8 +492,8 @@
         "security": []
       },
       "post": {
-        "summary": "Add new user",
-        "description": "Add new user",
+        "summary": "Add a new user",
+        "description": "Add a new user to the system",
         "operationId": "addUser",
         "tags": [
           "user"
@@ -280,6 +505,10 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UserPostRequest"
+              },
+              "example": {
+                "username": "john_doe",
+                "email": "something@something.com"
               }
             }
           }
@@ -291,12 +520,53 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/User"
+                },
+                "example": {
+                  "id": 1,
+                  "username": "john_doe",
+                  "email": "something@something.com",
+                  "inventories": [
+                    {
+                      "id": 1,
+                      "name": "Backpack",
+                      "userId": 1,
+                      "max_weight": 850,
+                      "volume": {
+                        "height": 3,
+                        "width": 4
+                      }
+                    },
+                    {
+                      "id": 2,
+                      "name": "Bank",
+                      "userId": 1,
+                      "max_weight": 10000,
+                      "volume": {
+                        "height": 10,
+                        "width": 10
+                      }
+                    }
+                  ]
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request - e.g. invalid user"
+            "description": "Bad request - e.g. invalid user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
+                }
+              }
+            }
           }
         },
         "security": []
@@ -304,8 +574,8 @@
     },
     "/api/users/{userId}": {
       "get": {
-        "summary": "Get user by ID",
-        "description": "Get user by ID",
+        "summary": "Get a user",
+        "description": "Get a user by ID",
         "operationId": "getUserById",
         "tags": [
           "user"
@@ -319,7 +589,8 @@
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "responses": {
@@ -330,37 +601,64 @@
                 "schema": {
                   "items": {
                     "$ref": "#/components/schemas/User"
+                  },
+                  "example": {
+                    "id": 1,
+                    "username": "john_doe",
+                    "email": "something@something.com",
+                    "inventories": [
+                      {
+                        "id": 1,
+                        "name": "Backpack",
+                        "userId": 1,
+                        "max_weight": 850,
+                        "volume": {
+                          "height": 3,
+                          "width": 4
+                        }
+                      },
+                      {
+                        "id": 2,
+                        "name": "Bank",
+                        "userId": 1,
+                        "max_weight": 10000,
+                        "volume": {
+                          "height": 10,
+                          "width": 10
+                        }
+                      }
+                    ]
                   }
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid ID supplied",
+            "description": "Invalid ID supplied - wrong format of user ID",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
           },
           "404": {
-            "description": "Can not find user (user ID)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "Can not find user (user ID) to return"
           }
         },
         "security": []
       },
       "put": {
-        "summary": "Update an user",
-        "description": "Update an user",
+        "summary": "Update a user",
+        "description": "Update a user by ID",
         "operationId": "updateUserById",
         "tags": [
           "user"
@@ -374,7 +672,8 @@
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "requestBody": {
@@ -384,6 +683,10 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UserPostRequest"
+              },
+              "example": {
+                "username": "john_doe",
+                "email": "something@something.com"
               }
             }
           }
@@ -395,22 +698,63 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/User"
+                },
+                "example": {
+                  "id": 1,
+                  "username": "john_doe",
+                  "email": "something@something.com",
+                  "inventories": [
+                    {
+                      "id": 1,
+                      "name": "Backpack",
+                      "userId": 1,
+                      "max_weight": 850,
+                      "volume": {
+                        "height": 3,
+                        "width": 4
+                      }
+                    },
+                    {
+                      "id": 2,
+                      "name": "Bank",
+                      "userId": 1,
+                      "max_weight": 10000,
+                      "volume": {
+                        "height": 10,
+                        "width": 10
+                      }
+                    }
+                  ]
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid ID supplied"
+            "description": "Invalid request - wrong format of user ID or wrong format of user object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Can not find user (user ID)"
+            "description": "Can not find user (user ID) to update"
           }
         },
         "security": []
       },
       "delete": {
-        "summary": "Delete user by ID",
-        "description": "Delete user by ID",
+        "summary": "Delete a user",
+        "description": "Delete a user by ID",
         "operationId": "deleteUserById",
         "tags": [
           "user"
@@ -424,7 +768,8 @@
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "responses": {
@@ -432,10 +777,24 @@
             "description": "Deleted user (user ID)"
           },
           "400": {
-            "description": "Invalid ID supplied"
+            "description": "Invalid ID supplied - wrong format of user ID, deletion not possible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Can not find user (user ID)"
+            "description": "Can not find user (user ID) to delete"
           }
         },
         "security": []
@@ -444,7 +803,7 @@
     "/api/inventories": {
       "get": {
         "summary": "Get all inventories",
-        "description": "Get all inventories",
+        "description": "Retrieve all inventories",
         "operationId": "getAllInventories",
         "tags": [
           "inventory"
@@ -456,6 +815,37 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InventoryListResponse"
+                },
+                "example": {
+                  "inventories": [
+                    {
+                      "id": 1,
+                      "name": "Backpack",
+                      "userId": 1,
+                      "max_weight": 850,
+                      "volume": {
+                        "height": 3,
+                        "width": 4
+                      }
+                    },
+                    {
+                      "id": 2,
+                      "name": "Chest",
+                      "userId": 1,
+                      "max_weight": 1500,
+                      "volume": {
+                        "height": 10,
+                        "width": 10
+                      }
+                    }
+                  ],
+                  "pagination": {
+                    "page": 1,
+                    "pages": 10,
+                    "limit": 10,
+                    "total": 100,
+                    "offset": 0
+                  }
                 }
               }
             }
@@ -466,6 +856,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
@@ -475,7 +872,7 @@
       },
       "post": {
         "summary": "Add new inventory",
-        "description": "Add new inventory",
+        "description": "Add new inventory to the system",
         "operationId": "addInventory",
         "tags": [
           "inventory"
@@ -487,6 +884,15 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/InventoryPostRequest"
+              },
+              "example": {
+                "name": "Backpack",
+                "user_id": 1,
+                "max_weight": 850,
+                "volume": {
+                  "height": 10,
+                  "width": 10
+                }
               }
             }
           }
@@ -498,6 +904,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Inventory"
+                },
+                "example": {
+                  "inventoryMeta": {
+                    "id": 1,
+                    "name": "Backpack",
+                    "userId": 1,
+                    "max_weight": 850,
+                    "volume": {
+                      "height": 3,
+                      "width": 4
+                    }
+                  },
+                  "items": [
+                    {
+                      "item": {
+                        "id": 1,
+                        "variant": "rare",
+                        "name": "Sword",
+                        "text": "A sword that can be used to fight tiny enemies.",
+                        "buy_value": 100,
+                        "sell_value": 50,
+                        "weight": 10,
+                        "durability": 100,
+                        "max_stack": 1,
+                        "shape": {
+                          "rawshape": "###",
+                          "height": 3,
+                          "width": 1
+                        },
+                        "type": "meleeWeapon"
+                      },
+                      "position": {
+                        "x": 0,
+                        "y": 0,
+                        "rotation": 0
+                      },
+                      "quantity": 1,
+                      "durability_left": 70
+                    }
+                  ]
                 }
               }
             }
@@ -508,6 +954,13 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
@@ -519,7 +972,7 @@
     "/api/inventories/{inventoryId}": {
       "get": {
         "summary": "Get inventory by ID",
-        "description": "Get inventory by ID",
+        "description": "Retrieve an inventory by ID",
         "operationId": "getInventoryById",
         "tags": [
           "inventory"
@@ -528,12 +981,13 @@
           {
             "name": "inventoryId",
             "in": "path",
-            "description": "ID of inventory",
+            "description": "ID of inventory to return",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "responses": {
@@ -543,36 +997,76 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Inventory"
+                },
+                "example": {
+                  "inventoryMeta": {
+                    "id": 1,
+                    "name": "Backpack",
+                    "userId": 1,
+                    "max_weight": 850,
+                    "volume": {
+                      "height": 3,
+                      "width": 4
+                    }
+                  },
+                  "items": [
+                    {
+                      "item": {
+                        "id": 1,
+                        "variant": "rare",
+                        "name": "Sword",
+                        "text": "A sword that can be used to fight tiny enemies.",
+                        "buy_value": 100,
+                        "sell_value": 50,
+                        "weight": 10,
+                        "durability": 100,
+                        "max_stack": 1,
+                        "shape": {
+                          "rawshape": "###",
+                          "height": 3,
+                          "width": 1
+                        },
+                        "type": "meleeWeapon"
+                      },
+                      "position": {
+                        "x": 0,
+                        "y": 0,
+                        "rotation": 0
+                      },
+                      "quantity": 1,
+                      "durability_left": 70
+                    }
+                  ]
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid ID supplied (e.g. not an integer)",
+            "description": "Invalid ID supplied (e.g. not an integer) - can not find inventory",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
           },
           "404": {
-            "description": "Can not find inventory (inventory ID)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "Can not find inventory (inventory ID) to return"
           }
         },
         "security": []
       },
       "put": {
         "summary": "Update an inventory",
-        "description": "Update an inventory",
+        "description": "Update an inventory by ID",
         "operationId": "updateInventoryById",
         "tags": [
           "inventory"
@@ -581,12 +1075,13 @@
           {
             "name": "inventoryId",
             "in": "path",
-            "description": "ID of inventory that needs to be updated",
+            "description": "ID of inventory to update",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "requestBody": {
@@ -596,6 +1091,15 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/InventoryPostRequest"
+              },
+              "example": {
+                "name": "Backpack",
+                "user_id": 1,
+                "max_weight": 850,
+                "volume": {
+                  "height": 10,
+                  "width": 10
+                }
               }
             }
           }
@@ -607,36 +1111,76 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Inventory"
+                },
+                "example": {
+                  "inventoryMeta": {
+                    "id": 1,
+                    "name": "Backpack",
+                    "userId": 1,
+                    "max_weight": 850,
+                    "volume": {
+                      "height": 3,
+                      "width": 4
+                    }
+                  },
+                  "items": [
+                    {
+                      "item": {
+                        "id": 1,
+                        "variant": "rare",
+                        "name": "Sword",
+                        "text": "A sword that can be used to fight tiny enemies.",
+                        "buy_value": 100,
+                        "sell_value": 50,
+                        "weight": 10,
+                        "durability": 100,
+                        "max_stack": 1,
+                        "shape": {
+                          "rawshape": "###",
+                          "height": 3,
+                          "width": 1
+                        },
+                        "type": "meleeWeapon"
+                      },
+                      "position": {
+                        "x": 0,
+                        "y": 0,
+                        "rotation": 0
+                      },
+                      "quantity": 1,
+                      "durability_left": 70
+                    }
+                  ]
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid ID supplied (e.g. not an integer)",
+            "description": "Invalid ID supplied (e.g. not an integer) - can not update inventory",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
           },
           "404": {
-            "description": "Can not find inventory (inventory ID)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "Can not find inventory (inventory ID) to update"
           }
         },
         "security": []
       },
       "delete": {
-        "summary": "Delete inventory by ID",
-        "description": "Delete inventory by ID",
+        "summary": "Delete an inventory",
+        "description": "Delete an inventory by ID",
         "operationId": "deleteInventoryById",
         "tags": [
           "inventory"
@@ -650,7 +1194,8 @@
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "responses": {
@@ -658,10 +1203,24 @@
             "description": "Deleted inventory (inventory ID)"
           },
           "400": {
-            "description": "Invalid ID supplied (e.g. not an integer)"
+            "description": "Invalid ID supplied (e.g. not an integer) - can not delete inventory",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Can not find inventory (inventory ID)"
+            "description": "Can not find inventory (inventory ID) to delete"
           }
         },
         "security": []
@@ -669,7 +1228,7 @@
     },
     "/api/inventories/{inventoryId}/move": {
       "post": {
-        "summary": "Move an item already in the inventory",
+        "summary": "Move item in Inventory",
         "description": "Move an item already in the inventory",
         "operationId": "moveItemInInventory",
         "tags": [
@@ -679,12 +1238,13 @@
           {
             "name": "inventoryId",
             "in": "path",
-            "description": "ID of inventory",
+            "description": "ID of inventory to move item in",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "requestBody": {
@@ -694,6 +1254,19 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/MoveItemRequest"
+              },
+              "example": {
+                "original_position": {
+                  "x": 0,
+                  "y": 0,
+                  "rotation": 0
+                },
+                "new_position": {
+                  "x": 1,
+                  "y": 0,
+                  "rotation": 0
+                },
+                "quantity": 1
               }
             }
           }
@@ -708,9 +1281,19 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Can not find inventory or item in inventory"
           }
         },
         "security": []
@@ -718,8 +1301,8 @@
     },
     "/api/inventories/{inventoryId}/add": {
       "post": {
-        "summary": "Add a new item to the inventory at the first possible position",
-        "description": "Add a new item to the inventory at the first possible position",
+        "summary": "Add item to inventory (with optional position)",
+        "description": "Adds a new item to the inventory with an optional position",
         "operationId": "addItemInInventory",
         "tags": [
           "inventory"
@@ -728,21 +1311,48 @@
           {
             "name": "inventoryId",
             "in": "path",
-            "description": "ID of inventory",
+            "description": "ID of inventory to add item to",
             "required": true,
             "schema": {
               "type": "integer",
               "format": "int64"
-            }
+            },
+            "example": 1
           }
         ],
         "requestBody": {
           "required": true,
-          "description": "Item to add to inventory and quantity and optional position",
+          "description": "Item to add with quantity and optional position",
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AddItemToInventoryRequest"
+              },
+              "example": {
+                "item": {
+                  "id": 1,
+                  "variant": "rare",
+                  "name": "Sword",
+                  "text": "Example of a rare sword.",
+                  "buy_value": 100,
+                  "sell_value": 50,
+                  "weight": 10,
+                  "durability": 100,
+                  "max_stack": 1,
+                  "shape": {
+                    "rawshape": "###",
+                    "height": 3,
+                    "width": 1
+                  },
+                  "type": "meleeWeapon"
+                },
+                "quantity": 1,
+                "durability_left": 100,
+                "position": {
+                  "x": 0,
+                  "y": 0,
+                  "rotation": 0
+                }
               }
             }
           }
@@ -754,16 +1364,49 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InventoryItem"
+                },
+                "example": {
+                  "item": {
+                    "id": 1,
+                    "variant": "rare",
+                    "name": "Sword",
+                    "text": "A sword that can be used to fight some enemies.",
+                    "buy_value": 100,
+                    "sell_value": 50,
+                    "weight": 10,
+                    "durability": 100,
+                    "max_stack": 1,
+                    "shape": {
+                      "rawshape": "#####..#####",
+                      "height": 3,
+                      "width": 4
+                    },
+                    "type": "meleeWeapon"
+                  },
+                  "position": {
+                    "x": 0,
+                    "y": 0,
+                    "rotation": 2
+                  },
+                  "quantity": 1,
+                  "durability_left": 70
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request (e.g. invalid item)",
+            "description": "Bad request (e.g. invalid item or invalid position)",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
@@ -777,33 +1420,34 @@
         "tags": [
           "info"
         ],
-        "summary": "Get metrics",
-        "description": "Get metrics for prometheus",
+        "summary": "Get metrics for the service",
+        "description": "Retrieve prometheus metrics",
         "operationId": "getMetrics",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Prometheus metrics",
             "content": {
-              "application/json": {
+              "text/plain": {
                 "schema": {
-                  "type": "object",
-                  "description": "Metrics for prometheus",
-                  "properties": {
-                    "metrics": {
-                      "type": "object",
-                      "description": "Metrics for prometheus"
-                    }
-                  }
-                }
+                  "type": "string"
+                },
+                "example": "SOME PROMETHEUS DATA"
               }
             }
           },
           "400": {
-            "description": "You somehow managed to mess up the request",
+            "description": "You somehow managed to mess up the metrics request",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
@@ -818,7 +1462,7 @@
           "info"
         ],
         "summary": "Get version info of the service",
-        "description": "Get version info of the service",
+        "description": "Retrieve the version info of the service",
         "operationId": "getVersion",
         "responses": {
           "200": {
@@ -827,16 +1471,30 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Version"
+                },
+                "example": {
+                  "version": "1.0.0",
+                  "buildDate": "2020-01-01",
+                  "details": "This is an API.",
+                  "commitHash": "0d1444adb917eacc71321f1281904f71c5e378ca",
+                  "commitDate": "2020-01-01T00:00:00Z"
                 }
               }
             }
           },
           "400": {
-            "description": "You somehow managed to mess up the request",
+            "description": "You somehow managed to mess up the version request",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
@@ -851,7 +1509,7 @@
           "info"
         ],
         "summary": "Get status of the service",
-        "description": "Get status of the service",
+        "description": "Retrieve the status of the service",
         "operationId": "getStatus",
         "responses": {
           "200": {
@@ -860,16 +1518,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Status"
-                }
+                },
+                "example": "HEALTHY"
               }
             }
           },
           "400": {
-            "description": "You somehow managed to mess up the request",
+            "description": "You somehow managed to mess up the status request",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
@@ -884,7 +1550,7 @@
           "info"
         ],
         "summary": "Get openapi spec as json",
-        "description": "Get openapi spec as json",
+        "description": "Retrieve the OpenAPI spec as JSON",
         "operationId": "getOpenAPIJSON",
         "responses": {
           "200": {
@@ -893,16 +1559,24 @@
               "application/json": {
                 "schema": {
                   "type": "object"
-                }
+                },
+                "example": {}
               }
             }
           },
           "400": {
-            "description": "You somehow managed to mess up the request",
+            "description": "You somehow managed to mess up the oapi json request",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
@@ -916,6 +1590,9 @@
         "tags": [
           "info"
         ],
+        "summary": "Get describing html of openapi spec",
+        "description": "Retrieve the OpenAPI spec as HTML",
+        "operationId": "getOpenAPIHTML",
         "parameters": [
           {
             "name": "render",
@@ -924,14 +1601,11 @@
             "required": false,
             "schema": {
               "type": "string",
-              "description": "OpenAPI html renderer name (scalar or spotlight)",
-              "example": "scalar"
-            }
+              "description": "OpenAPI html renderer name (scalar or spotlight)"
+            },
+            "example": "scalar"
           }
         ],
-        "summary": "Get describing html of openapi spec",
-        "description": "Get describing html of openapi spec",
-        "operationId": "getOpenAPIHTML",
         "responses": {
           "200": {
             "description": "The rendered HTML for the OpenAPI spec",
@@ -945,11 +1619,18 @@
             }
           },
           "400": {
-            "description": "You somehow managed to mess up the request",
+            "description": "You somehow managed to mess up the oapi html request",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "errorId": "123e4567-e89b-12d3-a456-426614174000",
+                  "error": "The item does not exist",
+                  "ErrorType": "Not Found",
+                  "code": 404,
+                  "timestamp": "2020-01-01T00:00:00Z"
                 }
               }
             }
@@ -971,10 +1652,12 @@
           },
           "height": {
             "type": "integer",
+            "format": "int64",
             "example": 3
           },
           "width": {
             "type": "integer",
+            "format": "int64",
             "example": 4
           }
         },
@@ -1009,38 +1692,44 @@
         "properties": {
           "id": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "variant": {
             "type": "string",
-            "example": "rare"
+            "example": "fast"
           },
           "name": {
             "type": "string",
             "example": "Sword"
           },
-          "description": {
+          "text": {
             "type": "string",
-            "example": "A sword that can be used to fight enemies."
+            "example": "A sword that can be used to fight slow enemies."
           },
           "buy_value": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           },
           "sell_value": {
             "type": "integer",
+            "format": "int64",
             "example": 50
           },
           "weight": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           },
           "durability": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           },
           "max_stack": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "shape": {
@@ -1052,9 +1741,9 @@
         },
         "example": {
           "id": 1,
-          "variant": "rare",
+          "variant": "gigantic",
           "name": "Sword",
-          "description": "A sword that can be used to fight enemies.",
+          "text": "A sword that can be used to fight gigantic enemies.",
           "buy_value": 100,
           "sell_value": 50,
           "weight": 10,
@@ -1071,7 +1760,7 @@
           "id",
           "variant",
           "name",
-          "description",
+          "text",
           "buy_value",
           "sell_value",
           "weight",
@@ -1081,28 +1770,76 @@
           "type"
         ]
       },
+      "ItemList": {
+        "type": "array",
+        "description": "The list of items.",
+        "items": {
+          "$ref": "#/components/schemas/Item"
+        },
+        "example": [
+          {
+            "id": 1,
+            "variant": "rare",
+            "name": "Sword",
+            "text": "A sword that can be used to fight enemies.",
+            "buy_value": 100,
+            "sell_value": 50,
+            "weight": 10,
+            "durability": 100,
+            "max_stack": 1,
+            "shape": {
+              "rawshape": "###",
+              "height": 3,
+              "width": 1
+            },
+            "type": "meleeWeapon"
+          },
+          {
+            "id": 2,
+            "variant": "common",
+            "name": "Shield",
+            "text": "A shield that can be used to block enemy attacks.",
+            "buy_value": 50,
+            "sell_value": 25,
+            "weight": 15,
+            "durability": 150,
+            "max_stack": 1,
+            "shape": {
+              "rawshape": "####",
+              "height": 2,
+              "width": 2
+            },
+            "type": "meleeWeapon"
+          }
+        ]
+      },
       "Pagination": {
         "type": "object",
         "description": "This object holds the pagination data.",
         "properties": {
           "page": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "pages": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           },
           "limit": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           },
           "total": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           },
           "offset": {
             "type": "integer",
+            "format": "int64",
             "example": 0
           }
         },
@@ -1126,11 +1863,7 @@
         "description": "This object holds the item list response data. It includes the list of items and pagination data.",
         "properties": {
           "items": {
-            "type": "array",
-            "description": "The list of items.",
-            "items": {
-              "$ref": "#/components/schemas/Item"
-            }
+            "$ref": "#/components/schemas/ItemList"
           },
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
@@ -1142,7 +1875,7 @@
               "id": 1,
               "variant": "rare",
               "name": "Sword",
-              "description": "A sword that can be used to fight enemies.",
+              "text": "A sword that can be used to fight small enemies.",
               "buy_value": 100,
               "sell_value": 50,
               "weight": 10,
@@ -1159,7 +1892,7 @@
               "id": 2,
               "variant": "common",
               "name": "Shield",
-              "description": "A shield that can be used to block enemy attacks.",
+              "text": "A shield that can be used to block enemy attacks.",
               "buy_value": 50,
               "sell_value": 25,
               "weight": 15,
@@ -1170,7 +1903,7 @@
                 "height": 2,
                 "width": 2
               },
-              "type": "shield"
+              "type": "meleeWeapon"
             }
           ],
           "pagination": {
@@ -1186,16 +1919,93 @@
           "pagination"
         ]
       },
+      "ItemPostRequest": {
+        "type": "object",
+        "description": "This object holds the request data for creating a new item.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Sword"
+          },
+          "variant": {
+            "type": "string",
+            "example": "Iron"
+          },
+          "text": {
+            "type": "string",
+            "example": "A sword made of iron."
+          },
+          "buy_value": {
+            "type": "integer",
+            "format": "int64",
+            "example": 100
+          },
+          "sell_value": {
+            "type": "integer",
+            "format": "int64",
+            "example": 50
+          },
+          "weight": {
+            "type": "integer",
+            "format": "int64",
+            "example": 10
+          },
+          "durability": {
+            "type": "integer",
+            "format": "int64",
+            "example": 200
+          },
+          "max_stack": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "type": {
+            "$ref": "#/components/schemas/ItemType"
+          },
+          "shape": {
+            "$ref": "#/components/schemas/ItemShape"
+          }
+        },
+        "example": {
+          "name": "Sword",
+          "variant": "Iron",
+          "text": "A sword made of iron.",
+          "buy_value": 200,
+          "sell_value": 70,
+          "weight": 20,
+          "durability": 350,
+          "max_stack": 1,
+          "type": "meleeWeapon",
+          "shape": {
+            "rawshape": "###",
+            "height": 3,
+            "width": 1
+          }
+        },
+        "required": [
+          "name",
+          "variant",
+          "text",
+          "buy_value",
+          "sell_value",
+          "weight",
+          "durability",
+          "max_stack",
+          "type",
+          "shape"
+        ]
+      },
       "ErrorType": {
         "type": "string",
-        "example": "Bad Request",
         "description": "The error type",
         "enum": [
           "Bad Request",
           "Not Found",
           "Not Implemented",
           "Internal Server Error"
-        ]
+        ],
+        "example": "Bad Request"
       },
       "Error": {
         "type": "object",
@@ -1226,6 +2036,13 @@
             "example": "2020-01-01T00:00:00Z"
           }
         },
+        "example": {
+          "errorId": "123e4567-e89b-12d3-a456-426614174000",
+          "error": "The item does not exist",
+          "ErrorType": "Not Found",
+          "code": 404,
+          "timestamp": "2020-01-01T00:00:00Z"
+        },
         "required": [
           "errorId",
           "error",
@@ -1234,88 +2051,18 @@
           "timestamp"
         ]
       },
-      "ItemPostRequest": {
-        "type": "object",
-        "description": "This object holds the request data for creating a new item.",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "Sword"
-          },
-          "variant": {
-            "type": "string",
-            "example": "Iron"
-          },
-          "description": {
-            "type": "string",
-            "example": "A sword made of iron."
-          },
-          "buy_value": {
-            "type": "integer",
-            "example": 100
-          },
-          "sell_value": {
-            "type": "integer",
-            "example": 50
-          },
-          "weight": {
-            "type": "integer",
-            "example": 10
-          },
-          "durability": {
-            "type": "integer",
-            "example": 200
-          },
-          "max_stack": {
-            "type": "integer",
-            "example": 1
-          },
-          "type": {
-            "$ref": "#/components/schemas/ItemType"
-          },
-          "shape": {
-            "$ref": "#/components/schemas/ItemShape"
-          }
-        },
-        "example": {
-          "name": "Sword",
-          "variant": "Iron",
-          "description": "A sword made of iron.",
-          "buy_value": 200,
-          "sell_value": 70,
-          "weight": 20,
-          "durability": 350,
-          "max_stack": 1,
-          "type": "meleeWeapon",
-          "shape": {
-            "rawshape": "###",
-            "height": 3,
-            "width": 1
-          }
-        },
-        "required": [
-          "name",
-          "variant",
-          "description",
-          "buy_value",
-          "sell_value",
-          "weight",
-          "durability",
-          "max_stack",
-          "type",
-          "shape"
-        ]
-      },
       "Volume": {
         "type": "object",
         "description": "This object holds the volume data.",
         "properties": {
           "height": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           },
           "width": {
             "type": "integer",
+            "format": "int64",
             "example": 10
           }
         },
@@ -1334,6 +2081,7 @@
         "properties": {
           "id": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "name": {
@@ -1342,10 +2090,12 @@
           },
           "userId": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "max_weight": {
             "type": "integer",
+            "format": "int64",
             "example": 850
           },
           "volume": {
@@ -1370,59 +2120,149 @@
           "volume"
         ]
       },
+      "InventoryMetaList": {
+        "type": "array",
+        "description": "The list of inventory metas.",
+        "items": {
+          "$ref": "#/components/schemas/InventoryMeta"
+        },
+        "example": [
+          {
+            "id": 1,
+            "name": "Backpack",
+            "userId": 1,
+            "max_weight": 850,
+            "volume": {
+              "height": 3,
+              "width": 4
+            }
+          },
+          {
+            "id": 2,
+            "name": "Chest",
+            "userId": 1,
+            "max_weight": 1500,
+            "volume": {
+              "height": 10,
+              "width": 10
+            }
+          }
+        ]
+      },
       "User": {
         "type": "object",
         "description": "This object holds the user data.",
         "properties": {
           "id": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "username": {
             "type": "string",
             "example": "JohnDoe"
           },
+          "email": {
+            "type": "string",
+            "example": "something@something.com"
+          },
           "inventories": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/InventoryMeta"
-            }
+            "$ref": "#/components/schemas/InventoryMetaList"
           }
         },
         "example": {
           "id": 1,
-          "username": "JohnDoe",
+          "username": "john_doe",
+          "email": "something@something.com",
           "inventories": [
             {
-              "inventoryMeta": {
-                "id": 1,
-                "name": "Main Inventory",
-                "description": "The main inventory",
-                "created": "2020-01-01T00:00:00Z"
-              },
-              "items": [
-                {
-                  "id": 1,
-                  "name": "Item 1",
-                  "description": "The first item",
-                  "quantity": 1,
-                  "created": "2020-01-01T00:00:00Z"
-                },
-                {
-                  "id": 2,
-                  "name": "Item 2",
-                  "description": "The second item",
-                  "quantity": 2,
-                  "created": "2020-01-01T00:00:00Z"
-                }
-              ]
+              "id": 1,
+              "name": "Backpack",
+              "userId": 1,
+              "max_weight": 850,
+              "volume": {
+                "height": 3,
+                "width": 4
+              }
+            },
+            {
+              "id": 2,
+              "name": "Bank",
+              "userId": 1,
+              "max_weight": 10000,
+              "volume": {
+                "height": 10,
+                "width": 10
+              }
             }
           ]
         },
         "required": [
           "id",
           "username",
+          "email",
           "inventories"
+        ]
+      },
+      "UserList": {
+        "type": "array",
+        "description": "The list of users.",
+        "items": {
+          "$ref": "#/components/schemas/User"
+        },
+        "example": [
+          {
+            "id": 1,
+            "username": "john_doe",
+            "inventories": [
+              {
+                "id": 1,
+                "name": "Backpack",
+                "userId": 1,
+                "max_weight": 850,
+                "volume": {
+                  "height": 3,
+                  "width": 4
+                }
+              },
+              {
+                "id": 2,
+                "name": "Bank",
+                "userId": 1,
+                "max_weight": 10000,
+                "volume": {
+                  "height": 10,
+                  "width": 10
+                }
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "username": "jane_doe",
+            "inventories": [
+              {
+                "id": 3,
+                "name": "Big Backpack",
+                "userId": 2,
+                "max_weight": 1350,
+                "volume": {
+                  "height": 5,
+                  "width": 8
+                }
+              },
+              {
+                "id": 4,
+                "name": "Small Bank",
+                "userId": 2,
+                "max_weight": 1000,
+                "volume": {
+                  "height": 7,
+                  "width": 7
+                }
+              }
+            ]
+          }
         ]
       },
       "UserListResponse": {
@@ -1430,11 +2270,7 @@
         "description": "This object holds the user list response data. It includes the list of users and pagination data.",
         "properties": {
           "users": {
-            "type": "array",
-            "description": "The list of users.",
-            "items": {
-              "$ref": "#/components/schemas/User"
-            }
+            "$ref": "#/components/schemas/UserList"
           },
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
@@ -1445,6 +2281,7 @@
             {
               "id": 1,
               "username": "john_doe",
+              "email": "something@something.com",
               "inventories": [
                 {
                   "id": 1,
@@ -1471,6 +2308,7 @@
             {
               "id": 2,
               "username": "jane_doe",
+              "email": "different@something.com",
               "inventories": [
                 {
                   "id": 3,
@@ -1519,21 +2357,15 @@
           "email": {
             "type": "string",
             "example": "john_doe@test.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "password"
           }
         },
         "example": {
           "username": "john_doe",
-          "email": "something@something.com",
-          "password": "password"
+          "email": "something@something.com"
         },
         "required": [
           "username",
-          "email",
-          "password"
+          "email"
         ]
       },
       "InventoryListResponse": {
@@ -1541,11 +2373,7 @@
         "description": "This object holds the inventory list response data. It includes the list of inventories and pagination data.",
         "properties": {
           "inventories": {
-            "type": "array",
-            "description": "The list of inventories.",
-            "items": {
-              "$ref": "#/components/schemas/InventoryMeta"
-            }
+            "$ref": "#/components/schemas/InventoryMetaList"
           },
           "pagination": {
             "$ref": "#/components/schemas/Pagination"
@@ -1597,10 +2425,12 @@
           },
           "user_id": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "max_weight": {
             "type": "integer",
+            "format": "int64",
             "example": 850
           },
           "volume": {
@@ -1629,14 +2459,17 @@
         "properties": {
           "x": {
             "type": "integer",
+            "format": "int64",
             "example": 3
           },
           "y": {
             "type": "integer",
+            "format": "int64",
             "example": 4
           },
           "rotation": {
             "type": "integer",
+            "format": "int64",
             "example": 2
           }
         },
@@ -1663,10 +2496,12 @@
           },
           "quantity": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "durability_left": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           }
         },
@@ -1675,7 +2510,7 @@
             "id": 1,
             "variant": "rare",
             "name": "Sword",
-            "description": "A sword that can be used to fight enemies.",
+            "text": "A sword that can be used to fight some enemies.",
             "buy_value": 100,
             "sell_value": 50,
             "weight": 10,
@@ -1690,7 +2525,8 @@
           },
           "position": {
             "x": 0,
-            "y": 0
+            "y": 0,
+            "rotation": 2
           },
           "quantity": 1,
           "durability_left": 70
@@ -1702,6 +2538,67 @@
           "durability_left"
         ]
       },
+      "InventoryItemList": {
+        "type": "array",
+        "description": "The list of inventory items.",
+        "items": {
+          "$ref": "#/components/schemas/InventoryItem"
+        },
+        "example": [
+          {
+            "item": {
+              "id": 1,
+              "variant": "rare",
+              "name": "Sword",
+              "text": "A sword that can be used to fight tiny enemies.",
+              "buy_value": 100,
+              "sell_value": 50,
+              "weight": 10,
+              "durability": 100,
+              "max_stack": 1,
+              "shape": {
+                "rawshape": "###",
+                "height": 3,
+                "width": 1
+              },
+              "type": "meleeWeapon"
+            },
+            "position": {
+              "x": 0,
+              "y": 0,
+              "rotation": 2
+            },
+            "quantity": 1,
+            "durability_left": 70
+          },
+          {
+            "item": {
+              "id": 2,
+              "variant": "wooden",
+              "name": "Shield",
+              "text": "A shield that can be used to block attacks.",
+              "buy_value": 50,
+              "sell_value": 25,
+              "weight": 5,
+              "durability": 50,
+              "max_stack": 1,
+              "shape": {
+                "rawshape": "####",
+                "height": 2,
+                "width": 2
+              },
+              "type": "meleeWeapon"
+            },
+            "position": {
+              "x": 3,
+              "y": 0,
+              "rotation": 0
+            },
+            "quantity": 1,
+            "durability_left": 30
+          }
+        ]
+      },
       "Inventory": {
         "type": "object",
         "description": "This object holds the inventory meta data and the items in the inventory as an array of InventoryItem objects.",
@@ -1710,11 +2607,7 @@
             "$ref": "#/components/schemas/InventoryMeta"
           },
           "items": {
-            "type": "array",
-            "description": "An array of InventoryItem objects.",
-            "items": {
-              "$ref": "#/components/schemas/InventoryItem"
-            }
+            "$ref": "#/components/schemas/InventoryItemList"
           }
         },
         "example": {
@@ -1730,24 +2623,27 @@
           },
           "items": [
             {
-              "id": 1,
-              "variant": "rare",
-              "name": "Sword",
-              "description": "A sword that can be used to fight enemies.",
-              "buy_value": 100,
-              "sell_value": 50,
-              "weight": 10,
-              "durability": 100,
-              "max_stack": 1,
-              "shape": {
-                "rawshape": "###",
-                "height": 3,
-                "width": 1
+              "item": {
+                "id": 1,
+                "variant": "rare",
+                "name": "Sword",
+                "text": "A sword that can be used to fight tiny enemies.",
+                "buy_value": 100,
+                "sell_value": 50,
+                "weight": 10,
+                "durability": 100,
+                "max_stack": 1,
+                "shape": {
+                  "rawshape": "###",
+                  "height": 3,
+                  "width": 1
+                },
+                "type": "meleeWeapon"
               },
-              "type": "meleeWeapon",
               "position": {
                 "x": 0,
-                "y": 0
+                "y": 0,
+                "rotation": 0
               },
               "quantity": 1,
               "durability_left": 70
@@ -1771,17 +2667,20 @@
           },
           "quantity": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           }
         },
         "example": {
           "original_position": {
             "x": 0,
-            "y": 0
+            "y": 0,
+            "rotation": 0
           },
           "new_position": {
             "x": 1,
-            "y": 0
+            "y": 0,
+            "rotation": 0
           },
           "quantity": 1
         },
@@ -1800,10 +2699,12 @@
           },
           "quantity": {
             "type": "integer",
+            "format": "int64",
             "example": 1
           },
           "durability_left": {
             "type": "integer",
+            "format": "int64",
             "example": 100
           },
           "position": {
@@ -1815,7 +2716,7 @@
             "id": 1,
             "variant": "rare",
             "name": "Sword",
-            "description": "A sword that can be used to fight enemies.",
+            "text": "Example of a rare sword.",
             "buy_value": 100,
             "sell_value": 50,
             "weight": 10,
@@ -1832,7 +2733,8 @@
           "durability_left": 100,
           "position": {
             "x": 0,
-            "y": 0
+            "y": 0,
+            "rotation": 0
           }
         },
         "required": [
@@ -1855,15 +2757,15 @@
             "description": "The date the code was built",
             "example": "2020-01-01"
           },
-          "description": {
+          "details": {
             "type": "string",
             "description": "A description of the API",
-            "example": "This is the API for the inventory management system"
+            "example": "This is the API for the x service"
           },
           "commitHash": {
             "type": "string",
             "description": "The hash of the commit",
-            "example": 1234567890
+            "example": "0d1444adb917eacc71321f1281904f71c5e378ca"
           },
           "commitDate": {
             "type": "string",
@@ -1874,14 +2776,14 @@
         "example": {
           "version": "1.0.0",
           "buildDate": "2020-01-01",
-          "description": "This is the API for the inventory management system",
-          "commitHash": 1234567890,
+          "details": "This is an API.",
+          "commitHash": "0d1444adb917eacc71321f1281904f71c5e378ca",
           "commitDate": "2020-01-01T00:00:00Z"
         },
         "required": [
           "version",
           "buildDate",
-          "description",
+          "details",
           "commitHash",
           "commitDate"
         ]
@@ -1889,12 +2791,12 @@
       "Status": {
         "type": "string",
         "description": "The status of the API",
-        "example": "HEALTHY",
         "enum": [
           "HEALTHY",
           "UNHEALTHY",
           "UNKNOWN"
-        ]
+        ],
+        "example": "HEALTHY"
       }
     }
   }

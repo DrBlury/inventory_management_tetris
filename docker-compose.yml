@@ -65,3 +65,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+  # otel:
+  #   image: public.ecr.aws/zinclabs/openobserve:latest
+  #   restart: on-failure
+  #   environment:
+  #     ZO_ROOT_USER_EMAIL: "root@example.com"
+  #     ZO_ROOT_USER_PASSWORD: "Complexpass#123"
+  #   ports:
+  #     - "5080:5080"
+  #   volumes:
+  #     - ./otel_data:/data

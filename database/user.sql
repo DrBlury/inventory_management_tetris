@@ -24,9 +24,9 @@ ORDER BY
 
 -- name: CreateUser :one
 INSERT INTO
-  "user" (username, email, salt, password_hash, created_at)
+  "user" (username, email, created_at)
 VALUES
-  ($1, $2, $3, $4, $5)
+  ($1, $2, $3)
 RETURNING
   *;
 
@@ -35,11 +35,9 @@ UPDATE "user"
 SET
   username = $1,
   email = $2,
-  salt = $3,
-  password_hash = $4,
-  created_at = $5
+  created_at = $3
 WHERE
-  id = $6
+  id = $4
 RETURNING
   *;
 

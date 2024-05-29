@@ -8,16 +8,11 @@ properties:
     $ref: '../types/Position.yml'
   quantity:
     type: integer
+    format: int64
     example: 1
 
 example:
-  original_position:
-    x: 0
-    y: 0
-  new_position:
-    x: 1
-    y: 0
-  quantity: 1
+  $ref: '../../examples/_index.yml#/MoveItemRequestExample'
 
 required:
   - original_position

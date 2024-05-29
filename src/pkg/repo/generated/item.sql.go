@@ -15,7 +15,7 @@ const createItem = `-- name: CreateItem :one
 INSERT INTO
   item (
     name,
-    description,
+    text,
     variant,
     buy_value,
     sell_value,
@@ -45,29 +45,29 @@ VALUES
     $13
   )
 RETURNING
-  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
+  id, name, text, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
 `
 
 type CreateItemParams struct {
-	Name        pgtype.Text
-	Description pgtype.Text
-	Variant     pgtype.Text
-	BuyValue    pgtype.Int4
-	SellValue   pgtype.Int4
-	Weight      pgtype.Int4
-	Durability  pgtype.Int4
-	MaxStack    pgtype.Int4
-	Height      pgtype.Int4
-	Width       pgtype.Int4
-	Rawshape    pgtype.Text
-	Type        NullItemType
-	CreatedAt   pgtype.Timestamp
+	Name       pgtype.Text
+	Text       pgtype.Text
+	Variant    pgtype.Text
+	BuyValue   pgtype.Int4
+	SellValue  pgtype.Int4
+	Weight     pgtype.Int4
+	Durability pgtype.Int4
+	MaxStack   pgtype.Int4
+	Height     pgtype.Int4
+	Width      pgtype.Int4
+	Rawshape   pgtype.Text
+	Type       NullItemType
+	CreatedAt  pgtype.Timestamp
 }
 
 func (q *Queries) CreateItem(ctx context.Context, arg CreateItemParams) (Item, error) {
 	row := q.db.QueryRow(ctx, createItem,
 		arg.Name,
-		arg.Description,
+		arg.Text,
 		arg.Variant,
 		arg.BuyValue,
 		arg.SellValue,
@@ -84,7 +84,7 @@ func (q *Queries) CreateItem(ctx context.Context, arg CreateItemParams) (Item, e
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
-		&i.Description,
+		&i.Text,
 		&i.Variant,
 		&i.BuyValue,
 		&i.SellValue,
@@ -105,7 +105,7 @@ DELETE FROM item
 WHERE
   id = $1
 RETURNING
-  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
+  id, name, text, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
 `
 
 func (q *Queries) DeleteItem(ctx context.Context, id int32) (Item, error) {
@@ -114,7 +114,7 @@ func (q *Queries) DeleteItem(ctx context.Context, id int32) (Item, error) {
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
-		&i.Description,
+		&i.Text,
 		&i.Variant,
 		&i.BuyValue,
 		&i.SellValue,
@@ -132,7 +132,7 @@ func (q *Queries) DeleteItem(ctx context.Context, id int32) (Item, error) {
 
 const getItem = `-- name: GetItem :one
 SELECT
-  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
+  id, name, text, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
 FROM
   item
 WHERE
@@ -145,7 +145,7 @@ func (q *Queries) GetItem(ctx context.Context, id int32) (Item, error) {
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
-		&i.Description,
+		&i.Text,
 		&i.Variant,
 		&i.BuyValue,
 		&i.SellValue,
@@ -163,7 +163,7 @@ func (q *Queries) GetItem(ctx context.Context, id int32) (Item, error) {
 
 const getItemByType = `-- name: GetItemByType :many
 SELECT
-  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
+  id, name, text, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
 FROM
   item
 WHERE
@@ -184,7 +184,7 @@ func (q *Queries) GetItemByType(ctx context.Context, type_ NullItemType) ([]Item
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
-			&i.Description,
+			&i.Text,
 			&i.Variant,
 			&i.BuyValue,
 			&i.SellValue,
@@ -209,7 +209,7 @@ func (q *Queries) GetItemByType(ctx context.Context, type_ NullItemType) ([]Item
 
 const listItems = `-- name: ListItems :many
 SELECT
-  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
+  id, name, text, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
 FROM
   item
 ORDER BY
@@ -228,7 +228,7 @@ func (q *Queries) ListItems(ctx context.Context) ([]Item, error) {
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
-			&i.Description,
+			&i.Text,
 			&i.Variant,
 			&i.BuyValue,
 			&i.SellValue,
@@ -255,7 +255,7 @@ const updateItem = `-- name: UpdateItem :one
 UPDATE "item"
 SET
   name = $1,
-  description = $2,
+  text = $2,
   variant = $3,
   buy_value = $4,
   sell_value = $5,
@@ -270,30 +270,30 @@ SET
 WHERE
   id = $14
 RETURNING
-  id, name, description, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
+  id, name, text, variant, buy_value, sell_value, weight, durability, max_stack, height, width, rawshape, created_at, type
 `
 
 type UpdateItemParams struct {
-	Name        pgtype.Text
-	Description pgtype.Text
-	Variant     pgtype.Text
-	BuyValue    pgtype.Int4
-	SellValue   pgtype.Int4
-	Weight      pgtype.Int4
-	Durability  pgtype.Int4
-	MaxStack    pgtype.Int4
-	Height      pgtype.Int4
-	Width       pgtype.Int4
-	Rawshape    pgtype.Text
-	Type        NullItemType
-	CreatedAt   pgtype.Timestamp
-	ID          int32
+	Name       pgtype.Text
+	Text       pgtype.Text
+	Variant    pgtype.Text
+	BuyValue   pgtype.Int4
+	SellValue  pgtype.Int4
+	Weight     pgtype.Int4
+	Durability pgtype.Int4
+	MaxStack   pgtype.Int4
+	Height     pgtype.Int4
+	Width      pgtype.Int4
+	Rawshape   pgtype.Text
+	Type       NullItemType
+	CreatedAt  pgtype.Timestamp
+	ID         int32
 }
 
 func (q *Queries) UpdateItem(ctx context.Context, arg UpdateItemParams) (Item, error) {
 	row := q.db.QueryRow(ctx, updateItem,
 		arg.Name,
-		arg.Description,
+		arg.Text,
 		arg.Variant,
 		arg.BuyValue,
 		arg.SellValue,
@@ -311,7 +311,7 @@ func (q *Queries) UpdateItem(ctx context.Context, arg UpdateItemParams) (Item, e
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
-		&i.Description,
+		&i.Text,
 		&i.Variant,
 		&i.BuyValue,
 		&i.SellValue,

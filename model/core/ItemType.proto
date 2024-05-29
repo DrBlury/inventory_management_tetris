@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+enum ItemType {
+    ARMOR = 0;
+    CONSUMABLE = 1;
+    CONSUMABLE_WEAPON = 2;
+    MELEE_WEAPON = 3;
+    RANGED_WEAPON = 4;
+    QUEST_ITEM = 5;
+    RESOURCE = 6;
+}

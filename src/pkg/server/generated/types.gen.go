@@ -35,14 +35,14 @@ const (
 
 // AddItemToInventoryRequest This object holds the request data for adding an item to the inventory.
 type AddItemToInventoryRequest struct {
-	DurabilityLeft int `json:"durability_left"`
+	DurabilityLeft int64 `json:"durability_left"`
 
 	// Item This object holds the item data.
 	Item Item `json:"item"`
 
 	// Position This object holds the position data.
 	Position *Position `json:"position,omitempty"`
-	Quantity int       `json:"quantity"`
+	Quantity int64     `json:"quantity"`
 }
 
 // Error This object holds the error response data.
@@ -71,26 +71,29 @@ type Inventory struct {
 	// InventoryMeta This object holds the inventory meta data (restrictions, owner, etc.)
 	InventoryMeta InventoryMeta `json:"inventoryMeta"`
 
-	// Items An array of InventoryItem objects.
-	Items []InventoryItem `json:"items"`
+	// Items The list of inventory items.
+	Items InventoryItemList `json:"items"`
 }
 
 // InventoryItem This object holds the inventory item data.
 type InventoryItem struct {
-	DurabilityLeft int `json:"durability_left"`
+	DurabilityLeft int64 `json:"durability_left"`
 
 	// Item This object holds the item data.
 	Item Item `json:"item"`
 
 	// Position This object holds the position data.
 	Position Position `json:"position"`
-	Quantity int      `json:"quantity"`
+	Quantity int64    `json:"quantity"`
 }
+
+// InventoryItemList The list of inventory items.
+type InventoryItemList = []InventoryItem
 
 // InventoryListResponse This object holds the inventory list response data. It includes the list of inventories and pagination data.
 type InventoryListResponse struct {
-	// Inventories The list of inventories.
-	Inventories []InventoryMeta `json:"inventories"`
+	// Inventories The list of inventory metas.
+	Inventories InventoryMetaList `json:"inventories"`
 
 	// Pagination This object holds the pagination data.
 	Pagination Pagination `json:"pagination"`
@@ -98,20 +101,23 @@ type InventoryListResponse struct {
 
 // InventoryMeta This object holds the inventory meta data (restrictions, owner, etc.)
 type InventoryMeta struct {
-	Id        int    `json:"id"`
-	MaxWeight int    `json:"max_weight"`
+	Id        int64  `json:"id"`
+	MaxWeight int64  `json:"max_weight"`
 	Name      string `json:"name"`
-	UserId    int    `json:"userId"`
+	UserId    int64  `json:"userId"`
 
 	// Volume This object holds the volume data.
 	Volume Volume `json:"volume"`
 }
 
+// InventoryMetaList The list of inventory metas.
+type InventoryMetaList = []InventoryMeta
+
 // InventoryPostRequest This object holds the request data for creating an inventory.
 type InventoryPostRequest struct {
-	MaxWeight int    `json:"max_weight"`
+	MaxWeight int64  `json:"max_weight"`
 	Name      string `json:"name"`
-	UserId    int    `json:"user_id"`
+	UserId    int64  `json:"user_id"`
 
 	// Volume This object holds the volume data.
 	Volume Volume `json:"volume"`
@@ -119,27 +125,30 @@ type InventoryPostRequest struct {
 
 // Item This object holds the item data.
 type Item struct {
-	BuyValue    int    `json:"buy_value"`
-	Description string `json:"description"`
-	Durability  int    `json:"durability"`
-	Id          int    `json:"id"`
-	MaxStack    int    `json:"max_stack"`
-	Name        string `json:"name"`
-	SellValue   int    `json:"sell_value"`
+	BuyValue   int64  `json:"buy_value"`
+	Durability int64  `json:"durability"`
+	Id         int64  `json:"id"`
+	MaxStack   int64  `json:"max_stack"`
+	Name       string `json:"name"`
+	SellValue  int64  `json:"sell_value"`
 
 	// Shape This object holds the item shape data.
 	Shape ItemShape `json:"shape"`
+	Text  string    `json:"text"`
 
 	// Type The type of the item.
 	Type    ItemType `json:"type"`
 	Variant string   `json:"variant"`
-	Weight  int      `json:"weight"`
+	Weight  int64    `json:"weight"`
 }
+
+// ItemList The list of items.
+type ItemList = []Item
 
 // ItemListResponse This object holds the item list response data. It includes the list of items and pagination data.
 type ItemListResponse struct {
 	// Items The list of items.
-	Items []Item `json:"items"`
+	Items ItemList `json:"items"`
 
 	// Pagination This object holds the pagination data.
 	Pagination Pagination `json:"pagination"`
@@ -147,27 +156,27 @@ type ItemListResponse struct {
 
 // ItemPostRequest This object holds the request data for creating a new item.
 type ItemPostRequest struct {
-	BuyValue    int    `json:"buy_value"`
-	Description string `json:"description"`
-	Durability  int    `json:"durability"`
-	MaxStack    int    `json:"max_stack"`
-	Name        string `json:"name"`
-	SellValue   int    `json:"sell_value"`
+	BuyValue   int64  `json:"buy_value"`
+	Durability int64  `json:"durability"`
+	MaxStack   int64  `json:"max_stack"`
+	Name       string `json:"name"`
+	SellValue  int64  `json:"sell_value"`
 
 	// Shape This object holds the item shape data.
 	Shape ItemShape `json:"shape"`
+	Text  string    `json:"text"`
 
 	// Type The type of the item.
 	Type    ItemType `json:"type"`
 	Variant string   `json:"variant"`
-	Weight  int      `json:"weight"`
+	Weight  int64    `json:"weight"`
 }
 
 // ItemShape This object holds the item shape data.
 type ItemShape struct {
-	Height   int    `json:"height"`
+	Height   int64  `json:"height"`
 	Rawshape string `json:"rawshape"`
-	Width    int    `json:"width"`
+	Width    int64  `json:"width"`
 }
 
 // ItemType The type of the item.
@@ -180,23 +189,23 @@ type MoveItemRequest struct {
 
 	// OriginalPosition This object holds the position data.
 	OriginalPosition Position `json:"original_position"`
-	Quantity         int      `json:"quantity"`
+	Quantity         int64    `json:"quantity"`
 }
 
 // Pagination This object holds the pagination data.
 type Pagination struct {
-	Limit  int `json:"limit"`
-	Offset int `json:"offset"`
-	Page   int `json:"page"`
-	Pages  int `json:"pages"`
-	Total  int `json:"total"`
+	Limit  int64 `json:"limit"`
+	Offset int64 `json:"offset"`
+	Page   int64 `json:"page"`
+	Pages  int64 `json:"pages"`
+	Total  int64 `json:"total"`
 }
 
 // Position This object holds the position data.
 type Position struct {
-	Rotation int `json:"rotation"`
-	X        int `json:"x"`
-	Y        int `json:"y"`
+	Rotation int64 `json:"rotation"`
+	X        int64 `json:"x"`
+	Y        int64 `json:"y"`
 }
 
 // Status The status of the API
@@ -204,10 +213,16 @@ type Status string
 
 // User This object holds the user data.
 type User struct {
-	Id          int             `json:"id"`
-	Inventories []InventoryMeta `json:"inventories"`
-	Username    string          `json:"username"`
+	Email string `json:"email"`
+	Id    int64  `json:"id"`
+
+	// Inventories The list of inventory metas.
+	Inventories InventoryMetaList `json:"inventories"`
+	Username    string            `json:"username"`
 }
+
+// UserList The list of users.
+type UserList = []User
 
 // UserListResponse This object holds the user list response data. It includes the list of users and pagination data.
 type UserListResponse struct {
@@ -215,13 +230,12 @@ type UserListResponse struct {
 	Pagination Pagination `json:"pagination"`
 
 	// Users The list of users.
-	Users []User `json:"users"`
+	Users UserList `json:"users"`
 }
 
 // UserPostRequest This object holds the request data for creating a new user.
 type UserPostRequest struct {
 	Email    string `json:"email"`
-	Password string `json:"password"`
 	Username string `json:"username"`
 }
 
@@ -236,8 +250,8 @@ type Version struct {
 	// CommitHash The hash of the commit
 	CommitHash string `json:"commitHash"`
 
-	// Description A description of the API
-	Description string `json:"description"`
+	// Details A description of the API
+	Details string `json:"details"`
 
 	// Version The version of the API
 	Version string `json:"version"`
@@ -245,8 +259,8 @@ type Version struct {
 
 // Volume This object holds the volume data.
 type Volume struct {
-	Height int `json:"height"`
-	Width  int `json:"width"`
+	Height int64 `json:"height"`
+	Width  int64 `json:"width"`
 }
 
 // GetOpenAPIHTMLParams defines parameters for GetOpenAPIHTML.

@@ -1,0 +1,43 @@
+---
+- item:
+    id: 1
+    variant: 'rare'
+    name: 'Sword'
+    text: 'A sword that can be used to fight tiny enemies.'
+    buy_value: 100
+    sell_value: 50
+    weight: 10
+    durability: 100
+    max_stack: 1
+    shape:
+      rawshape: '###'
+      height: 3
+      width: 1
+    type: "meleeWeapon"
+  position:
+    x: 0
+    y: 0
+    rotation: 2
+  quantity: 1
+  durability_left: 70
+- item:
+    id: 2
+    variant: 'wooden'
+    name: 'Shield'
+    text: 'A shield that can be used to block attacks.'
+    buy_value: 50
+    sell_value: 25
+    weight: 5
+    durability: 50
+    max_stack: 1
+    shape:
+      rawshape: '####'
+      height: 2
+      width: 2
+    type: meleeWeapon
+  position:
+    x: 3
+    y: 0
+    rotation: 0
+  quantity: 1
+  durability_left: 30

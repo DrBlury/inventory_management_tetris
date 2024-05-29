@@ -35,7 +35,7 @@ func (a APIHandler) GetAllInventories(w http.ResponseWriter, r *http.Request) {
 // Add new inventory
 // (POST /api/inventories)
 func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
-	a.log.Info("adding inventory: ", zap.String("request", r.RequestURI))
+	a.log.With(zap.String("request", r.RequestURI)).Info("adding inventory: ")
 	// read dto inventory from request using unmarshal
 	var dtoInventory server.InventoryPostRequest
 	// read request body into bytes
@@ -45,7 +45,7 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		a.log.Error("error reading request body", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error reading request body")
 		return
 	}
 	// unmarshal bytes into dto
@@ -53,12 +53,12 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		a.log.Error("error unmarshalling request body", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error unmarshalling request body")
 		return
 	}
 
-	createInventoryParams := domain.CreateInventoryParams{
-		UserID:    dtoInventory.UserId,
+	createInventoryParams := &domain.CreateInventoryParams{
+		UserId:    dtoInventory.UserId,
 		Name:      dtoInventory.Name,
 		MaxWeight: dtoInventory.MaxWeight,
 		Width:     dtoInventory.Volume.Width,
@@ -70,7 +70,7 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		a.log.Error("error adding inventory", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error adding inventory")
 		return
 	}
 
@@ -85,7 +85,7 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 // (DELETE /api/inventories/{inventoryId})
 func (a APIHandler) DeleteInventoryById(w http.ResponseWriter, r *http.Request, inventoryId int64) {
 	// call domain layer
-	err := a.AppLogic.DeleteInventoryById(r.Context(), int(inventoryId))
+	err := a.AppLogic.DeleteInventoryById(r.Context(), inventoryId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
@@ -100,7 +100,7 @@ func (a APIHandler) DeleteInventoryById(w http.ResponseWriter, r *http.Request, 
 // (GET /api/inventories/{inventoryId})
 func (a APIHandler) GetInventoryById(w http.ResponseWriter, r *http.Request, inventoryId int64) {
 	// call domain layer
-	inventory, err := a.AppLogic.GetInventoryById(r.Context(), int(inventoryId))
+	inventory, err := a.AppLogic.GetInventoryById(r.Context(), inventoryId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
@@ -134,8 +134,8 @@ func (a APIHandler) UpdateInventoryById(w http.ResponseWriter, r *http.Request, 
 		return
 	}
 
-	updateInventoryParams := domain.UpdateInventoryParams{
-		UserID:    dtoInventory.UserId,
+	updateInventoryParams := &domain.UpdateInventoryParams{
+		UserId:    dtoInventory.UserId,
 		Name:      dtoInventory.Name,
 		MaxWeight: dtoInventory.MaxWeight,
 		Width:     dtoInventory.Volume.Width,
@@ -143,7 +143,7 @@ func (a APIHandler) UpdateInventoryById(w http.ResponseWriter, r *http.Request, 
 	}
 
 	// call domain layer
-	updatedInventory, err := a.AppLogic.UpdateInventory(r.Context(), int(inventoryId), updateInventoryParams)
+	updatedInventory, err := a.AppLogic.UpdateInventory(r.Context(), inventoryId, updateInventoryParams)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return

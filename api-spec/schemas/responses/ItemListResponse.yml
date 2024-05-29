@@ -3,49 +3,12 @@ type: object
 description: This object holds the item list response data. It includes the list of items and pagination data.
 properties:
   items:
-    type: array
-    description: The list of items.
-    items:
-      $ref: '../types/Item.yml'
+    $ref: '../types/ItemList.yml'
   pagination:
     $ref: '../types/Pagination.yml'
 
 example:
-  items:
-    - id: 1
-      variant: 'rare'
-      name: 'Sword'
-      description: 'A sword that can be used to fight enemies.'
-      buy_value: 100
-      sell_value: 50
-      weight: 10
-      durability: 100
-      max_stack: 1
-      shape:
-        rawshape: '###'
-        height: 3
-        width: 1
-      type: meleeWeapon
-    - id: 2
-      variant: 'common'
-      name: 'Shield'
-      description: 'A shield that can be used to block enemy attacks.'
-      buy_value: 50
-      sell_value: 25
-      weight: 15
-      durability: 150
-      max_stack: 1
-      shape:
-        rawshape: '####'
-        height: 2
-        width: 2
-      type: shield
-  pagination:
-    page: 1
-    pages: 10
-    limit: 10
-    total: 100
-    offset: 0
+  $ref: '../../examples/_index.yml#/ItemListResponseExample'
 
 required:
   - items

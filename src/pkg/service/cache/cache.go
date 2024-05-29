@@ -24,11 +24,11 @@ func NewCache(config *Config, log *zap.SugaredLogger) *Cache {
 
 	result, err := client.Ping(context.Background()).Result()
 	if err != nil {
-		log.Error("error connecting to cache", zap.Error(err), zap.String("result", result))
+		log.With(zap.Error(err), zap.String("result", result)).Error("error connecting to cache")
 		return nil
 	}
 
-	log.Info("connected to cache", zap.String("result", result))
+	log.With(zap.String("result", result)).Info("connected to cache")
 
 	return &Cache{
 		Config: config,
@@ -50,7 +50,7 @@ func (c *Cache) GetString(ctx context.Context, key string) (string, error) {
 		case redis.Nil:
 			return "", nil
 		default:
-			c.log.Error("error getting string from cache", zap.Error(err))
+			c.log.With(zap.Error(err)).Error("error getting string from cache")
 			return "", err
 		}
 	}

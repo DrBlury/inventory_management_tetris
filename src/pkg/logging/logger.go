@@ -15,7 +15,7 @@ func SetLogger() *zap.SugaredLogger {
 	if ok && loggerVar == "json" {
 		logger, err := zap.NewProduction()
 		if err != nil {
-			zap.L().Sugar().Warnf("error creating prod logger: ", err)
+			zap.L().Sugar().With(zap.Error(err)).Warnf("error creating prod logger")
 		}
 		zap.ReplaceGlobals(logger)
 		return logger.Sugar()
@@ -25,7 +25,7 @@ func SetLogger() *zap.SugaredLogger {
 	zap.L().Warn("LOGGER environment variable not set to json, using default logger")
 	logger, err := zap.NewDevelopment()
 	if err != nil {
-		zap.L().Sugar().Warnf("error creating dev logger: ", err)
+		zap.L().Sugar().With(zap.Error(err)).Warnf("error creating dev logger")
 	}
 	zap.ReplaceGlobals(logger)
 	return logger.Sugar()

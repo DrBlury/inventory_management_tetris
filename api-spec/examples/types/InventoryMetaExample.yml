@@ -1,0 +1,8 @@
+---
+id: 1
+name: 'Backpack'
+userId: 1
+max_weight: 850
+volume:
+  height: 3
+  width: 4

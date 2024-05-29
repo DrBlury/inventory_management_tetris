@@ -1,18 +1,19 @@
 ---
 get:
   summary: Get inventory by ID
-  description: Get inventory by ID
+  description: Retrieve an inventory by ID
   operationId: getInventoryById
   tags:
     - inventory
   parameters:
     - name: inventoryId
       in: path
-      description: ID of inventory
+      description: ID of inventory to return
       required: true
       schema:
         type: integer
         format: int64
+      example: 1
   responses:
     '200':
       description: successful operation - returns inventory
@@ -20,37 +21,37 @@ get:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Inventory'
+          example:
+            $ref: '../../examples/_index.yml#/InventoryExample'
     '400':
-      description: Invalid ID supplied (e.g. not an integer)
+      description: Invalid ID supplied (e.g. not an integer) - can not find inventory
       content:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Error'
-
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
     '404':
-      description: Can not find inventory (inventory ID)
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/Error'
+      description: Can not find inventory (inventory ID) to return
 
   # This API has no security
   security: []
 
 put:
   summary: Update an inventory
-  description: Update an inventory
+  description: Update an inventory by ID
   operationId: updateInventoryById
   tags:
     - inventory
   parameters:
     - name: inventoryId
       in: path
-      description: ID of inventory that needs to be updated
+      description: ID of inventory to update
       required: true
       schema:
         type: integer
         format: int64
+      example: 1
   requestBody:
     required: true
     description: Inventory object that needs to be updated
@@ -58,6 +59,8 @@ put:
       application/json:
         schema:
           $ref: '../../schemas/_index.yml#/InventoryPostRequest'
+        example:
+          $ref: '../../examples/_index.yml#/InventoryPostRequestExample'
   responses:
     '200':
       description: Update done - returns updated inventory
@@ -65,25 +68,25 @@ put:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Inventory'
+          example:
+            $ref: '../../examples/_index.yml#/InventoryExample'
     '404':
-      description: Can not find inventory (inventory ID)
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/_index.yml#/Error'
+      description: Can not find inventory (inventory ID) to update
     '400':
-      description: Invalid ID supplied (e.g. not an integer)
+      description: Invalid ID supplied (e.g. not an integer) - can not update inventory
       content:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []
 
 delete:
-  summary: Delete inventory by ID
-  description: Delete inventory by ID
+  summary: Delete an inventory
+  description: Delete an inventory by ID
   operationId: deleteInventoryById
   tags:
     - inventory
@@ -95,13 +98,20 @@ delete:
       schema:
         type: integer
         format: int64
+      example: 1
   responses:
     '200':
       description: Deleted inventory (inventory ID)
-    '400':
-      description: Invalid ID supplied (e.g. not an integer)
     '404':
-      description: Can not find inventory (inventory ID)
+      description: Can not find inventory (inventory ID) to delete
+    '400':
+      description: Invalid ID supplied (e.g. not an integer) - can not delete inventory
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
 
   # This API has no security
   security: []

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+message Info {
+  string Version = 1;
+  string BuildDate = 2;
+  string Details = 3;
+  string CommitHash = 4;
+  string CommitDate = 5;
+}

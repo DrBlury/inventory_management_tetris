@@ -42,6 +42,6 @@ func main() {
 	)
 
 	if err != nil {
-		zap.L().Error("error running app", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error running app")
 	}
 }

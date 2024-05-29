@@ -6,7 +6,6 @@ import (
 	"linuxcode/inventory_manager/pkg/server"
 	"linuxcode/inventory_manager/pkg/server/router"
 	"linuxcode/inventory_manager/pkg/service/cache"
-	"linuxcode/inventory_manager/pkg/telemetry"
 	"time"
 
 	"github.com/spf13/viper"
@@ -17,7 +16,6 @@ type Config struct {
 	Router      *router.Config
 	Server      *server.Config
 	Database    *repo.Config
-	OTelConfig  *telemetry.Config
 	CacheConfig *cache.Config
 }
 
@@ -32,7 +30,7 @@ func SetDefaults() {
 func LoadConfig(
 	version string,
 	buildDate string,
-	description string,
+	details string,
 	commitHash string,
 	commitDate string,
 ) (*Config, error) {
@@ -40,11 +38,11 @@ func LoadConfig(
 	viper.AutomaticEnv()
 
 	infoConfig := &domain.Info{
-		Version:     version,
-		BuildDate:   buildDate,
-		Description: description,
-		CommitHash:  commitHash,
-		CommitDate:  commitDate,
+		Version:    version,
+		BuildDate:  buildDate,
+		Details:    details,
+		CommitHash: commitHash,
+		CommitDate: commitDate,
 	}
 
 	routerConfig := &router.Config{
@@ -71,12 +69,6 @@ func LoadConfig(
 		BaseURL: viper.GetString("APP_SERVER_BASE_URL"),
 	}
 
-	otelConfig := &telemetry.Config{
-		EnableOTel:     viper.GetBool("OTEL_ENABLED"),
-		MeterProvider:  viper.GetString("OTEL_METER_PROVIDER"),
-		TracerProvider: viper.GetString("OTEL_TRACER_PROVIDER"),
-	}
-
 	cacheConfig := &cache.Config{
 		Host: viper.GetString("APP_CACHE_HOST"),
 		Port: viper.GetInt("APP_CACHE_PORT"),
@@ -87,7 +79,6 @@ func LoadConfig(
 		Router:      routerConfig,
 		Server:      serverConfig,
 		Database:    databaseConfig,
-		OTelConfig:  otelConfig,
 		CacheConfig: cacheConfig,
 	}, nil
 }

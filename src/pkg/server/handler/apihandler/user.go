@@ -5,6 +5,7 @@ import (
 	domain "linuxcode/inventory_manager/pkg/domain/model"
 	server "linuxcode/inventory_manager/pkg/server/generated"
 	handler "linuxcode/inventory_manager/pkg/server/handler"
+	dtoTransform "linuxcode/inventory_manager/pkg/server/transform"
 	"net/http"
 
 	"github.com/go-chi/render"
@@ -17,19 +18,18 @@ func (a APIHandler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	// call domain layer
 	users, err := a.AppLogic.GetAllUsers(r.Context())
 	if err != nil {
-
 		handler.HandleInternalServerError(w, r, err)
 		return
 	}
 
-	// TODO map domain model to dto
-	// usersDTO := make([]server.User, 0, len(*users))
-	// for _, user := range *users {
-	// 	usersDTO = append(usersDTO, transform.UserDTOFromDomain(&user))
-	// }
+	// map to dto users
+	usersDTO := make([]*server.User, 0)
+	for _, user := range users {
+		usersDTO = append(usersDTO, dtoTransform.ToDTOUser(user))
+	}
 
 	// return response
-	render.JSON(w, r, users)
+	render.JSON(w, r, usersDTO)
 }
 
 // Add new user
@@ -44,7 +44,7 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error reading request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error reading request body")
 		return
 	}
 	// unmarshal bytes into dto
@@ -52,61 +52,60 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error unmarshalling request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error unmarshalling request body")
 		return
 	}
 
-	createUserParams := domain.CreateUserParams{
+	createUserParams := &domain.CreateUserParams{
 		Username: dtoUser.Username,
 		Email:    dtoUser.Email,
-		Password: dtoUser.Password,
 	}
 
 	// call domain layer
 	addedUser, err := a.AppLogic.AddUser(r.Context(), createUserParams)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
-		zap.L().Error("error adding user", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error adding user")
 		return
 	}
 
-	// TODO map to dto
+	// map to dto user
+	userDTO := dtoTransform.ToDTOUser(addedUser)
 
 	// return response
 	render.Status(r, http.StatusCreated)
-	render.JSON(w, r, addedUser)
+	render.JSON(w, r, userDTO)
 }
 
 // Delete user by ID
 // (DELETE /api/users/{userId})
 func (a APIHandler) DeleteUserById(w http.ResponseWriter, r *http.Request, userId int64) {
 	// call domain layer
-	err := a.AppLogic.DeleteUserById(r.Context(), int(userId))
+	err := a.AppLogic.DeleteUserById(r.Context(), userId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
 	}
 
 	// return response
-	// TODO Also change api response to return new status code
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusOK)
 }
 
 // Get user by ID
 // (GET /api/users/{userId})
 func (a APIHandler) GetUserById(w http.ResponseWriter, r *http.Request, userId int64) {
 	// call domain layer
-	user, err := a.AppLogic.GetUserById(r.Context(), int(userId))
+	user, err := a.AppLogic.GetUserById(r.Context(), userId)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		return
 	}
 
-	// TODO: map domain model to dto
-	// userDTO := transform.UserDTOFromDomain(user)
+	// map to dto user
+	userDTO := dtoTransform.ToDTOUser(user)
 
 	// return response
-	render.JSON(w, r, user)
+	render.JSON(w, r, userDTO)
 }
 
 // Update an user
@@ -121,7 +120,7 @@ func (a APIHandler) UpdateUserById(w http.ResponseWriter, r *http.Request, userI
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error reading request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error reading request body")
 		return
 	}
 	// unmarshal bytes into dto
@@ -129,28 +128,28 @@ func (a APIHandler) UpdateUserById(w http.ResponseWriter, r *http.Request, userI
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error unmarshalling request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error unmarshalling request body")
 		return
 	}
 
-	updateUserParams := domain.UpdateUserParams{
+	updateUserParams := &domain.UpdateUserParams{
 		Username: dtoUser.Username,
 		Email:    dtoUser.Email,
-		Password: dtoUser.Password,
 	}
 
 	// call domain layer
-	updatedUser, err := a.AppLogic.UpdateUser(r.Context(), int(userId), updateUserParams)
+	updatedUser, err := a.AppLogic.UpdateUser(r.Context(), userId, updateUserParams)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error updating user", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error updating user")
 		return
 	}
 
-	// TODO map to dto
+	// Map user to dto
+	userDTO := dtoTransform.ToDTOUser(updatedUser)
 
 	// return response
 	w.WriteHeader(http.StatusOK)
-	render.JSON(w, r, updatedUser)
+	render.JSON(w, r, userDTO)
 }

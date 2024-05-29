@@ -1,6 +1,6 @@
 ---
 post:
-  summary: Move an item already in the inventory
+  summary: Move item in Inventory
   description: Move an item already in the inventory
   operationId: moveItemInInventory
   tags:
@@ -8,11 +8,12 @@ post:
   parameters:
     - name: inventoryId
       in: path
-      description: ID of inventory
+      description: ID of inventory to move item in
       required: true
       schema:
         type: integer
         format: int64
+      example: 1
   requestBody:
     required: true
     description: Position data and quantity to move
@@ -20,6 +21,8 @@ post:
       application/json:
         schema:
           $ref: '../../schemas/_index.yml#/MoveItemRequest'
+        example:
+          $ref: '../../examples/_index.yml#/MoveItemRequestExample'
   responses:
     '200':
       description: Moved item in inventory
@@ -29,6 +32,11 @@ post:
         application/json:
           schema:
             $ref: '../../schemas/_index.yml#/Error'
+          example:
+            $ref: '../../examples/_index.yml#/ErrorExample'
+    '404':
+      description: Can not find inventory or item in inventory
+
 
   # This API has no security
   security: []

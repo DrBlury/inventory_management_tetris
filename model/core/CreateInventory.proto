@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package domain;
+
+option go_package = "./domain";
+
+message CreateInventoryParams {
+  int64 maxWeight = 1;
+  string name = 2;
+  int64 userId = 3;
+  int64 width = 4;
+  int64 height = 5;
+}

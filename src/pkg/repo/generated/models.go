@@ -81,27 +81,25 @@ type InventoryItem struct {
 }
 
 type Item struct {
-	ID          int32
-	Name        pgtype.Text
-	Description pgtype.Text
-	Variant     pgtype.Text
-	BuyValue    pgtype.Int4
-	SellValue   pgtype.Int4
-	Weight      pgtype.Int4
-	Durability  pgtype.Int4
-	MaxStack    pgtype.Int4
-	Height      pgtype.Int4
-	Width       pgtype.Int4
-	Rawshape    pgtype.Text
-	CreatedAt   pgtype.Timestamp
-	Type        NullItemType
+	ID         int32
+	Name       pgtype.Text
+	Text       pgtype.Text
+	Variant    pgtype.Text
+	BuyValue   pgtype.Int4
+	SellValue  pgtype.Int4
+	Weight     pgtype.Int4
+	Durability pgtype.Int4
+	MaxStack   pgtype.Int4
+	Height     pgtype.Int4
+	Width      pgtype.Int4
+	Rawshape   pgtype.Text
+	CreatedAt  pgtype.Timestamp
+	Type       NullItemType
 }
 
 type User struct {
-	ID           int32
-	Username     pgtype.Text
-	Salt         pgtype.Text
-	PasswordHash pgtype.Text
-	Email        pgtype.Text
-	CreatedAt    pgtype.Timestamp
+	ID        int32
+	Username  pgtype.Text
+	Email     pgtype.Text
+	CreatedAt pgtype.Timestamp
 }

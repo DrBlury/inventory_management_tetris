@@ -8,16 +8,10 @@ properties:
   email:
     type: string
     example: 'john_doe@test.com'
-  password:
-    type: string
-    example: 'password'
 
 example:
-  username: 'john_doe'
-  email: 'something@something.com'
-  password: 'password'
+  $ref: '../../examples/_index.yml#/UserPostRequestExample'
 
 required:
   - username
   - email
-  - password
