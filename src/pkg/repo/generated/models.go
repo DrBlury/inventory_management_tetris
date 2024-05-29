@@ -98,10 +98,8 @@ type Item struct {
 }
 
 type User struct {
-	ID           int32
-	Username     pgtype.Text
-	Salt         pgtype.Text
-	PasswordHash pgtype.Text
-	Email        pgtype.Text
-	CreatedAt    pgtype.Timestamp
+	ID        int32
+	Username  pgtype.Text
+	Email     pgtype.Text
+	CreatedAt pgtype.Timestamp
 }

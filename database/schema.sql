@@ -1,4 +1,6 @@
--- +migrate Up
+-- SQL dump generated using DBML (dbml.dbdiagram.io)
+-- Database: PostgreSQL
+-- Generated at: 2024-05-29T16:47:22.621Z
 
 CREATE TYPE "item_type" AS ENUM (
   'consumable',

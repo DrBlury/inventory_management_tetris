@@ -45,7 +45,7 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error reading request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error reading request body")
 		return
 	}
 	// unmarshal bytes into dto
@@ -53,7 +53,7 @@ func (a APIHandler) AddItem(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error unmarshalling request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error unmarshalling request body")
 		return
 	}
 

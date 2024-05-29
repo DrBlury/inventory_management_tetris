@@ -34,7 +34,7 @@ func (a appLogicImpl) GetAllInventories(ctx context.Context) ([]*domain.Inventor
 	// store all inventories in cache
 	err = a.setInventoriesInCache(ctx, inventoryMetas)
 	if err != nil {
-		a.log.Error("error setting all inventories in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error setting all inventories in cache")
 	}
 
 	return inventoryMetas, nil
@@ -43,7 +43,7 @@ func (a appLogicImpl) GetAllInventories(ctx context.Context) ([]*domain.Inventor
 // AddInventory creates a new inventory without any items for the given user
 func (a appLogicImpl) AddInventory(ctx context.Context, createInventoryParams *domain.CreateInventoryParams) (*domain.InventoryMeta, error) {
 	// log user the inventory is created for
-	a.log.Info("creating inventory for user", zap.Int64("userId", createInventoryParams.UserId))
+	a.log.With(zap.Int64("userId", createInventoryParams.UserId)).Info("creating inventory for user")
 	createdInventory, err := a.queries.CreateInventory(ctx, repo.CreateInventoryParams{
 		UserID:    pgtype.Int4{Int32: int32(createInventoryParams.UserId), Valid: true},
 		Invname:   pgtype.Text{String: createInventoryParams.Name, Valid: true},
@@ -59,14 +59,14 @@ func (a appLogicImpl) AddInventory(ctx context.Context, createInventoryParams *d
 	// invalidate cache
 	err = a.cache.Invalidate(ctx, "allInventoriesMeta")
 	if err != nil {
-		a.log.Error("error invalidating all inventories in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error invalidating all inventories in cache")
 	}
 
 	// Map repo model to domain model
 	invMeta := domain.MapRepoInventoryToDomainInventoryMeta(&createdInventory)
 
 	// log what inventory was created
-	a.log.Info("created inventory", zap.String("name", invMeta.Name))
+	a.log.With(zap.String("name", invMeta.Name)).Info("created inventory")
 
 	return invMeta, nil
 }
@@ -81,11 +81,11 @@ func (a appLogicImpl) DeleteInventoryById(ctx context.Context, inventoryId int64
 	// invalidate cache
 	err = a.cache.Invalidate(ctx, "allInventoriesMeta")
 	if err != nil {
-		a.log.Error("error invalidating all inventories in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error invalidating all inventories in cache")
 	}
 
 	// log what inventory was deleted
-	a.log.Info("deleted inventory", zap.String("name", deletedInventory.Invname.String))
+	a.log.With(zap.String("name", deletedInventory.Invname.String)).Info("deleted inventory")
 	return nil
 }
 
@@ -141,7 +141,7 @@ func (a appLogicImpl) GetInventoryById(ctx context.Context, inventoryId int64) (
 	// store the inventory in the cache
 	err = a.setInventoryInCache(ctx, inventoryId, domainInventory)
 	if err != nil {
-		a.log.Error("error setting inventory in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error setting inventory in cache")
 	}
 
 	return domainInventory, nil
@@ -164,12 +164,12 @@ func (a appLogicImpl) UpdateInventory(ctx context.Context, inventoryId int64, up
 	key := "inventoryID-" + strconv.Itoa(int(inventoryId))
 	err = a.cache.Invalidate(ctx, key)
 	if err != nil {
-		a.log.Error("error invalidating inventory in cache", zap.String("key", key), zap.Error(err))
+		a.log.With(zap.String("key", key), zap.Error(err)).Error("error invalidating inventory in cache")
 	}
 
 	err = a.cache.Invalidate(ctx, "allInventories")
 	if err != nil {
-		a.log.Error("error invalidating all inventories in cache", zap.String("key", key), zap.Error(err))
+		a.log.With(zap.String("key", key), zap.Error(err)).Error("error invalidating all inventories in cache")
 	}
 
 	// map repo model to domain model

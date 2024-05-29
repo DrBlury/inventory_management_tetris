@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	domain "linuxcode/inventory_manager/pkg/domain/model"
 	repo "linuxcode/inventory_manager/pkg/repo/generated"
+	dboTransform "linuxcode/inventory_manager/pkg/repo/transform"
 	"strconv"
 	"time"
 
@@ -31,12 +32,12 @@ func (a appLogicImpl) GetAllItems(ctx context.Context) ([]*domain.Item, error) {
 	// turn ALL to json and store in cache as one
 	jsonAllItems, err := json.Marshal(domainItems)
 	if err != nil {
-		a.log.Error("error marshalling all items to json", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error marshalling all items to json")
 		return domainItems, err
 	}
 	err = a.cache.SetString(ctx, "allItems", string(jsonAllItems))
 	if err != nil {
-		a.log.Error("error setting all items in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error setting all items in cache")
 		return domainItems, err
 	}
 
@@ -45,11 +46,11 @@ func (a appLogicImpl) GetAllItems(ctx context.Context) ([]*domain.Item, error) {
 
 // AddItem adds a new item to the database
 func (a appLogicImpl) AddItem(ctx context.Context, createItemParams *domain.CreateItemParams) (*domain.Item, error) {
-	a.log.Info("creating item", zap.String("name", createItemParams.Name))
-	a.log.Info("item type", zap.Any("type", createItemParams.Type))
+	a.log.With(zap.String("name", createItemParams.Name)).Info("creating item")
+	a.log.With(zap.Any("type", createItemParams.Type)).Info("item type")
 
-	repoItemType := repo.ItemType(createItemParams.Type)
-	a.log.Info("item type", zap.String("repo type", string(repoItemType)))
+	repoItemType := dboTransform.ToRepoItemType(createItemParams.Type)
+	a.log.With(zap.String("repo type", string(repoItemType))).Info("item type")
 	createdItem, err := a.queries.CreateItem(ctx, repo.CreateItemParams{
 		Name:       pgtype.Text{String: createItemParams.Name, Valid: true},
 		Text:       pgtype.Text{String: createItemParams.Text, Valid: true},
@@ -70,16 +71,16 @@ func (a appLogicImpl) AddItem(ctx context.Context, createItemParams *domain.Crea
 	}
 
 	// log what item was created
-	a.log.Info("created item", zap.String("name", createdItem.Name.String))
+	a.log.With(zap.Int32("name", createdItem.ID)).Info("created item")
 	err = a.cache.Invalidate(ctx, "allItems")
 	if err != nil {
-		a.log.Error("error invalidating allItems in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error invalidating allItems in cache")
 	}
 
 	key := "ItemID-" + strconv.Itoa(int(createdItem.ID))
 	err = a.cache.Invalidate(ctx, key)
 	if err != nil {
-		a.log.Error("error invalidating item in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error invalidating item in cache")
 	}
 
 	// map repo model to domain model
@@ -100,19 +101,19 @@ func (a appLogicImpl) DeleteItemById(ctx context.Context, itemId int64) error {
 	}
 
 	// log what item was deleted
-	a.log.Info("deleted item", zap.String("name", repoItem.Name.String))
+	a.log.With(zap.Int32("id", repoItem.ID)).Info("deleted item")
 
 	// invalidate cache for this item
-	key := "ItemID-" + strconv.Itoa(int(itemId))
+	key := "ItemID-" + strconv.Itoa(int(repoItem.ID))
 	err = a.cache.Invalidate(ctx, key)
 	if err != nil {
-		a.log.Error("error invalidating item in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error invalidating item in cache")
 	}
 
 	// invalidate cache for all items
 	err = a.cache.Invalidate(ctx, "allItems")
 	if err != nil {
-		a.log.Error("error invalidating allItems in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error invalidating allItems in cache")
 	}
 
 	return nil
@@ -138,7 +139,7 @@ func (a appLogicImpl) GetItemById(ctx context.Context, itemId int64) (*domain.It
 	// Store the item in the cache, ignore error for now
 	err = a.setItemInCache(ctx, itemId, domainItem)
 	if err != nil {
-		a.log.Error("error setting item in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error setting item in cache")
 	}
 
 	return domainItem, nil
@@ -166,16 +167,16 @@ func (a appLogicImpl) UpdateItem(ctx context.Context, itemId int64, updateItemPa
 	}
 
 	// log what item was updated
-	a.log.Info("updated item", zap.Int64("id", itemId))
+	a.log.With(zap.Int64("id", itemId)).Info("updated item")
 	key := "ItemID-" + strconv.Itoa(int(itemId))
 	err = a.cache.Invalidate(ctx, key)
 	if err != nil {
-		a.log.Error("error invalidating item in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error invalidating item in cache")
 	}
 
 	err = a.cache.Invalidate(ctx, "allItems")
 	if err != nil {
-		a.log.Error("error invalidating allItems in cache", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error invalidating allItems in cache")
 	}
 
 	return nil

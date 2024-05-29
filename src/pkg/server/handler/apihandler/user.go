@@ -44,7 +44,7 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error reading request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error reading request body")
 		return
 	}
 	// unmarshal bytes into dto
@@ -52,7 +52,7 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error unmarshalling request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error unmarshalling request body")
 		return
 	}
 
@@ -65,7 +65,7 @@ func (a APIHandler) AddUser(w http.ResponseWriter, r *http.Request) {
 	addedUser, err := a.AppLogic.AddUser(r.Context(), createUserParams)
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
-		zap.L().Error("error adding user", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error adding user")
 		return
 	}
 
@@ -121,7 +121,7 @@ func (a APIHandler) UpdateUserById(w http.ResponseWriter, r *http.Request, userI
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error reading request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error reading request body")
 		return
 	}
 	// unmarshal bytes into dto
@@ -129,7 +129,7 @@ func (a APIHandler) UpdateUserById(w http.ResponseWriter, r *http.Request, userI
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error unmarshalling request body", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error unmarshalling request body")
 		return
 	}
 
@@ -143,7 +143,7 @@ func (a APIHandler) UpdateUserById(w http.ResponseWriter, r *http.Request, userI
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		zap.L().Error("error updating user", zap.Error(err))
+		zap.L().With(zap.Error(err)).Error("error updating user")
 		return
 	}
 

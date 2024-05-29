@@ -35,7 +35,7 @@ func (a APIHandler) GetAllInventories(w http.ResponseWriter, r *http.Request) {
 // Add new inventory
 // (POST /api/inventories)
 func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
-	a.log.Info("adding inventory: ", zap.String("request", r.RequestURI))
+	a.log.With(zap.String("request", r.RequestURI)).Info("adding inventory: ")
 	// read dto inventory from request using unmarshal
 	var dtoInventory server.InventoryPostRequest
 	// read request body into bytes
@@ -45,7 +45,7 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		a.log.Error("error reading request body", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error reading request body")
 		return
 	}
 	// unmarshal bytes into dto
@@ -53,7 +53,7 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		a.log.Error("error unmarshalling request body", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error unmarshalling request body")
 		return
 	}
 
@@ -70,7 +70,7 @@ func (a APIHandler) AddInventory(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		handler.HandleInternalServerError(w, r, err)
 		// log error
-		a.log.Error("error adding inventory", zap.Error(err))
+		a.log.With(zap.Error(err)).Error("error adding inventory")
 		return
 	}
 

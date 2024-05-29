@@ -99,7 +99,7 @@ func (a appLogicImpl) AddUser(ctx context.Context, createUserParams *domain.Crea
 	}
 
 	// log what user was created
-	a.log.Info("created user", zap.String("username", createUserParams.Username))
+	a.log.With(zap.String("username", createUserParams.Username)).Info("created user")
 
 	// map user to domain model
 	createdUserDomain := &domain.User{
@@ -125,7 +125,7 @@ func (a appLogicImpl) DeleteUserById(ctx context.Context, userId int64) error {
 	}
 
 	// log what user was deleted
-	a.log.Info("deleted user", zap.String("username", repoUser.Username.String))
+	a.log.With(zap.String("username", repoUser.Username.String)).Info("deleted user")
 	return nil
 }
 
@@ -148,6 +148,6 @@ func (a appLogicImpl) UpdateUser(ctx context.Context, userId int64, updateUserPa
 	}
 
 	// log what user was updated
-	a.log.Info("updated user", zap.String("username", updateUserParams.Username))
+	a.log.With(zap.String("username", updateUserParams.Username)).Info("updated user")
 	return updatedUserDomain, nil
 }

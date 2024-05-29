@@ -28,8 +28,7 @@ func (a appLogicImpl) AddItemInInventory(ctx context.Context, inventoryId int64,
 			PositionY:   pgtype.Int4{Int32: int32(positionSuggestion.Y), Valid: true},
 			Rotation:    pgtype.Int4{Int32: int32(positionSuggestion.Rotation), Valid: true},
 			Quantity:    pgtype.Int4{Int32: int32(quantity), Valid: true},
-			// TODO missing!?
-			//Durability: durability
+			// TODO durability
 		})
 	}
 
@@ -37,7 +36,7 @@ func (a appLogicImpl) AddItemInInventory(ctx context.Context, inventoryId int64,
 	key := fmt.Sprint("inventoryID-", inventoryId)
 	err = a.cache.Invalidate(ctx, key)
 	if err != nil {
-		a.log.Error("error invalidating inventory in cache", zap.String("key", key), zap.Error(err))
+		a.log.With(zap.String("key", key), zap.Error(err)).Error("error invalidating inventory in cache")
 	}
 	return inventory, nil
 }
@@ -55,7 +54,7 @@ func (a appLogicImpl) AddItemInInventoryAtPosition(ctx context.Context, inventor
 	if err != nil {
 		return nil, errorx.IllegalArgument.New("Addint the item with id %d at PosX: %d, PosY: %d, Rot: %d was not possible: %s", item.ItemMeta.Id, position.X, position.Y, position.Rotation, err.Error())
 	}
-	a.log.Info("added item to inventory", zap.Int64("inventoryId", inventoryId), zap.Int64("itemId", inventoryItem.Item.ItemMeta.Id), zap.Any("position", position))
+	a.log.With(zap.Int64("inventoryId", inventoryId), zap.Int64("itemId", inventoryItem.Item.ItemMeta.Id), zap.Any("position", position)).Info("added item to inventory")
 
 	positionSuggestion, ok := inventory.AddItem(item, quantity, durability)
 	if ok {
@@ -76,7 +75,7 @@ func (a appLogicImpl) AddItemInInventoryAtPosition(ctx context.Context, inventor
 	key := fmt.Sprint("inventoryID-", inventoryId)
 	err = a.cache.Invalidate(ctx, key)
 	if err != nil {
-		a.log.Error("error invalidating inventory in cache", zap.String("key", key), zap.Error(err))
+		a.log.With(zap.String("key", key), zap.Error(err)).Error("error invalidating inventory in cache")
 	}
 
 	return inventory, nil
@@ -124,7 +123,7 @@ func (a appLogicImpl) DeleteItemFromInventory(ctx context.Context, inventoryId i
 	key := fmt.Sprint("inventoryID-", inventoryId)
 	err = a.cache.Invalidate(ctx, key)
 	if err != nil {
-		a.log.Error("error invalidating inventory in cache", zap.String("key", key), zap.Error(err))
+		a.log.With(zap.String("key", key), zap.Error(err)).Error("error invalidating inventory in cache")
 	}
 	return inventory, nil
 }
@@ -137,7 +136,7 @@ func (a appLogicImpl) MoveItemWithinInventory(ctx context.Context, inventoryId i
 	if err != nil {
 		return nil, errorx.IllegalArgument.New("The requested Inventory with Id: %d does not exist.", inventoryId)
 	}
-	a.log.Info("Found inventory with ID: ", zap.Int64("inventoryId", inv.InventoryMeta.Id))
+	a.log.With(zap.Int64("inventoryId", inv.InventoryMeta.Id)).Info("Found inventory with ID: ")
 
 	// check if the item is in the inventory
 	itemExists := false
@@ -154,7 +153,7 @@ func (a appLogicImpl) MoveItemWithinInventory(ctx context.Context, inventoryId i
 		return nil, errorx.IllegalArgument.New("The requested Inventory with Id: %d does not have item to be moved at PosX: %d, PosY: %d, Rot: %d", inventoryId, startPos.X, startPos.Y, startPos.Rotation)
 	}
 
-	a.log.Info("Found item to move with ID: ", zap.Int64("itemId", itemToMove.Item.ItemMeta.Id))
+	a.log.With(zap.Int64("itemId", itemToMove.Item.ItemMeta.Id)).Info("Found item to move with ID: ")
 
 	// check if the amount to move is valid
 	if amount < itemToMove.Quantity {
@@ -176,7 +175,7 @@ func (a appLogicImpl) MoveItemWithinInventory(ctx context.Context, inventoryId i
 	key := fmt.Sprint("inventoryID-", inventoryId)
 	err = a.cache.Invalidate(ctx, key)
 	if err != nil {
-		a.log.Error("error invalidating inventory in cache", zap.String("key", key), zap.Error(err))
+		a.log.With(zap.String("key", key), zap.Error(err)).Error("error invalidating inventory in cache")
 	}
 	return nil, nil
 }

@@ -5,64 +5,65 @@ import (
 	repo "linuxcode/inventory_manager/pkg/repo/generated"
 )
 
-type DBOTransform interface {
-	// To domain model
-	ToItem(*repo.Item) *domain.Item
-	ToInventoryItem(*repo.InventoryItem) *domain.InventoryItem
-	ToInventory(*repo.Inventory) *domain.Inventory
-	ToUser(*repo.User) *domain.User
-
-	// To repo model
-	ToRepoItem(*domain.Item) *repo.Item
-	ToRepoInventoryItem(*domain.InventoryItem) *repo.InventoryItem
-	ToRepoInventory(*domain.Inventory) *repo.Inventory
-	ToRepoUser(*domain.User) *repo.User
-}
-
-type dboTransformImpl struct{}
-
-func New() DBOTransform {
-	return dboTransformImpl{}
-}
-
 // === MAP REPO TO DOMAIN MODEL ===
-func (dboTransformImpl) ToItem(item *repo.Item) *domain.Item {
+func ToItem(item *repo.Item) *domain.Item {
 	// TODO implement
 	return nil
 }
 
-func (dboTransformImpl) ToInventoryItem(inventoryItem *repo.InventoryItem) *domain.InventoryItem {
+func ToInventoryItem(inventoryItem *repo.InventoryItem) *domain.InventoryItem {
 	// TODO implement
 	return nil
 }
 
-func (dboTransformImpl) ToInventory(inventory *repo.Inventory) *domain.Inventory {
+func ToInventory(inventory *repo.Inventory) *domain.Inventory {
 	// TODO implement
 	return nil
 }
 
-func (dboTransformImpl) ToUser(user *repo.User) *domain.User {
+func ToUser(user *repo.User) *domain.User {
 	// TODO implement
 	return nil
 }
 
-// === MAP DOMAIN TO REPO MODEL ===
-func (dboTransformImpl) ToRepoItem(item *domain.Item) *repo.Item {
-	// TODO implement
-	return nil
+func ToItemType(itemType repo.ItemType) domain.ItemType {
+	switch itemType {
+	case repo.ItemTypeArmor:
+		return domain.ItemType_ARMOR
+	case repo.ItemTypeConsumable:
+		return domain.ItemType_CONSUMABLE
+	case repo.ItemTypeResource:
+		return domain.ItemType_RESOURCE
+	case repo.ItemTypeConsumableWeapon:
+		return domain.ItemType_CONSUMABLE_WEAPON
+	case repo.ItemTypeMeleeWeapon:
+		return domain.ItemType_MELEE_WEAPON
+	case repo.ItemTypeRangedWeapon:
+		return domain.ItemType_RANGED_WEAPON
+	case repo.ItemTypeQuest:
+		return domain.ItemType_QUEST_ITEM
+	default:
+		return domain.ItemType_RESOURCE
+	}
 }
 
-func (dboTransformImpl) ToRepoInventoryItem(inventoryItem *domain.InventoryItem) *repo.InventoryItem {
-	// TODO implement
-	return nil
-}
-
-func (dboTransformImpl) ToRepoInventory(inventory *domain.Inventory) *repo.Inventory {
-	// TODO implement
-	return nil
-}
-
-func (dboTransformImpl) ToRepoUser(user *domain.User) *repo.User {
-	// TODO implement
-	return nil
+func ToRepoItemType(itemType domain.ItemType) repo.ItemType {
+	switch itemType {
+	case domain.ItemType_ARMOR:
+		return repo.ItemTypeArmor
+	case domain.ItemType_CONSUMABLE:
+		return repo.ItemTypeConsumable
+	case domain.ItemType_RESOURCE:
+		return repo.ItemTypeResource
+	case domain.ItemType_CONSUMABLE_WEAPON:
+		return repo.ItemTypeConsumableWeapon
+	case domain.ItemType_MELEE_WEAPON:
+		return repo.ItemTypeMeleeWeapon
+	case domain.ItemType_RANGED_WEAPON:
+		return repo.ItemTypeRangedWeapon
+	case domain.ItemType_QUEST_ITEM:
+		return repo.ItemTypeQuest
+	default:
+		return repo.ItemTypeResource
+	}
 }
